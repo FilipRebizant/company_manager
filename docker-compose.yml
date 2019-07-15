@@ -9,28 +9,29 @@ services:
 
   nginx:
     image: nginx:stable
+#    command: "rm -r /etc/nginx/default.conf"
     volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./public/build/:/var/www/html/public/build:ro
+#      - ./docker/nginx/default.conf:/etc/nginx/conf.d/site.conf
+      - ./:/var/www/html
     depends_on:
       - php-fpm
-      - mysql8.0
+#      - database
     ports:
       - "80:80"
-
-  mysql8.0:
-    container_name: mysql.8
-    image: mysql:8
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
-
-volumes:
-  mysql8.0:
+#
+#  database:
+#    build:
+#      context: ./docker/mysql
+#    restart: always
+#    environment:
+#      MYSQL_DATABASE: 'company-manager'
+#      MYSQL_USER: 'user'
+#      MYSQL_PASSWORD: 'password'
+#      MYSQL_ROOT_PASSWORD: 'password'
+#    ports:
+#      - '3306:3306'
+#    expose:
+#      - '3306'
+#
+#volumes:
+#  database:
