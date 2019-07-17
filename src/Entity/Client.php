@@ -137,14 +137,14 @@ class Client
         return $this;
     }
 
-    public function getCommision(): ?Commission
+    public function getCommission(): ?Commission
     {
         return $this->commision;
     }
 
-    public function setCommision(?Commission $commision): self
+    public function setCommission(?Commission $commission): self
     {
-        $this->commision = $commision;
+        $this->commission = $commission;
 
         return $this;
     }
