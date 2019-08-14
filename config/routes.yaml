@@ -1,3 +1,7 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+users_api:
+  resource: 'routes/users_api.yaml'
+  prefix: api/
+
+index:
+    path: /
+    controller: App\Controller\DefaultController::index

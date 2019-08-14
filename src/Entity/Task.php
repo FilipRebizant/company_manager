@@ -49,7 +49,7 @@ class Task
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="tasks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
      */
     private $user;
 

@@ -37,7 +37,7 @@ class User
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $password;
 
@@ -57,7 +57,7 @@ class User
     private $active;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Task", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="user")
      */
     private $tasks;
 
