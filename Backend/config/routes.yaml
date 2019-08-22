@@ -1,0 +1,12 @@
+users_api:
+  resource: 'routes/users_api.yaml'
+  prefix: api/
+
+clients_api:
+  resource: 'routes/clients_api.yaml'
+  prefix: api/
+
+
+index:
+    path: /
+    controller: App\Controller\DefaultController::index
