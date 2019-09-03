@@ -1,29 +1,36 @@
 import React from 'react';
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCol, MDBNavLink, MDBCardHeader, MDBListGroupItem } from 'mdbreact';
-import { MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
+import { ListItem } from "../ListItem/ListItem";
 
 const ListGroupItem = (props) => {
-
-    // {props.usedMaterial.map((item, key) =>
-        {/*<div key={key}>*/}
-            // {item.name}
-        // </div>
-    // )}
-    // {console.log(props)}
-
-// }
-    {/*<MDBTable fixed bordered>*/}
-        {/*<MDBTableHead columns={data_people.columns}/>*/}
-        {/*<MDBTableBody rows={data_people.rows} />*/}
-    {/*</MDBTable>*/}
+    const style = {
+        border: '2px solid black',
+        margin: '15px 0',
+    };
+    console.log(props.usedMaterial);
     return(
-        <MDBTable responsive bordered>
-            <MDBTableHead columns={
-                props.columns
-            }/>
-            <MDBTableBody rows={props.usedMaterial} />
-        </MDBTable>
+        <div style={style}>
+            <div className="card-header d-flex justify-content-between">
+                <div>{props.usedMaterial[0].usedAt}</div><div>X</div>
+            </div>
+            <div className="hiddenContent">
+                <ul className="list-group" >
+
+                    { props.usedMaterial.map((item, key) =>
+                        <ListItem
+                            key={key}
+                            name={item.name}
+                            code={item.code}
+                            quantity={item.quantity}
+                            additionalInfo={item.additionalInfo}
+                            usedAt={item.usedAt}
+                        />
+                    )}
+                </ul>
+            </div>
+        </div>
+
     );
+
 };
 
 export { ListGroupItem };

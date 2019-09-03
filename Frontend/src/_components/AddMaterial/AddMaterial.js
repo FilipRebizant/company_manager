@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MDBContainer, MDBRow, MDBCol, MDBBtn, MDBIcon, MDBListGroup, MDBListGroupItem} from 'mdbreact';
+import {MDBBtn, MDBIcon} from 'mdbreact';
 
 class AddMaterial extends Component {
     constructor(props) {

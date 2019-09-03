@@ -7,93 +7,58 @@ class CommissionPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            material: null,
             columns: [
-                {
-                    label: '#',
-                    field: 'id',
-                    sort: 'asc',
-                },
                 {
                     label: 'Name',
                     field: 'name',
                     sort: 'asc'
                 },
                 {
-                    label: 'Surname',
-                    field: 'surname',
+                    label: 'Code',
+                    field: 'code',
                     sort: 'asc'
                 },
                 {
-                    label: 'Country',
-                    field: 'country',
+                    label: 'Added by',
+                    field: 'addedBy',
                     sort: 'asc'
                 },
                 {
-                    label: 'City',
-                    field: 'city',
+                    label: 'Quantity',
+                    field: 'quantity',
                     sort: 'asc'
                 },
                 {
-                    label: 'Position',
-                    field: 'position',
+                    label: 'Used at',
+                    field: 'usedAt',
                     sort: 'asc'
-                },
-                {
-                    label: 'Age',
-                    field: 'age',
-                    sort: 'asc'
-                }
-            ],
-            date: [
-                {
-                    date: '27.08.2019',
-                    usedMaterial: [
-                        {
-                            name: 'Camera',
-                            code: 'ek-432j',
-                            addedBy: 'Jan Kowalski',
-                            addedAt: '27.08.2019 15:00',
-                            createdAt: '27.08.2019',
-                            additionalInfo: 'lorem Ipsum dolar'
-                        }
-                    ]
-                },
-                {
-                    date: '28.08.2019',
-                    usedMaterial: [
-                        {
-                            name: 'Camera',
-                            code: 'ek-432j',
-                            addedBy: 'Jan Kowalski',
-                            addedAt: '27.08.2019 15:00',
-                            createdAt: '27.08.2019',
-                            additionalInfo: 'lorem Ipsum dolar'
-                        },
-                        {
-                            name: 'Camera2',
-                            code: 'ek-432j',
-                            addedBy: 'Jan Kowalski',
-                            addedAt: '27.08.2019 15:00',
-                            createdAt: '27.08.2019',
-                            additionalInfo: 'lorem Ipsum dolar'
-                        }
-                    ]
                 }
             ]
+
         };
     }
 
-    render() {
-        this.items = this.state.date.map((day, key) =>
-            <ListGroupItem key={day.date}
-                           days={day.date}
-                           columns={this.state.columns}
-                           usedMaterial={day.usedMaterial}
-            >
+    componentDidMount() {
+        let currentMaterialList = localStorage.getItem('localMaterialItems');
 
-            </ListGroupItem>
-        );
+        this.setState({
+            material: JSON.parse(currentMaterialList)
+        });
+    };
+
+    render() {
+        const { material, columns } = this.state;
+
+        if (material) {
+            this.items = Object.keys(material).map((key) =>
+                <ListGroupItem
+                    key={key}
+                    columns={columns}
+                    usedMaterial={material[key]}
+                />
+            );
+        }
 
         return (
             <MDBContainer>
@@ -104,9 +69,7 @@ class CommissionPage extends Component {
                     </MDBCol>
                     <MDBCol md="8">
                         <MDBContainer>
-                            <MDBListGroup>
-                                {this.items}
-                            </MDBListGroup>
+                            {this.items}
                         </MDBContainer>
                     </MDBCol>
                 </MDBRow>
