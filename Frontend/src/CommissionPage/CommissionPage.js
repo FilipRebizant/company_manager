@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {MDBContainer, MDBRow, MDBCol, MDBListGroup} from 'mdbreact';
-import { ListGroupItem } from "../_components/ListGroupItem/ListGroupItem";
+import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
+import { ListGroup } from "../_components/ListGroupItem/ListGroup";
 import { AddMaterial } from "../_components/AddMaterial/AddMaterial";
 
 class CommissionPage extends Component {
@@ -35,11 +35,19 @@ class CommissionPage extends Component {
                     sort: 'asc'
                 }
             ]
-
         };
     }
 
+    updateList = () => {
+        this.getItems();
+        this.renderList();
+    };
+
     componentDidMount() {
+       this.getItems();
+    };
+
+    getItems = () => {
         let currentMaterialList = localStorage.getItem('localMaterialItems');
 
         this.setState({
@@ -47,29 +55,30 @@ class CommissionPage extends Component {
         });
     };
 
-    render() {
+    renderList = () => {
         const { material, columns } = this.state;
-
         if (material) {
-            this.items = Object.keys(material).map((key) =>
-                <ListGroupItem
+           return this.items = Object.keys(material).map((key) =>
+                <ListGroup
                     key={key}
                     columns={columns}
                     usedMaterial={material[key]}
                 />
             );
         }
+    };
 
+    render() {
         return (
             <MDBContainer>
                 <h2>Commission</h2>
                 <MDBRow>
                     <MDBCol md="4">
-                        <AddMaterial/>
+                        <AddMaterial reloadList={this.updateList}/>
                     </MDBCol>
                     <MDBCol md="8">
                         <MDBContainer>
-                            {this.items}
+                            {this.renderList()}
                         </MDBContainer>
                     </MDBCol>
                 </MDBRow>

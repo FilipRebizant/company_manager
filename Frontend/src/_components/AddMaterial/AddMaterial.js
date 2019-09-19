@@ -14,6 +14,16 @@ class AddMaterial extends Component {
         }
     }
 
+    resetInputFields = () => {
+        this.setState({
+            currentItems: {},
+            name: '',
+            code: '',
+            quantity: '',
+            usedAt: '',
+            additionalInfo: '' })
+    };
+
     handleChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
     };
@@ -41,9 +51,15 @@ class AddMaterial extends Component {
             currentMaterialList[newItem.usedAt] = [];
         }
 
-        currentMaterialList[newItem.usedAt].push(newItem);
+        if (this.state.usedAt !== '') {
+            currentMaterialList[newItem.usedAt].push(newItem);
+            localStorage.setItem("localMaterialItems", JSON.stringify(currentMaterialList));
 
-        localStorage.setItem("localMaterialItems", JSON.stringify(currentMaterialList));
+            this.resetInputFields();
+
+        }
+
+        this.props.reloadList();
     };
 
     render() {
@@ -61,6 +77,7 @@ class AddMaterial extends Component {
                     type="text"
                     id="name"
                     name="name"
+                    value={this.state.name}
                     className="form-control"
                     onChange={this.handleChange}
                 />
@@ -77,6 +94,7 @@ class AddMaterial extends Component {
                     type="text"
                     id="code"
                     name="code"
+                    value={this.state.code}
                     className="form-control"
                     onChange={this.handleChange}
                 />
@@ -92,6 +110,7 @@ class AddMaterial extends Component {
                     type="number"
                     id="quantity"
                     name="quantity"
+                    value={this.state.quantity}
                     className="form-control"
                     onChange={this.handleChange}
                 />
@@ -108,6 +127,7 @@ class AddMaterial extends Component {
                     type="date"
                     id="usedAt"
                     name="usedAt"
+                    value={this.state.usedAt}
                     className="form-control"
                     onChange={this.handleChange}
                 />
@@ -120,6 +140,7 @@ class AddMaterial extends Component {
                     type="text"
                     id="additionalInfo"
                     name="additionalInfo"
+                    value={this.state.additionalInfo}
                     className="form-control"
                     onChange={this.handleChange}
                 />
@@ -135,4 +156,4 @@ class AddMaterial extends Component {
     }
 }
 
-export {AddMaterial};
+export { AddMaterial };
