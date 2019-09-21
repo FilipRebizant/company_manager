@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
-import { ListGroup } from "../_components/ListGroupItem/ListGroup";
-import { AddMaterial } from "../_components/AddMaterial/AddMaterial";
+import { ListGroup } from "../_components/ListGroup";
+import { AddMaterial } from "../_components/AddMaterial";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -58,7 +58,7 @@ class CommissionPage extends Component {
     renderList = () => {
         const { material, columns } = this.state;
         if (material) {
-           return this.items = Object.keys(material).map((key) =>
+           return Object.keys(material).map((key) =>
                 <ListGroup
                     key={key}
                     columns={columns}
@@ -71,13 +71,14 @@ class CommissionPage extends Component {
     render() {
         return (
             <MDBContainer>
-                <h2>Commission</h2>
+                <h2 className="h2 py-4">Commission</h2>
                 <MDBRow>
                     <MDBCol md="4">
-                        <AddMaterial reloadList={this.updateList}/>
+                        <AddMaterial updateList={this.updateList}/>
                     </MDBCol>
                     <MDBCol md="8">
                         <MDBContainer>
+                            <h3 className="py-4">Used Material</h3>
                             {this.renderList()}
                         </MDBContainer>
                     </MDBCol>

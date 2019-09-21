@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MDBBtn, MDBIcon} from 'mdbreact';
+import { MDBBtn, MDBIcon } from 'mdbreact';
 
 class AddMaterial extends Component {
     constructor(props) {
@@ -21,7 +21,8 @@ class AddMaterial extends Component {
             code: '',
             quantity: '',
             usedAt: '',
-            additionalInfo: '' })
+            additionalInfo: ''
+        })
     };
 
     handleChange = (e) => {
@@ -59,13 +60,13 @@ class AddMaterial extends Component {
 
         }
 
-        this.props.reloadList();
+        this.props.updateList();
     };
 
     render() {
         return (
             <form onSubmit={this.handleFormSubmit}>
-                <p className="h4 text-center py-4">Add Used Material</p>
+                <h3 className="text-center py-4">Add Used Material</h3>
 
                 <label
                     htmlFor="name"
@@ -146,7 +147,7 @@ class AddMaterial extends Component {
                 />
 
                 <div className="text-center py-4 mt-3">
-                    <MDBBtn className="btn btn-outline-purple" type="submit">
+                    <MDBBtn className="btn btn-outline-blue" type="submit">
                         Send
                         <MDBIcon far icon="paper-plane" className="ml-2"/>
                     </MDBBtn>

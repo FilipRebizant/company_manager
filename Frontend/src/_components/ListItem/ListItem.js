@@ -16,7 +16,7 @@ const ListItem = (props) => {
         margin: '0 0 0 0',
         listStyleType: 'none',
     };
-    // console.log(props);
+
     return (
         <li style={listItemStyle} className="d-flex justify-content-around">
 

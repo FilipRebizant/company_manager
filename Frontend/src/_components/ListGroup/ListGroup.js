@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItem } from "../ListItem/ListItem";
+import { ListItem } from "../ListItem";
 import { MDBHamburgerToggler } from 'mdbreact';
 
 const ListGroup = (props) => {
@@ -43,7 +43,6 @@ const ListGroup = (props) => {
             </div>
         </div>
     );
-
 };
 
 export { ListGroup };
