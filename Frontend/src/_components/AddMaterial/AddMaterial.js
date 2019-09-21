@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
+import { Label } from "../Label";
+import { Input } from "../Input";
 
 class AddMaterial extends Component {
     constructor(props) {
@@ -62,89 +64,36 @@ class AddMaterial extends Component {
 
         this.props.updateList();
     };
-
+//163
     render() {
         return (
             <form onSubmit={this.handleFormSubmit}>
                 <h3 className="text-center py-4">Add Used Material</h3>
 
-                <label
-                    htmlFor="name"
-                    className="grey-text font-weight-light"
-                >
-                    Name
-                </label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={this.state.name}
-                    className="form-control"
-                    onChange={this.handleChange}
-                />
-                <br/>
+                <div className="form-group">
+                    <Label for="name"/>
+                    <Input name="name" value={this.state.name} onChange={this.handleChange} />
+                </div>
 
-                <label
-                    htmlFor="code"
-                    className="grey-text font-weight-light"
-                >
-                    Code
-                </label>
+                <div className="form-group">
+                    <Label for="code"/>
+                    <Input name="code" value={this.state.code} onChange={this.handleChange} />
+                </div>
 
-                <input
-                    type="text"
-                    id="code"
-                    name="code"
-                    value={this.state.code}
-                    className="form-control"
-                    onChange={this.handleChange}
-                />
-                <br/>
+                <div className="form-group">
+                    <Label for="quantity"/>
+                    <Input type="number" name="quantity" value={this.state.quantity} onChange={this.handleChange} />
+                </div>
 
-                <label
-                    htmlFor="quantity"
-                    className="grey-text font-weight-light"
-                >
-                    Quantity
-                </label>
-                <input
-                    type="number"
-                    id="quantity"
-                    name="quantity"
-                    value={this.state.quantity}
-                    className="form-control"
-                    onChange={this.handleChange}
-                />
-                <br/>
+                <div className="form-group">
+                    <Label for="usedAt"/>
+                    <Input type="date" name="usedAt" value={this.state.usedAt} onChange={this.handleChange} />
+                </div>
 
-                <label
-                    htmlFor="usedAt"
-                    className="grey-text font-weight-light"
-                >
-                    Used at
-                </label>
-
-                <input
-                    type="date"
-                    id="usedAt"
-                    name="usedAt"
-                    value={this.state.usedAt}
-                    className="form-control"
-                    onChange={this.handleChange}
-                />
-                <br/>
-
-                <label htmlFor="additionalInfo" className="grey-text font-weight-light">
-                    Additional Info
-                </label>
-                <input
-                    type="text"
-                    id="additionalInfo"
-                    name="additionalInfo"
-                    value={this.state.additionalInfo}
-                    className="form-control"
-                    onChange={this.handleChange}
-                />
+                <div className="form-group">
+                    <Label for="additionalInfo"/>
+                    <Input name="additionalInfo" value={this.state.additionalInfo} onChange={this.handleChange} />
+                </div>
 
                 <div className="text-center py-4 mt-3">
                     <MDBBtn className="btn btn-outline-blue" type="submit">
