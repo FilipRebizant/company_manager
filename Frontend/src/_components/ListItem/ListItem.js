@@ -19,7 +19,6 @@ const ListItem = (props) => {
 
     return (
         <li style={listItemStyle} className="d-flex justify-content-around">
-
             <div style={singlePropStyle}>John Doe</div>
             <div style={singlePropStyle}>{props.name}</div>
             <div style={singlePropStyle}>{props.code}</div>

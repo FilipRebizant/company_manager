@@ -8,33 +8,7 @@ class CommissionPage extends Component {
         super(props);
         this.state = {
             material: null,
-            columns: [
-                {
-                    label: 'Name',
-                    field: 'name',
-                    sort: 'asc'
-                },
-                {
-                    label: 'Code',
-                    field: 'code',
-                    sort: 'asc'
-                },
-                {
-                    label: 'Added by',
-                    field: 'addedBy',
-                    sort: 'asc'
-                },
-                {
-                    label: 'Quantity',
-                    field: 'quantity',
-                    sort: 'asc'
-                },
-                {
-                    label: 'Used at',
-                    field: 'usedAt',
-                    sort: 'asc'
-                }
-            ]
+            commissionId: ''
         };
     }
 
@@ -44,6 +18,10 @@ class CommissionPage extends Component {
     };
 
     componentDidMount() {
+       const url = window.location.href;
+       const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
+
+       this.setState({commissionId: id});
        this.getItems();
     };
 
@@ -56,16 +34,17 @@ class CommissionPage extends Component {
     };
 
     renderList = () => {
-        const { material, columns } = this.state;
+        const { material, commissionId } = this.state;
         if (material) {
-           return Object.keys(material).map((key) =>
-                <ListGroup
-                    key={key}
-                    columns={columns}
-                    usedMaterial={material[key]}
-                />
-            );
-        }
+           return Object.keys(material).map((key) => {
+               if (commissionId === material[key][0].commissionId) {
+                   return <ListGroup
+                       key={key}
+                       usedMaterial={material[key]}
+                   />
+               }
+          });
+       }
     };
 
     render() {

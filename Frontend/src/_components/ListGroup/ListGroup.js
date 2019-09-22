@@ -8,14 +8,13 @@ const ListGroup = (props) => {
         margin: '15px 0',
     };
 
-    const showContent = (e) => {
+    const toggleVisibilityContent = () => {
         let hiddenPart = wrapper.current.children[1];
         if (hiddenPart.classList.contains("hiddenContent")) {
             hiddenPart.classList.remove("hiddenContent");
         } else {
             hiddenPart.classList.add("hiddenContent");
         }
-
     };
 
     let wrapper = React.createRef();
@@ -24,13 +23,13 @@ const ListGroup = (props) => {
         <div ref={wrapper} style={style}>
             <div className="card-header d-flex justify-content-between">
                 <div>{props.usedMaterial[0].usedAt}</div>
-                <MDBHamburgerToggler color="#000000" id={props.usedMaterial[0].usedAt} onClick={e => showContent(e)} />
-
+                <MDBHamburgerToggler color="#000000" id={props.usedMaterial[0].usedAt} onClick={toggleVisibilityContent} />
             </div>
             <div className="hiddenContentContainer hiddenContent">
                 <ul className="list-group" >
                     { props.usedMaterial.map((item, key) =>
                         <ListItem
+                            id={item.id}
                             key={key}
                             name={item.name}
                             code={item.code}

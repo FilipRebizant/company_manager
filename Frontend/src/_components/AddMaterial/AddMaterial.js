@@ -7,6 +7,7 @@ class AddMaterial extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            commissionId: '',
             currentItems: {},
             name: '',
             code: '',
@@ -14,6 +15,13 @@ class AddMaterial extends Component {
             usedAt: '',
             additionalInfo: ''
         }
+    }
+
+    componentDidMount() {
+        const url = window.location.href;
+        const id = url.substring(url.lastIndexOf('/') + 1);
+
+        this.setState({commissionId: id});
     }
 
     resetInputFields = () => {
@@ -33,8 +41,9 @@ class AddMaterial extends Component {
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        const {name, code, quantity, usedAt, additionalInfo} = this.state;
+        const {name, code, quantity, usedAt, additionalInfo, commissionId} = this.state;
         const newItem = {
+            commissionId: parseInt(commissionId),
             name: name,
             code: code,
             quantity: quantity,
@@ -59,12 +68,11 @@ class AddMaterial extends Component {
             localStorage.setItem("localMaterialItems", JSON.stringify(currentMaterialList));
 
             this.resetInputFields();
-
         }
 
         this.props.updateList();
     };
-//163
+
     render() {
         return (
             <form onSubmit={this.handleFormSubmit}>
@@ -94,6 +102,8 @@ class AddMaterial extends Component {
                     <Label for="additionalInfo"/>
                     <Input name="additionalInfo" value={this.state.additionalInfo} onChange={this.handleChange} />
                 </div>
+
+                <Input type="hidden" value={this.state.commissionId} />
 
                 <div className="text-center py-4 mt-3">
                     <MDBBtn className="btn btn-outline-blue" type="submit">
