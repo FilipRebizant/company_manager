@@ -8,6 +8,7 @@ class AddCommission extends Component {
         super(props);
         this.state = {
             modalOpened: false,
+            id: '',
             name: '',
             town: '',
             street: '',
@@ -30,6 +31,24 @@ class AddCommission extends Component {
         return `${year}/${month}/${day} ${hour}:${minutes}:${seconds}`;
     };
 
+    componentDidMount() {
+        this.getOpenedCommissions();
+    }
+
+    getOpenedCommissions = () => {
+        const localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
+        const parsedCommissions = JSON.parse(localOpenedCommissions);
+        let lastId = 0;
+
+        if (parsedCommissions) {
+            lastId = parsedCommissions[parsedCommissions.length-1].id + 1;
+        }
+
+        this.setState({
+            id: lastId
+        });
+    };
+
     toggleModal = () => {
         this.setState({
             modalOpened: !this.state.modalOpened
@@ -37,8 +56,9 @@ class AddCommission extends Component {
     };
 
     handleFormSubmit = () => {
-        const {name, town, street, houseNumber, createdAt} = this.state;
+        const {id, name, town, street, houseNumber, createdAt} = this.state;
         const newItem = {
+            id: id,
             name: name,
             town: town,
             street: street,
@@ -60,7 +80,7 @@ class AddCommission extends Component {
 
             this.resetInputFields();
         }
-
+        this.getOpenedCommissions();
         this.props.updateList();
     };
 
@@ -107,6 +127,7 @@ class AddCommission extends Component {
                             </div>
 
                             <Input type="hidden" value={this.state.createdAt} />
+                            <Input type="hidden" value={this.state.id} />
                         </form>
                     </MDBModalBody>
                     <MDBModalFooter>

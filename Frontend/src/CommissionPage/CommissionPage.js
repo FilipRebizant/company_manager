@@ -8,6 +8,7 @@ class CommissionPage extends Component {
         super(props);
         this.state = {
             material: null,
+            name: null,
             commissionId: ''
         };
     }
@@ -17,12 +18,31 @@ class CommissionPage extends Component {
         this.renderList();
     };
 
+    getCommissionsData = (id) => {
+        const localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
+        const parsedCommissions = JSON.parse(localOpenedCommissions);
+
+        let name = null;
+        parsedCommissions.map((item) => {
+            if (item.id === id) {
+                name = item.name;
+            }
+        });
+
+        this.setState({
+            name: name
+        })
+    };
+
     componentDidMount() {
        const url = window.location.href;
        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
-
-       this.setState({commissionId: id});
+       this.getCommissionsData(id);
        this.getItems();
+
+       this.setState({
+           commissionId: id
+       });
     };
 
     getItems = () => {
@@ -48,9 +68,17 @@ class CommissionPage extends Component {
     };
 
     render() {
-        return (
+        const { name } = this.state;
+
+        let pageContent =
+        <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>;
+
+        if (name) {
+            pageContent =
             <MDBContainer>
-                <h2 className="h2 py-4">Commission</h2>
+                <h2 className="h2 py-4">{name}</h2>
                 <MDBRow>
                     <MDBCol md="4">
                         <AddMaterial updateList={this.updateList}/>
@@ -63,6 +91,9 @@ class CommissionPage extends Component {
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
+        }
+        return (
+            pageContent
         );
     }
 }

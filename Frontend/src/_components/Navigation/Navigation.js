@@ -33,18 +33,15 @@ class Navigation extends Component {
                 <NavItem>
                     <MDBNavLink to="/commission" className="nav-item nav-link">Commission</MDBNavLink>
                 </NavItem>
-
             </MDBNavbarNav>;
 
         return (
-
             <Navbar color="bg-dark navbar-dark" expand="md" scrolling>
                 {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick}/>}
                 <Collapse isOpen={this.state.collapse} navbar>
                     {navItems}
                 </Collapse>
             </Navbar>
-
         );
     }
 }

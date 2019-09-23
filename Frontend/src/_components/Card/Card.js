@@ -10,7 +10,8 @@ const Card = (props) => {
             <MDBCardBody>
                 <MDBCardTitle>{ props.title }</MDBCardTitle>
                 <MDBCardText>{ props.address }</MDBCardText>
-                <MDBNavLink to={`/commission/${props.id}`}>Show</MDBNavLink>
+                <MDBNavLink to={`/commission/${props.id}`}
+                >Show</MDBNavLink>
             </MDBCardBody>
         </MDBCard>
     )

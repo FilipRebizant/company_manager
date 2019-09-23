@@ -11,12 +11,12 @@ class HomePage extends Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.getOpenedCommissions();
     };
 
     getOpenedCommissions = () => {
-        let localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
+        const localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
 
         this.setState({
             localOpenedCommissions: JSON.parse(localOpenedCommissions)
