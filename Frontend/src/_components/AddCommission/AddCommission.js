@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
-import { Label } from "../Label";
-import { Input } from "../Input";
+import { Label } from "../atoms/Label";
+import { Input } from "../atoms/Input";
 
 class AddCommission extends Component {
     constructor(props) {

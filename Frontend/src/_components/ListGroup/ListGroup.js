@@ -4,7 +4,7 @@ import { MDBHamburgerToggler } from 'mdbreact';
 
 const ListGroup = (props) => {
     const style = {
-        border: '2px solid black',
+        border: '1px solid #ced4da',
         margin: '15px 0',
     };
 

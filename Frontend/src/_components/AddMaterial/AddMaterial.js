@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
-import { Label } from "../Label";
-import { Input } from "../Input";
+import { Label } from "../atoms/Label";
+import { Input } from "../atoms/Input";
 
 class AddMaterial extends Component {
     constructor(props) {
         super(props);
         this.state = {
             commissionId: '',
-            currentItems: {},
             name: '',
             code: '',
             quantity: '',
@@ -26,7 +25,6 @@ class AddMaterial extends Component {
 
     resetInputFields = () => {
         this.setState({
-            currentItems: {},
             name: '',
             code: '',
             quantity: '',
@@ -68,9 +66,9 @@ class AddMaterial extends Component {
             localStorage.setItem("localMaterialItems", JSON.stringify(currentMaterialList));
 
             this.resetInputFields();
+            this.props.updateList();
         }
 
-        this.props.updateList();
     };
 
     render() {

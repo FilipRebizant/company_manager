@@ -41,3 +41,12 @@
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
   overflow: hidden;
 }
+
+.nav-tabs .nav-link.active {
+  font-weight: 800;
+}
+
+.nav-link {
+  color: black;
+}
+
