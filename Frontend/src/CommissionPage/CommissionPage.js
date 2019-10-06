@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBNavLink } from "mdbreact";
-import { ListGroup } from "../_components/ListGroup";
-import { AddMaterial } from "../_components/AddMaterial";
-import { AddDayReport } from "../_components/AddDayReport";
+import { MaterialList } from "../_components/Material/MaterialList";
+import { AddMaterial } from "../_components/Material/AddMaterial";
+import { AddDayReport } from "../_components/DayReports/AddDayReport";
+import { ReportsTable } from "../_components/DayReports/ReportsTable";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -58,8 +59,10 @@ class CommissionPage extends Component {
 
     getItems = () => {
         let currentMaterialList = localStorage.getItem('localMaterialItems');
+        let currentDayReports = localStorage.getItem('localDayReports');
 
         this.setState({
+            reports: JSON.parse(currentDayReports),
             material: JSON.parse(currentMaterialList)
         });
     };
@@ -69,9 +72,10 @@ class CommissionPage extends Component {
         if (material) {
            return Object.keys(material).map((key) => {
                if (commissionId === material[key][0].commissionId) {
-                   return <ListGroup
+                   return <MaterialList
                        key={key}
-                       usedMaterial={material[key]}
+                       setName={"material"}
+                       items={material[key]}
                    />
                }
           });
@@ -83,9 +87,11 @@ class CommissionPage extends Component {
         if (reports) {
             return Object.keys(reports).map((key) => {
                 if (commissionId === reports[key][0].commissionId) {
-                    return <ListGroup
+                    return <ReportsTable
                         key={key}
-                        usedMaterial={reports[key]}
+                        setName='reports'
+                        date={reports[key][0].date}
+                        items={reports[key]}
                     />
                 }
             });

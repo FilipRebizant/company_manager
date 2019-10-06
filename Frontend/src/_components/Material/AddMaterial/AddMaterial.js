@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
-import { Label } from "../atoms/Label";
-import { Input } from "../atoms/Input";
+import { Label } from "../../atoms/Label/index";
+import { Input } from "../../atoms/Input/index";
 
-class AddDayReport extends Component {
+class AddMaterial extends Component {
     constructor(props) {
         super(props);
         this.state = {
             commissionId: '',
+            name: '',
+            code: '',
+            quantity: '',
             date: '',
-            startedAt: '',
-            finishedAt: '',
-            hoursSum: '',
-            dayDescription: ''
+            additionalInfo: ''
         }
     }
 
@@ -25,11 +25,11 @@ class AddDayReport extends Component {
 
     resetInputFields = () => {
         this.setState({
+            name: '',
+            code: '',
+            quantity: '',
             date: '',
-            startedAt: '',
-            finishedAt: '',
-            hoursSum: '',
-            dayDescription: ''
+            additionalInfo: ''
         })
     };
 
@@ -39,20 +39,17 @@ class AddDayReport extends Component {
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        console.log('submit');
-        console.log(this.state);
-
-        const {commissionId, date, startedAt, finishedAt, hoursSum, dayDescription} = this.state;
+        const {name, code, quantity, date, additionalInfo, commissionId} = this.state;
         const newItem = {
             commissionId: parseInt(commissionId),
+            name: name,
+            code: code,
+            quantity: quantity,
             date: date,
-            startedAt: startedAt,
-            finishedAt: finishedAt,
-            hoursSum: hoursSum,
-            dayDescription: dayDescription,
+            additionalInfo: additionalInfo,
             pushed: false
         };
-        let currentMaterialList = localStorage.getItem('localReportDays');
+        let currentMaterialList = localStorage.getItem('localMaterialItems');
 
         if (currentMaterialList === null) {
             currentMaterialList = {};
@@ -64,28 +61,34 @@ class AddDayReport extends Component {
             currentMaterialList[newItem.date] = [];
         }
 
-        if (this.state.usedAt !== '') {
+        if (this.state.date !== '') {
             currentMaterialList[newItem.date].push(newItem);
-            localStorage.setItem("localReportDays", JSON.stringify(currentMaterialList));
+            localStorage.setItem("localMaterialItems", JSON.stringify(currentMaterialList));
 
-            this.props.updateList();
             this.resetInputFields();
+            this.props.updateList();
         }
+
     };
 
     render() {
-        return(
+        return (
             <form onSubmit={this.handleFormSubmit}>
-                <h3 className="text-center py-4">Add Day Report</h3>
+                <h3 className="text-center py-4">Add Used Material</h3>
 
                 <div className="form-group">
-                    <Label for="startedAt"/>
-                    <Input type="time" name="startedAt" value={this.state.startedAt} onChange={this.handleChange} />
+                    <Label for="name"/>
+                    <Input name="name" value={this.state.name} onChange={this.handleChange} />
                 </div>
 
                 <div className="form-group">
-                    <Label for="finishedAt"/>
-                    <Input type="time" name="finishedAt" value={this.state.finishedAt} onChange={this.handleChange} />
+                    <Label for="code"/>
+                    <Input name="code" value={this.state.code} onChange={this.handleChange} />
+                </div>
+
+                <div className="form-group">
+                    <Label for="quantity"/>
+                    <Input type="number" name="quantity" value={this.state.quantity} onChange={this.handleChange} />
                 </div>
 
                 <div className="form-group">
@@ -94,13 +97,8 @@ class AddDayReport extends Component {
                 </div>
 
                 <div className="form-group">
-                    <Label for="dayDescription"/>
-                    <textarea
-                        className="form-control"
-                        name="dayDescription"
-                        rows="5"
-                        value={this.state.dayDescription}
-                        onChange={this.handleChange} ></textarea>
+                    <Label for="additionalInfo"/>
+                    <Input name="additionalInfo" value={this.state.additionalInfo} onChange={this.handleChange} />
                 </div>
 
                 <Input type="hidden" value={this.state.commissionId} />
@@ -116,4 +114,4 @@ class AddDayReport extends Component {
     }
 }
 
-export { AddDayReport }
+export { AddMaterial };

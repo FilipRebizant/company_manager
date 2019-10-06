@@ -50,3 +50,34 @@
   color: black;
 }
 
+.table {
+  margin-bottom: 0;
+}
+
+.table__row-full-width {
+  border-bottom: 2px solid rgba(0,0,0,.125);
+  /*position: relative;*/
+  /*top: -1px;*/
+}
+
+.table__row-full-width:last-child {
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.table__data-highlighted {
+  padding: .75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+  border-left: 1px solid rgba(0,0,0,.125);
+}
+
+.table__data_counter {
+  vertical-align: inherit !important;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 2px solid rgba(0,0,0,.125);
+}
+
+.table__data_counter:last-child {
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
