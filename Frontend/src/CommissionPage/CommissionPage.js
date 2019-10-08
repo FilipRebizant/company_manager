@@ -4,6 +4,7 @@ import { MaterialList } from "../_components/Material/MaterialList";
 import { AddMaterial } from "../_components/Material/AddMaterial";
 import { AddDayReport } from "../_components/DayReports/AddDayReport";
 import { ReportsTable } from "../_components/DayReports/ReportsTable";
+import {AddTask} from "../_components/Task/AddTask";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class CommissionPage extends Component {
             reports: null,
             commissionName: null,
             commissionId: '',
-            activeTab: "2"
+            activeTab: "3"
         };
     }
 
@@ -28,6 +29,10 @@ class CommissionPage extends Component {
     updateList = () => {
         this.getItems();
         this.renderMaterialList();
+    };
+
+    updateTaskList = () => {
+        console.log('List updated');
     };
 
     getCommissionsData = (id) => {
@@ -98,6 +103,10 @@ class CommissionPage extends Component {
         }
     };
 
+    renderTaskList = () => {
+
+    };
+
     render() {
         const { commissionName } = this.state;
 
@@ -120,6 +129,11 @@ class CommissionPage extends Component {
                     <MDBNavItem>
                         <MDBNavLink to="#" active={this.state.activeTab === "2"} onClick={this.toggleTab("2")} role="tab" >
                             Working hours
+                        </MDBNavLink>
+                    </MDBNavItem>
+                    <MDBNavItem>
+                        <MDBNavLink to="#" active={this.state.activeTab === "3"} onClick={this.toggleTab("3")} role="tab" >
+                            Tasks
                         </MDBNavLink>
                     </MDBNavItem>
                 </MDBNav>
@@ -149,6 +163,22 @@ class CommissionPage extends Component {
                                 <MDBContainer>
                                     <h3 className="py-4">Day Reports</h3>
                                     {this.renderReportsList()}
+                                </MDBContainer>
+                            </MDBCol>
+                        </MDBRow>
+                    </MDBTabPane>
+
+                    <MDBTabPane tabId="3" role="tabpanel">
+                        <MDBRow>
+                            <MDBCol md="12">
+                                <AddTask updateTaskList={this.updateTaskList}/>
+                            </MDBCol>
+                        </MDBRow>
+                        <MDBRow>
+                            <MDBCol md="12">
+                                <MDBContainer>
+                                    <h3 className="py-4">Tasks</h3>
+                                    {this.renderTaskList()}
                                 </MDBContainer>
                             </MDBCol>
                         </MDBRow>
