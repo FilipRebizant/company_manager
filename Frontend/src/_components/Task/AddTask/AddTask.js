@@ -10,7 +10,7 @@ class AddTask extends Component {
         this.state = {
             commissionId: null,
             taskId: null,
-            modalOpened: true,
+            modalOpened: false,
             description: '',
             employeeAssigned: null,
             createdAt: '',
@@ -26,17 +26,17 @@ class AddTask extends Component {
     }
 
     getTasks = () => {
-        const localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
-        const parsedCommissions = JSON.parse(localOpenedCommissions);
-        let lastId = 0;
+        // const localTasks = localStorage.getItem('localTasks');
+        // const parsedTasks = JSON.parse(localTasks);
+        // let lastId = 0;
 
-        if (parsedCommissions) {
-            lastId = parsedCommissions[parsedCommissions.length-1].id + 1;
-        }
+        // if (parsedTasks) {
+        //     lastId = parsedTasks[parsedTasks.length-1].id + 1;
+        // }
 
-        this.setState({
-            commissionId: lastId
-        });
+        // this.setState({
+        //     commissionId: lastId
+        // });
     };
 
     toggleModal = () => {
@@ -60,13 +60,17 @@ class AddTask extends Component {
         let localTasks = localStorage.getItem('localTasks');
 
         if (localTasks === null) {
-            localTasks = [];
+            localTasks = {};
         } else {
             localTasks = JSON.parse(localTasks);
         }
 
+        if (!localTasks[newItem.createdAt]) {
+            localTasks[newItem.createdAt] = [];
+        }
+
         if (this.state.valid === true) {
-            localTasks.push(newItem);
+            localTasks[newItem.createdAt].push(newItem);
             localStorage.setItem("localTasks", JSON.stringify(localTasks));
 
             this.resetInputFields();

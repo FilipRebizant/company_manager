@@ -12,9 +12,10 @@ class CommissionPage extends Component {
         this.state = {
             material: null,
             reports: null,
+            tasks: null,
             commissionName: null,
             commissionId: '',
-            activeTab: "3"
+            activeTab: "1"
         };
     }
 
@@ -65,10 +66,12 @@ class CommissionPage extends Component {
     getItems = () => {
         let currentMaterialList = localStorage.getItem('localMaterialItems');
         let currentDayReports = localStorage.getItem('localDayReports');
+        let currentTasksList = localStorage.getItem('localTasks');
 
         this.setState({
             reports: JSON.parse(currentDayReports),
-            material: JSON.parse(currentMaterialList)
+            material: JSON.parse(currentMaterialList),
+            tasks: JSON.parse(currentTasksList)
         });
     };
 
@@ -104,7 +107,19 @@ class CommissionPage extends Component {
     };
 
     renderTaskList = () => {
-
+        const { tasks, commissionId } = this.state;
+        if (tasks) {
+            return Object.keys(tasks).map((key) => {
+                if (commissionId === tasks[key][0].commissionId) {
+                    return <ReportsTable
+                        key={key}
+                        setName='tasks'
+                        date={tasks[key][0].date}
+                        items={tasks[key]}
+                    />
+                }
+            });
+        }
     };
 
     render() {
