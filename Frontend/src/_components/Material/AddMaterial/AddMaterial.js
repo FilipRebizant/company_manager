@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
 import { Label } from "../../atoms/Label/index";
 import { Input } from "../../atoms/Input/index";
+import { getCommissionId } from "../../../_helpers";
 
 class AddMaterial extends Component {
     constructor(props) {
@@ -14,13 +15,6 @@ class AddMaterial extends Component {
             date: '',
             additionalInfo: ''
         }
-    }
-
-    componentDidMount() {
-        const url = window.location.href;
-        const id = url.substring(url.lastIndexOf('/') + 1);
-
-        this.setState({commissionId: id});
     }
 
     resetInputFields = () => {
@@ -37,11 +31,16 @@ class AddMaterial extends Component {
         this.setState({[e.target.name]: e.target.value});
     };
 
+    getCurrentItems = (id) => {
+        console.log(id);
+        return JSON.parse(localStorage.getItem(`commission${id}material`));
+    };
+
     handleFormSubmit = (e) => {
         e.preventDefault();
-        const {name, code, quantity, date, additionalInfo, commissionId} = this.state;
+        const {name, code, quantity, date, additionalInfo} = this.state;
         const newItem = {
-            commissionId: parseInt(commissionId),
+            commissionId: getCommissionId(),
             name: name,
             code: code,
             quantity: quantity,
@@ -49,26 +48,26 @@ class AddMaterial extends Component {
             additionalInfo: additionalInfo,
             pushed: false
         };
-        let currentMaterialList = localStorage.getItem('localMaterialItems');
+
+        let currentMaterialList = this.getCurrentItems(getCommissionId());
+
+        console.log(currentMaterialList);
 
         if (currentMaterialList === null) {
-            currentMaterialList = {};
+            currentMaterialList = {
+                [newItem.date]: []
+            };
         } else {
-            currentMaterialList = JSON.parse(currentMaterialList);
+            if (!currentMaterialList[newItem.date]) {
+                currentMaterialList[newItem.date] = [];
+            }
         }
 
-        if (!currentMaterialList[newItem.date]) {
-            currentMaterialList[newItem.date] = [];
-        }
+        currentMaterialList[newItem.date].push(newItem);
+        localStorage.setItem(`commission${newItem.commissionId}material`, JSON.stringify(currentMaterialList));
 
-        if (this.state.date !== '') {
-            currentMaterialList[newItem.date].push(newItem);
-            localStorage.setItem("localMaterialItems", JSON.stringify(currentMaterialList));
-
-            this.resetInputFields();
-            this.props.updateList();
-        }
-
+        this.resetInputFields();
+        this.props.updateList();
     };
 
     render() {

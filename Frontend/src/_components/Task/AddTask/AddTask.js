@@ -21,24 +21,6 @@ class AddTask extends Component {
         }
     }
 
-    componentDidMount() {
-        this.getTasks();
-    }
-
-    getTasks = () => {
-        // const localTasks = localStorage.getItem('localTasks');
-        // const parsedTasks = JSON.parse(localTasks);
-        // let lastId = 0;
-
-        // if (parsedTasks) {
-        //     lastId = parsedTasks[parsedTasks.length-1].id + 1;
-        // }
-
-        // this.setState({
-        //     commissionId: lastId
-        // });
-    };
-
     toggleModal = () => {
         this.setState({
             modalOpened: !this.state.modalOpened
@@ -76,7 +58,6 @@ class AddTask extends Component {
             this.resetInputFields();
         }
 
-        this.getTasks();
         this.props.updateTaskList();
     };
 

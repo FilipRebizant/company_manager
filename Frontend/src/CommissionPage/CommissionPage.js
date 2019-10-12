@@ -4,7 +4,8 @@ import { MaterialList } from "../_components/Material/MaterialList";
 import { AddMaterial } from "../_components/Material/AddMaterial";
 import { AddDayReport } from "../_components/DayReports/AddDayReport";
 import { ReportsTable } from "../_components/DayReports/ReportsTable";
-import {AddTask} from "../_components/Task/AddTask";
+import { AddTask } from "../_components/Task/AddTask";
+import { TasksList } from "../_components/Task/TasksList";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class CommissionPage extends Component {
     };
 
     updateList = () => {
-        this.getItems();
+        this.getItems(this.state.commissionId);
         this.renderMaterialList();
     };
 
@@ -56,68 +57,64 @@ class CommissionPage extends Component {
        const url = window.location.href;
        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
        this.getCommissionsData(id);
-       this.getItems();
+       this.getItems(id);
 
        this.setState({
            commissionId: id
        });
     };
 
-    getItems = () => {
-        let currentMaterialList = localStorage.getItem('localMaterialItems');
-        let currentDayReports = localStorage.getItem('localDayReports');
-        let currentTasksList = localStorage.getItem('localTasks');
+    getItems = (id) => {
+        const material = JSON.parse(localStorage.getItem(`commission${id}material`));
+        const reports = JSON.parse(localStorage.getItem('localDayReports'));
+        const tasks = JSON.parse(localStorage.getItem('localTasks'));
 
         this.setState({
-            reports: JSON.parse(currentDayReports),
-            material: JSON.parse(currentMaterialList),
-            tasks: JSON.parse(currentTasksList)
+            material: material,
+            reports: reports,
+            tasks: tasks
         });
     };
 
     renderMaterialList = () => {
-        const { material, commissionId } = this.state;
+        const { material } = this.state;
         if (material) {
-           return Object.keys(material).map((key) => {
-               if (commissionId === material[key][0].commissionId) {
-                   return <MaterialList
-                       key={key}
-                       setName={"material"}
-                       items={material[key]}
-                   />
-               }
-          });
-       }
+            return Object.keys(material).map((key) => {
+                return <MaterialList
+                    key={key}
+                    name='reports'
+                    date={key}
+                    items={material}
+                />
+            });
+        }
     };
 
+
     renderReportsList = () => {
-        const { reports, commissionId } = this.state;
+        const { reports } = this.state;
         if (reports) {
             return Object.keys(reports).map((key) => {
-                if (commissionId === reports[key][0].commissionId) {
-                    return <ReportsTable
-                        key={key}
-                        setName='reports'
-                        date={reports[key][0].date}
-                        items={reports[key]}
-                    />
-                }
+                return <ReportsTable
+                    key={key}
+                    name='reports'
+                    date={key}
+                    items={reports}
+                />
             });
         }
     };
 
     renderTaskList = () => {
-        const { tasks, commissionId } = this.state;
+        const { tasks } = this.state;
         if (tasks) {
             return Object.keys(tasks).map((key) => {
-                if (commissionId === tasks[key][0].commissionId) {
-                    return <ReportsTable
-                        key={key}
-                        setName='tasks'
-                        date={tasks[key][0].date}
-                        items={tasks[key]}
-                    />
-                }
+                return <TasksList
+                    key={key}
+                    name='tasks'
+                    date={key}
+                    items={tasks}
+                />
             });
         }
     };
