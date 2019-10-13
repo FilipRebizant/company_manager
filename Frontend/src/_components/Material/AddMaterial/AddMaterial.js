@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
 import { Label } from "../../atoms/Label/index";
 import { Input } from "../../atoms/Input/index";
-import { getCommissionId } from "../../../_helpers";
+import {getCommissionId, getCurrentDate} from "../../../_helpers";
 
 class AddMaterial extends Component {
     constructor(props) {
@@ -16,6 +16,10 @@ class AddMaterial extends Component {
             additionalInfo: ''
         }
     }
+
+    validate = (item) => {
+        return true;
+    };
 
     resetInputFields = () => {
         this.setState({
@@ -31,15 +35,32 @@ class AddMaterial extends Component {
         this.setState({[e.target.name]: e.target.value});
     };
 
-    getCurrentItems = (id) => {
-        console.log(id);
-        return JSON.parse(localStorage.getItem(`commission${id}material`));
+    addNewItem = (newItem) => {
+        let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
+
+        for (let elem in commissions) {
+
+            if (commissions[elem].id === newItem.commissionId) {
+                if (!commissions[elem].material[newItem.date]) {
+                    commissions[elem].material[newItem.date] = [];
+                }
+
+                commissions[elem].material[newItem.date].push(newItem);
+                localStorage.removeItem('localOpenedCommissions');
+                localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+            }
+        }
+
     };
 
-    handleFormSubmit = (e) => {
-        e.preventDefault();
-        const {name, code, quantity, date, additionalInfo} = this.state;
-        const newItem = {
+    getNewItem = () => {
+        const {name, code, quantity, additionalInfo} = this.state;
+        let { date } = this.state;
+        if (date === '') {
+            date = getCurrentDate();
+        }
+
+        return {
             commissionId: getCommissionId(),
             name: name,
             code: code,
@@ -48,26 +69,17 @@ class AddMaterial extends Component {
             additionalInfo: additionalInfo,
             pushed: false
         };
+    };
 
-        let currentMaterialList = this.getCurrentItems(getCommissionId());
+    handleFormSubmit = (e) => {
+        e.preventDefault();
+        const newItem = this.getNewItem();
 
-        console.log(currentMaterialList);
-
-        if (currentMaterialList === null) {
-            currentMaterialList = {
-                [newItem.date]: []
-            };
-        } else {
-            if (!currentMaterialList[newItem.date]) {
-                currentMaterialList[newItem.date] = [];
-            }
+        if (this.validate(newItem)) {
+            this.addNewItem(newItem);
+            this.resetInputFields();
+            this.props.updateList();
         }
-
-        currentMaterialList[newItem.date].push(newItem);
-        localStorage.setItem(`commission${newItem.commissionId}material`, JSON.stringify(currentMaterialList));
-
-        this.resetInputFields();
-        this.props.updateList();
     };
 
     render() {

@@ -64,6 +64,9 @@ class AddCommission extends Component {
             street: street,
             houseNumber: houseNumber,
             createdAt: createdAt,
+            material: {},
+            reports: {},
+            tasks: {},
             pushed: false
         };
         let localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
