@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
 import { Label } from "../../atoms/Label/index";
 import { Input } from "../../atoms/Input/index";
-import {getCommissionId, getCurrentDate} from "../../../_helpers";
+import { getCommissionId, getCurrentDate } from "../../../_helpers";
 
 class AddMaterial extends Component {
     constructor(props) {

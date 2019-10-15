@@ -19,4 +19,20 @@ const getCurrentDateTime = () => {
     return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
 };
 
-export { getCurrentDate };
+const countTimeDifference = (startedAt, finishedAt) => {
+    const startedDate = new Date();
+    const finishedDate = new Date();
+    const startedHours = startedAt.split(":")[0];
+    const startedMinutes = startedAt.split(":")[1];
+    const finishedHours = finishedAt.split(":")[0];
+    const finishedMinutes = finishedAt.split(":")[1];
+
+    startedDate.setHours(startedHours);
+    startedDate.setMinutes(startedMinutes);
+    finishedDate.setHours(finishedHours);
+    finishedDate.setMinutes(finishedMinutes);
+
+    return Math.abs(finishedDate.getTime() - startedDate.getTime()) / 3600000;
+};
+
+export { getCurrentDate, countTimeDifference, getCurrentDateTime };

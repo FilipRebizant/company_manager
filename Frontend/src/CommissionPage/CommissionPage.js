@@ -41,16 +41,18 @@ class CommissionPage extends Component {
         const localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
         const parsedCommissions = JSON.parse(localOpenedCommissions);
 
-        let commissionName = null;
         parsedCommissions.map((item) => {
             if (item.id === id) {
-                commissionName = item.name;
+                this.setState({
+                    commissionName: item.name,
+                    material: item.material,
+                    reports: item.reports,
+                    tasks: item.tasks
+                })
             }
         });
 
-        this.setState({
-            commissionName: commissionName
-        })
+
     };
 
     componentDidMount() {
@@ -65,29 +67,27 @@ class CommissionPage extends Component {
     };
 
     getItems = (id) => {
-        const material = JSON.parse(localStorage.getItem(`commission${id}material`));
-        const reports = JSON.parse(localStorage.getItem('localDayReports'));
-        const tasks = JSON.parse(localStorage.getItem('localTasks'));
-
-        this.setState({
-            material: material,
-            reports: reports,
-            tasks: tasks
-        });
+    //     const material = JSON.parse(localStorage.getItem(`commission${id}material`));
+    //     const reports = JSON.parse(localStorage.getItem('localDayReports'));
+    //     const tasks = JSON.parse(localStorage.getItem('localTasks'));
+    //
+    //     this.setState({
+    //         material: material,
+    //         reports: reports,
+    //         tasks: tasks
+    //     });
     };
 
     renderMaterialList = () => {
         const { material } = this.state;
-        if (material) {
-            return Object.keys(material).map((key) => {
-                return <MaterialList
-                    key={key}
-                    name='reports'
-                    date={key}
-                    items={material}
-                />
-            });
-        }
+        return Object.keys(material).map((key) => {
+            return <MaterialList
+                key={key}
+                name='reports'
+                date={key}
+                items={material}
+            />
+        });
     };
 
 

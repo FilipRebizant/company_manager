@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
 import { Label } from "../../atoms/Label/index";
 import { Input } from "../../atoms/Input/index";
+import { getCommissionId, getCurrentDate, countTimeDifference } from "../../../_helpers";
 
 class AddDayReport extends Component {
     constructor(props) {
@@ -14,13 +15,6 @@ class AddDayReport extends Component {
             addedBy: "John Doe",
             dayDescription: ''
         }
-    }
-
-    componentDidMount() {
-        const url = window.location.href;
-        const id = url.substring(url.lastIndexOf('/') + 1);
-
-        this.setState({commissionId: id});
     }
 
     resetInputFields = () => {
@@ -36,30 +30,21 @@ class AddDayReport extends Component {
         this.setState({[e.target.name]: e.target.value});
     };
 
-    countDifference = (startedAt, finishedAt) => {
-        const startedDate = new Date();
-        const finishedDate = new Date();
-        const startedHours = startedAt.split(":")[0];
-        const startedMinutes = startedAt.split(":")[1];
-        const finishedHours = finishedAt.split(":")[0];
-        const finishedMinutes = finishedAt.split(":")[1];
-
-        startedDate.setHours(startedHours);
-        startedDate.setMinutes(startedMinutes);
-        finishedDate.setHours(finishedHours);
-        finishedDate.setMinutes(finishedMinutes);
-
-        return Math.abs(finishedDate.getTime() - startedDate.getTime()) / 3600000;
+    validate = (report) => {
+        return true;
     };
 
-    handleFormSubmit = (e) => {
-        e.preventDefault();
+    getNewReport = () => {
+        const {startedAt, finishedAt, dayDescription, addedBy} = this.state;
+        const summary = countTimeDifference(startedAt, finishedAt);
+        let { date } = this.state;
 
-        const {commissionId, date, startedAt, finishedAt, dayDescription, addedBy} = this.state;
-        const summary = this.countDifference(startedAt, finishedAt);
+        if (date === '') {
+            date = getCurrentDate();
+        }
 
-        const newItem = {
-            commissionId: parseInt(commissionId),
+        return {
+            commissionId: getCommissionId(),
             date: date,
             startedAt: startedAt,
             finishedAt: finishedAt,
@@ -68,22 +53,32 @@ class AddDayReport extends Component {
             addedBy: addedBy,
             pushed: false
         };
-        let currentMaterialList = localStorage.getItem('localDayReports');
+    };
 
-        if (currentMaterialList === null) {
-            currentMaterialList = {};
-        } else {
-            currentMaterialList = JSON.parse(currentMaterialList);
+    addNewReport = (newReport) => {
+        let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
+
+        for (let elem in commissions) {
+
+            if (commissions[elem].id === newReport.commissionId) {
+                if (!commissions[elem].reports[newReport.date]) {
+                    commissions[elem].reports[newReport.date] = [];
+                }
+
+                commissions[elem].reports[newReport.date].push(newReport);
+                localStorage.removeItem('localOpenedCommissions');
+                localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+            }
         }
 
-        if (!currentMaterialList[newItem.date]) {
-            currentMaterialList[newItem.date] = [];
-        }
+    };
 
-        if (this.state.usedAt !== '') {
-            currentMaterialList[newItem.date].push(newItem);
-            localStorage.setItem("localDayReports", JSON.stringify(currentMaterialList));
+    handleFormSubmit = (e) => {
+        e.preventDefault();
+        const newReport = this.getNewReport();
 
+        if (this.validate(newReport)) {
+            this.addNewReport(newReport);
             this.props.updateList();
             this.resetInputFields();
         }
