@@ -13,7 +13,7 @@ class AddTask extends Component {
             modalOpened: false,
             description: '',
             employeeAssigned: null,
-            createdAt: '',
+            date: '',
             status: null,
             progress: 0,
             pushed: false,
@@ -27,38 +27,53 @@ class AddTask extends Component {
         });
     };
 
-    handleFormSubmit = () => {
+    validate = (task) => {
+        return true;
+    };
+
+    addNewTask = (newTask) => {
+        let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
+
+        for (let elem in commissions) {
+            if (commissions[elem].id === newTask.commissionId) {
+                if (!commissions[elem].tasks[newTask.date]) {
+                    commissions[elem].tasks[newTask.date] = [];
+                }
+
+                commissions[elem].tasks[newTask.date].push(newTask);
+                localStorage.removeItem('localOpenedCommissions');
+                localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+            }
+        }
+    };
+
+    getNewTask = () => {
         const {taskId, description, progress, employeeAssigned, status} = this.state;
-        const newItem = {
+        let { date } = this.state;
+        if (date === '') {
+            date = getCurrentDate();
+        }
+
+        return {
             commissionId: getCommissionId(),
             taskId: taskId,
             description: description,
             employeeAssigned: employeeAssigned,
             status: status,
             progress: progress,
-            createdAt: getCurrentDate(),
+            date: date,
             pushed: false
         };
-        let localTasks = localStorage.getItem('localTasks');
+    };
 
-        if (localTasks === null) {
-            localTasks = {};
-        } else {
-            localTasks = JSON.parse(localTasks);
-        }
+    handleFormSubmit = () => {
+        const newTask = this.getNewTask();
 
-        if (!localTasks[newItem.createdAt]) {
-            localTasks[newItem.createdAt] = [];
-        }
-
-        if (this.state.valid === true) {
-            localTasks[newItem.createdAt].push(newItem);
-            localStorage.setItem("localTasks", JSON.stringify(localTasks));
-
+        if (this.validate(newTask)) {
+            this.addNewTask(newTask);
             this.resetInputFields();
+            this.props.updateTaskList();
         }
-
-        this.props.updateTaskList();
     };
 
     resetInputFields = () => {

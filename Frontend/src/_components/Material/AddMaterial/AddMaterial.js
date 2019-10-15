@@ -50,7 +50,6 @@ class AddMaterial extends Component {
                 localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
             }
         }
-
     };
 
     getNewItem = () => {
