@@ -29,8 +29,7 @@ class CommissionPage extends Component {
     };
 
     updateList = () => {
-        this.getItems(this.state.commissionId);
-        this.renderMaterialList();
+        this.getCommissionsData(this.state.commissionId);
     };
 
     updateTaskList = () => {
@@ -51,31 +50,16 @@ class CommissionPage extends Component {
                 })
             }
         });
-
-
     };
 
     componentDidMount() {
        const url = window.location.href;
        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
        this.getCommissionsData(id);
-       this.getItems(id);
 
        this.setState({
            commissionId: id
        });
-    };
-
-    getItems = (id) => {
-    //     const material = JSON.parse(localStorage.getItem(`commission${id}material`));
-    //     const reports = JSON.parse(localStorage.getItem('localDayReports'));
-    //     const tasks = JSON.parse(localStorage.getItem('localTasks'));
-    //
-    //     this.setState({
-    //         material: material,
-    //         reports: reports,
-    //         tasks: tasks
-    //     });
     };
 
     renderMaterialList = () => {
@@ -83,7 +67,7 @@ class CommissionPage extends Component {
         return Object.keys(material).map((key) => {
             return <MaterialList
                 key={key}
-                name='reports'
+                name='material'
                 date={key}
                 items={material}
             />

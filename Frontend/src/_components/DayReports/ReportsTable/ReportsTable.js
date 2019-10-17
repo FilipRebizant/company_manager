@@ -16,12 +16,12 @@ const ReportsTable = (props) => {
         },
         {
             label: 'Added By',
-            field: 'name',
+            field: 'addedBy',
             sort: 'asc'
         },
         {
             label: 'Started At',
-            field: 'name',
+            field: 'startedAt',
             sort: 'asc'
         },
         {
@@ -57,18 +57,18 @@ const ReportsTable = (props) => {
                 <MDBTable responsive>
                     <MDBTableHead columns={columns}/>
                     <tbody>
-                    { Object.keys(props.items).map((key) => {
+                    { Object.keys(props.items[props.date]).map((key) => {
                        return <React.Fragment key={key}>
                             <tr>
-                                <td className="table__data_counter" rowSpan="2">{key}</td>
-                                <td>{props.items[key].addedBy}</td>
-                                <td>{props.items[key].startedAt}</td>
-                                <td>{props.items[key].finishedAt}</td>
-                                <td>{props.items[key].hoursSum}</td>
+                                <td className="table__data_counter" rowSpan="2">{parseInt(key)+1}</td>
+                                <td>{props.items[props.date][key].addedBy}</td>
+                                <td>{props.items[props.date][key].startedAt}</td>
+                                <td>{props.items[props.date][key].finishedAt}</td>
+                                <td>{props.items[props.date][key].hoursSum}</td>
                             </tr>
                             <tr className="table__row-full-width">
                                 <td className="table__data-highlighted"
-                                    colSpan="4">{props.items[key].dayDescription}</td>
+                                    colSpan="4">{props.items[props.date][key].dayDescription}</td>
                             </tr>
                         </React.Fragment>
                     })}

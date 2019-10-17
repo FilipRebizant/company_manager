@@ -59,7 +59,6 @@ class AddDayReport extends Component {
         let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
 
         for (let elem in commissions) {
-
             if (commissions[elem].id === newReport.commissionId) {
                 if (!commissions[elem].reports[newReport.date]) {
                     commissions[elem].reports[newReport.date] = [];
