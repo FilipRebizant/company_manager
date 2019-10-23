@@ -16,7 +16,7 @@ class CommissionPage extends Component {
             tasks: null,
             commissionName: null,
             commissionId: '',
-            activeTab: "1"
+            activeTab: "3"
         };
     }
 
@@ -30,10 +30,6 @@ class CommissionPage extends Component {
 
     updateList = () => {
         this.getCommissionsData(this.state.commissionId);
-    };
-
-    updateTaskList = () => {
-        console.log('List updated');
     };
 
     getCommissionsData = (id) => {
@@ -167,7 +163,7 @@ class CommissionPage extends Component {
                     <MDBTabPane tabId="3" role="tabpanel">
                         <MDBRow>
                             <MDBCol md="12">
-                                <AddTask updateTaskList={this.updateTaskList}/>
+                                <AddTask updateTaskList={this.updateList}/>
                             </MDBCol>
                         </MDBRow>
                         <MDBRow>

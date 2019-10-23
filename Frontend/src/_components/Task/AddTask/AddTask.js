@@ -14,7 +14,7 @@ class AddTask extends Component {
             description: '',
             employeeAssigned: null,
             date: '',
-            status: null,
+            status: "New",
             progress: 0,
             pushed: false,
             valid: true
