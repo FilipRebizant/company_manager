@@ -3,7 +3,7 @@
 namespace App\Validator;
 
 
-use App\Repository\CommisionRepository;
+use App\Repository\CommissionRepository;
 use App\Validator\Constraint\EndBeforeStart;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -12,9 +12,9 @@ class EndBeforeStartValidator extends ConstraintValidator
 {
     private $commissionRepository;
 
-    public function __construct(CommisionRepository $commisionRepository)
+    public function __construct(CommissionRepository $commissionRepository)
     {
-        $this->commissionRepository = $commisionRepository;
+        $this->commissionRepository = $commissionRepository;
     }
 
     /**

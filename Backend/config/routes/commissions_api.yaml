@@ -1,0 +1,24 @@
+showCommissions:
+    path:       /commissions
+    controller: App\Controller\API\CommissionController::showAll
+    methods:    GET
+
+createCommission:
+    path:       /commissions
+    controller: App\Controller\API\CommissionController::create
+    methods:    POST
+
+showCommission:
+    path:       /commissions/{id}
+    controller: App\Controller\API\CommissionController::show
+    methods:    GET
+
+updateCommission:
+    path:       /commissions/{id}
+    controller: App\Controller\API\CommissionController::update
+    methods:    PUT|PATCH
+
+deleteCommission:
+    path:       /commissions/{id}
+    controller: App\Controller\API\CommissionController::delete
+    methods:    DELETE

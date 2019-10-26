@@ -1,31 +1,8 @@
 import React from 'react';
-import { MDBHamburgerToggler,
-    MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBNavLink, MDBCardHeader
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader
 } from 'mdbreact';
 
 const TasksList = (props) => {
-    const style = {
-        border: '1px solid #ced4da',
-        margin: '15px 0',
-    };
-
-    const columns= [
-        {
-            label: '#',
-            field: 'id',
-            sort: 'asc'
-        },
-        {
-            label: 'Status',
-            field: 'last',
-            sort: 'asc'
-        },
-        {
-            label: 'Assigned Person',
-            field: 'handle',
-            sort: 'asc'
-        }
-    ];
 
     const toggleVisibilityContent = () => {
       /*  <input id={`finished${key}`} name={ props.items[props.date][key].status } onChange={handleChange} className="custom-control-input" type="checkbox"/>
