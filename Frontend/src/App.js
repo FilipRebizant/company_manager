@@ -4,7 +4,7 @@ import './App.css';
 import { HomePage } from './HomePage';
 import { CommissionPage } from "./CommissionPage";
 import { Navigation } from "./_components/Navigation";
-
+import { NotificationBanner } from "./_components/NotificationBanner";
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
 
         <Router>
         <Navigation />
+        <NotificationBanner/>
             <Switch>
                 <Route exact path="/" component={HomePage}/>
                 <Route path="/commission/:id" component={CommissionPage}/>

@@ -71,7 +71,8 @@ class CommissionController extends ApiController
             $commissionsArray[] = $this->commissionService->transform($commission);
         }
 
-        return $this->respondSuccess(['commissions' => $commissionsArray], Response::HTTP_OK);
+        return $this->respondSuccess(['commissions' => $commissionsArray], 200);
+//        return $this->respondSuccess(['commissions' => $commissionsArray], Response::HTTP_OK);
     }
 
     /**

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBNavLink } from "mdbreact";
 import { MaterialList } from "../_components/Material/MaterialList";
 import { AddMaterial } from "../_components/Material/AddMaterial";

@@ -27,7 +27,6 @@ class CommissionService implements ServiceInterface
 
     public function create(array $data): Commission
     {
-        // TODO: Implement create() method.
         $addressFactory = new AddressFactory();
         $address = $addressFactory->create($data);
         $this->save($address);
@@ -53,7 +52,7 @@ class CommissionService implements ServiceInterface
         return [
             'id' => $commission->getId(),
             'name' => $commission->getName(),
-            'createdAt' => $commission->getCreatedAt(),
+            'createdAt' => $commission->getCreatedAt()->format('Y-m-d h:i:s'),
             'town' => $commission->getAddress()->getTown(),
             'street' => $commission->getAddress()->getStreet(),
             'houseNumber' => $commission->getAddress()->getHouseNumber(),

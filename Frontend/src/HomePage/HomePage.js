@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Card } from '../_components/Card';
 import { AddCommission } from "../_components/AddCommission";
+import { commissionService } from "../_services/commissionService";
 
 class HomePage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            localOpenedCommissions: null
+            openedCommissions: null
         }
     }
 
@@ -16,11 +17,43 @@ class HomePage extends Component {
     };
 
     getOpenedCommissions = () => {
-        const localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
+        let openedCommissions = this.loadCommissionsFromServer();
 
-        this.setState({
-            localOpenedCommissions: JSON.parse(localOpenedCommissions)
-        });
+        // if (openedCommissions === false) {
+        //     openedCommissions = localStorage.getItem('localOpenedCommissions');
+        // }
+        //
+        // this.setState({
+        //     openedCommissions: JSON.parse(openedCommissions)
+        // });
+    };
+
+    loadCommissionsFromServer = () => {
+        const commissionsPromise = commissionService.getAll();
+
+        commissionsPromise.then(response => {
+            console.log(response);
+            if (response.status === 200) {
+                return response
+            }
+        }).then(response => response.json()
+                .then((response => {
+                    if (response) {
+
+                    }
+                    console.log(response);
+                    console.log(response.commissions);
+                    this.setState({
+                        openedCommissions: response.commissions
+                    })
+                })))
+            .catch(error => {
+                this.setState({
+                    openedCommissions: JSON.parse(localStorage.getItem('localOpenedCommissions'))
+                });
+            });
+
+        return false;
     };
 
     updateList = () => {
@@ -29,28 +62,38 @@ class HomePage extends Component {
     };
 
     renderList = () => {
-        const { localOpenedCommissions } = this.state;
+        const { openedCommissions } = this.state;
 
-        if (localOpenedCommissions) {
-            return Object.keys(localOpenedCommissions).map((key) =>
+        if (openedCommissions) {
+            return Object.keys(openedCommissions).map((key) =>
                 <Card
                     key={key}
                     id={key}
-                    title={localOpenedCommissions[key].name}
-                    address = { `${localOpenedCommissions[key].street} ${localOpenedCommissions[key].houseNumber} ${localOpenedCommissions[key].town}` }
-                    createdAt = {localOpenedCommissions[key].createdAt} />
+                    title={openedCommissions[key].name}
+                    address = { `${openedCommissions[key].street} ${openedCommissions[key].houseNumber} ${openedCommissions[key].town}` }
+                    createdAt = {openedCommissions[key].createdAt} />
             );
         }
     };
 
    render() {
-       return(
-           <div>
-               <h2 className="h2 py-5">Opened Commissions</h2>
-               <AddCommission updateList={this.updateList}/>
-               <div className="d-flex justify-content-around my-5">
-                    {this.renderList()}
+       const { openedCommissions } = this.state;
+
+       if (openedCommissions) {
+           return (
+               <div>
+                   <h2 className="h2 py-5">Opened Commissions</h2>
+                   <AddCommission updateList={this.updateList}/>
+                   <div className="d-flex justify-content-around my-5">
+                       {this.renderList()}
+                   </div>
                </div>
+           );
+       }
+
+       return (
+           <div className="spinner-border" role="status">
+               <span className="sr-only">Loading...</span>
            </div>
        );
    }
