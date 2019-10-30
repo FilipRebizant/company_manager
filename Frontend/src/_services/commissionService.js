@@ -2,7 +2,8 @@ import { config } from "../config/config";
 import {handleError} from "../_helpers";
 
 export const commissionService = {
-    getAll
+    getAll,
+    createCommission
 };
 
 function getAll() {
@@ -13,4 +14,15 @@ function getAll() {
     return fetch(`${config.apiUrl}/commissions`, requestOptions)
         .catch((error => handleError(error)));
 
+}
+
+function createCommission(data)
+{
+    const requestOptions = {
+        'method': 'POST',
+        'body': data
+    };
+
+    return fetch(`${config.apiUrl}/commissions`, requestOptions)
+        .catch((error => handleError(error)));
 }
