@@ -4,12 +4,6 @@ import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader
 
 const TasksList = (props) => {
 
-    const toggleVisibilityContent = () => {
-      /*  <input id={`finished${key}`} name={ props.items[props.date][key].status } onChange={handleChange} className="custom-control-input" type="checkbox"/>
-        { console.log(props.items[props.date][key]) }
-        <label className="custom-control-label" htmlFor={`finished${key}`}></label> */
-    };
-
     let wrapper = React.createRef();
 
     const handleChange = (e) => {
@@ -17,6 +11,8 @@ const TasksList = (props) => {
         console.log(e.target.value);
         console.log(e.target.name);
     };
+
+    console.log(props);
 
     return(
         <div className="d-flex justify-content-around" ref={wrapper}>
@@ -35,7 +31,6 @@ const TasksList = (props) => {
                             <button className="btn btn-black">Close task</button>
                         </div>
                     </MDBCard>
-
                 </React.Fragment>
             })}
         </div>

@@ -15,6 +15,9 @@ class CommissionService implements ServiceInterface
     /** @var ValidatorInterface $validator */
     private $validator;
 
+    /** @var string */
+    private $dateFormat;
+
     /**
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
@@ -23,6 +26,7 @@ class CommissionService implements ServiceInterface
     {
         $this->em = $em;
         $this->validator = $validator;
+        $this->dateFormat = 'Y-m-d h:i:s';
     }
 
     public function create(array $data): Commission
@@ -49,16 +53,53 @@ class CommissionService implements ServiceInterface
 
     public function transform(Commission $commission): array
     {
+        $tasks = [];
+        foreach ($commission->getTasks() as $task) {
+            $tasks[] =
+            [
+                'id' => $task->getId(),
+                'name' => $task->getName(),
+                'description' => $task->getDescription(),
+                'createdAt' => $task->getCreatedAt()->format($this->dateFormat),
+                'status' => $task->getStatus(),
+                'employeeAssigned' => $task->getUser()->toString(),
+            ];
+        }
+
+        $reports = [];
+        foreach ($commission->getReports() as $report) {
+            $reports[] = [
+                'id' => $report->getId(),
+                'dayDescription' => $report->getDayDescription(),
+                'startedAt' => $report->getStartedAt()->format($this->dateFormat),
+                'finishedAt' => $report->getFinishedAt()->format($this->dateFormat),
+                'hoursSummary' => $report->getHoursSummary(),
+                'addedBy' => $report->getUser(),
+                'createdAt' => $report->getCreatedAt()->format($this->dateFormat),
+            ];
+        }
+
+        $material = [];
+        foreach ($commission->getMaterial() as $material) {
+            $material[] = [
+                'id' => $material->getId(),
+                'createdAt' => $material->getCreatedAt(),
+                'code' => $material->getCode(),
+                'name' => $material->getName(),
+                'quantity' => $material->getQuantity(),
+            ];
+        }
+
         return [
             'id' => $commission->getId(),
             'name' => $commission->getName(),
-            'createdAt' => $commission->getCreatedAt()->format('Y-m-d h:i:s'),
+            'createdAt' => $commission->getCreatedAt()->format($this->dateFormat),
             'town' => $commission->getAddress()->getTown(),
             'street' => $commission->getAddress()->getStreet(),
             'houseNumber' => $commission->getAddress()->getHouseNumber(),
-            'material' => $commission->getMaterial(),
-            'reports' => $commission->getReports(),
-            'tasks' => $commission->getTasks(),
+            'material' => $material,
+            'reports' => $reports,
+            'tasks' => $tasks,
         ];
     }
 

@@ -58,10 +58,6 @@ class User
      */
     private $active;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="user")
-     */
-    private $tasks;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="user")
@@ -174,18 +170,6 @@ class User
         return $this;
     }
 
-    public function getTasks(): ?Task
-    {
-        return $this->tasks;
-    }
-
-    public function setTasks(?Task $tasks): self
-    {
-        $this->tasks = $tasks;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Report[]
      */
@@ -215,5 +199,10 @@ class User
         }
 
         return $this;
+    }
+
+    public function toString()
+    {
+        return $this->getFirstName() . " " . $this->getLastName();
     }
 }

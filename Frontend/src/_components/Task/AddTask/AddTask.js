@@ -13,7 +13,7 @@ class AddTask extends Component {
             modalOpened: false,
             description: '',
             employeeAssigned: null,
-            date: '',
+            createdAt: '',
             status: "New",
             progress: 0,
             pushed: false,
@@ -36,11 +36,11 @@ class AddTask extends Component {
 
         for (let elem in commissions) {
             if (commissions[elem].id === newTask.commissionId) {
-                if (!commissions[elem].tasks[newTask.date]) {
-                    commissions[elem].tasks[newTask.date] = [];
+                if (!commissions[elem].tasks[newTask.createdAt]) {
+                    commissions[elem].tasks[newTask.createdAt] = [];
                 }
 
-                commissions[elem].tasks[newTask.date].push(newTask);
+                commissions[elem].tasks[newTask.createdAt].push(newTask);
                 localStorage.removeItem('localOpenedCommissions');
                 localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
             }
@@ -49,9 +49,9 @@ class AddTask extends Component {
 
     getNewTask = () => {
         const {taskId, description, progress, employeeAssigned, status} = this.state;
-        let { date } = this.state;
-        if (date === '') {
-            date = getCurrentDate();
+        let { createdAt } = this.state;
+        if (createdAt === '') {
+            createdAt = getCurrentDate();
         }
 
         return {
@@ -61,7 +61,7 @@ class AddTask extends Component {
             employeeAssigned: employeeAssigned,
             status: status,
             progress: progress,
-            date: date,
+            createdAt: createdAt,
             pushed: false
         };
     };

@@ -48,10 +48,6 @@ class Task
      */
     private $updatedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
-     */
-    private $user;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -62,6 +58,11 @@ class Task
      * @ORM\ManyToOne(targetEntity="App\Entity\Commission", inversedBy="tasks")
      */
     private $commission;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    private $user;
 
     public function __construct()
     {
@@ -145,37 +146,6 @@ class Task
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-            $user->setTasks($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->user->contains($user)) {
-            $this->user->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getTasks() === $this) {
-                $user->setTasks(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getStatus(): ?string
     {
         return $this->status;
@@ -196,6 +166,18 @@ class Task
     public function setCommission(?Commission $commission): self
     {
         $this->commission = $commission;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

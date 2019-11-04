@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {commissionService} from "../../_services";
+
 
 class NotificationBanner extends Component {
     state = {
@@ -21,20 +23,33 @@ class NotificationBanner extends Component {
         if (condition === 'online') {
             const webPing = setInterval(
                 () => {
-                    fetch('//google.com', {
-                        mode: 'no-cors',
-                    })
-                        .then(() => {
-                            this.setState({ isDisconnected: false }, () => {
+                    commissionService.getAll()
+                        .then(response => response.json())
+                        .then((response => {
+                            // console.log(response);
+                            // this.pushLocalChanges();
+                            this.updateCommissionsList(response.commissions);
+                            commissionService.pushLocalChanges();
+                            this.setState({isDisconnected: false}, () => {
                                 return clearInterval(webPing)
                             });
-                        }).catch(() => this.setState({ isDisconnected: true }) )
+                        }))
+                        .catch(() => this.setState({isDisconnected: true}))
                 }, 2000);
             return;
         }
 
         return this.setState({ isDisconnected: true });
     };
+
+    updateCommissionsList = (commissions) => {
+        localStorage.removeItem('localOpenedCommissions');
+        localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+    }
+
+    pushLocalChanges = () => {
+        commissionService.pushLocalChanges()
+    }
 
     render() {
         const { isDisconnected } = this.state;
