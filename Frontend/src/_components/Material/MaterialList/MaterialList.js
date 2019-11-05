@@ -14,13 +14,18 @@ const MaterialList = (props) => {
             sort: 'asc'
         },
         {
-            label: 'Name',
-            field: 'name',
+            label: 'Added at',
+            field: 'addedAt',
             sort: 'asc'
         },
         {
             label: 'Code',
             field: 'last',
+            sort: 'asc'
+        },
+        {
+            label: 'Name',
+            field: 'name',
             sort: 'asc'
         },
         {

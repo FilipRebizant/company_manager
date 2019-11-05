@@ -26,7 +26,7 @@ class CommissionService implements ServiceInterface
     {
         $this->em = $em;
         $this->validator = $validator;
-        $this->dateFormat = 'Y-m-d h:i:s';
+        $this->dateFormat = 'Y-m-d h:i';
     }
 
     public function create(array $data): Commission
@@ -75,7 +75,7 @@ class CommissionService implements ServiceInterface
                 'dayDescription' => $report->getDayDescription(),
                 'startedAt' => $report->getStartedAt()->format($this->dateFormat),
                 'finishedAt' => $report->getFinishedAt()->format($this->dateFormat),
-                'hoursSummary' => $report->getHoursSummary(),
+                'hoursSum' => $report->getHoursSummary(),
                 'addedBy' => $report->getUser()->toString(),
                 'createdAt' => $report->getCreatedAt()->format($this->dateFormat),
             ];

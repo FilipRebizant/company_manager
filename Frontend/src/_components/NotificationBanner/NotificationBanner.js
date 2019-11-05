@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {commissionService} from "../../_services";
 
-
 class NotificationBanner extends Component {
     state = {
         isDisconnected: false
@@ -56,7 +55,12 @@ class NotificationBanner extends Component {
 
         if (isDisconnected) {
             return (
-                <div className="alert alert-danger">You are offline</div>
+                <div className="alert alert-danger">
+                    You are offline
+                    <div>
+                        <button onClick={commissionService.syncLocalChanges} className="btn btn-primary">Sync me</button>
+                    </div>
+                </div>
             );
         }
 
