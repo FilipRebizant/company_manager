@@ -29,7 +29,7 @@ class NotificationBanner extends Component {
                             // console.log(response);
                             // this.pushLocalChanges();
                             this.updateCommissionsList(response.commissions);
-                            commissionService.pushLocalChanges();
+                            commissionService.syncLocalChanges();
                             this.setState({isDisconnected: false}, () => {
                                 return clearInterval(webPing)
                             });

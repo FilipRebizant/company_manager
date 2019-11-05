@@ -4,7 +4,7 @@ import {handleError} from "../_helpers";
 export const commissionService = {
     getAll,
     createCommission,
-    pushLocalChanges
+    syncLocalChanges
 };
 
 function getAll() {
@@ -17,19 +17,20 @@ function getAll() {
 
 }
 
-function pushLocalChanges()
+function syncLocalChanges()
 {
     console.log('trying to sync');
     const localCommissions = JSON.parse(localStorage.getItem('localOpenedCommissions'));
-    let notPushedData = [];
 
     Object.keys(localCommissions).map((key) => {
-        console.log(localCommissions[key]);
         let obj = localCommissions[key];
         Object.keys(obj).map((key) => {
             // console.log(typeof obj[key]);
             if (typeof(obj[key]) === 'object') {
                 // console.log(obj[key]);
+                if (isPushed(obj[key])) {
+                    createCommission(obj[key])
+                }
             }
         });
     });
@@ -40,6 +41,18 @@ function pushLocalChanges()
     };
 
     // return fetch(`${config.apiUrl}/commissions`, requestOptions);
+}
+
+function isPushed(obj)
+{
+    console.log(obj);
+    Object.keys(obj).map((key) => {
+        if (obj[key].pushed === false) {
+            return true;
+        }
+    });
+
+    return false;
 }
 
 function createCommission(data)

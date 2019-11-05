@@ -55,7 +55,8 @@ class CommissionService implements ServiceInterface
     {
         $tasks = [];
         foreach ($commission->getTasks() as $task) {
-            $tasks[] =
+            $date = $task->getCreatedAt()->format('d-m-Y');
+            $tasks[$date][] =
             [
                 'id' => $task->getId(),
                 'name' => $task->getName(),
@@ -68,22 +69,24 @@ class CommissionService implements ServiceInterface
 
         $reports = [];
         foreach ($commission->getReports() as $report) {
-            $reports[] = [
+            $date = $report->getCreatedAt()->format('d-m-Y');
+            $reports[$date][] = [
                 'id' => $report->getId(),
                 'dayDescription' => $report->getDayDescription(),
                 'startedAt' => $report->getStartedAt()->format($this->dateFormat),
                 'finishedAt' => $report->getFinishedAt()->format($this->dateFormat),
                 'hoursSummary' => $report->getHoursSummary(),
-                'addedBy' => $report->getUser(),
+                'addedBy' => $report->getUser()->toString(),
                 'createdAt' => $report->getCreatedAt()->format($this->dateFormat),
             ];
         }
 
-        $material = [];
+        $materials = [];
         foreach ($commission->getMaterial() as $material) {
-            $material[] = [
+            $date = $material->getCreatedAt()->format('d-m-Y');
+            $materials[$date][] = [
                 'id' => $material->getId(),
-                'createdAt' => $material->getCreatedAt(),
+                'createdAt' => $material->getCreatedAt()->format($this->dateFormat),
                 'code' => $material->getCode(),
                 'name' => $material->getName(),
                 'quantity' => $material->getQuantity(),
@@ -97,7 +100,7 @@ class CommissionService implements ServiceInterface
             'town' => $commission->getAddress()->getTown(),
             'street' => $commission->getAddress()->getStreet(),
             'houseNumber' => $commission->getAddress()->getHouseNumber(),
-            'material' => $material,
+            'material' => $materials,
             'reports' => $reports,
             'tasks' => $tasks,
         ];
