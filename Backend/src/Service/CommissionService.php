@@ -18,6 +18,9 @@ class CommissionService implements ServiceInterface
     /** @var string */
     private $dateFormat;
 
+    /** @var string */
+    private $shortDateFormat;
+
     /**
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
@@ -27,6 +30,7 @@ class CommissionService implements ServiceInterface
         $this->em = $em;
         $this->validator = $validator;
         $this->dateFormat = 'Y-m-d h:i';
+        $this->shortDateFormat = 'Y-m-d';
     }
 
     public function create(array $data): Commission
@@ -55,11 +59,10 @@ class CommissionService implements ServiceInterface
     {
         $tasks = [];
         foreach ($commission->getTasks() as $task) {
-            $date = $task->getCreatedAt()->format('d-m-Y');
+            $date = $task->getCreatedAt()->format($this->shortDateFormat);
             $tasks[$date][] =
             [
                 'id' => $task->getId(),
-                'name' => $task->getName(),
                 'description' => $task->getDescription(),
                 'createdAt' => $task->getCreatedAt()->format($this->dateFormat),
                 'status' => $task->getStatus(),
@@ -69,7 +72,7 @@ class CommissionService implements ServiceInterface
 
         $reports = [];
         foreach ($commission->getReports() as $report) {
-            $date = $report->getCreatedAt()->format('d-m-Y');
+            $date = $report->getCreatedAt()->format($this->shortDateFormat);
             $reports[$date][] = [
                 'id' => $report->getId(),
                 'dayDescription' => $report->getDayDescription(),
@@ -83,7 +86,7 @@ class CommissionService implements ServiceInterface
 
         $materials = [];
         foreach ($commission->getMaterial() as $material) {
-            $date = $material->getCreatedAt()->format('d-m-Y');
+            $date = $material->getCreatedAt()->format($this->shortDateFormat);
             $materials[$date][] = [
                 'id' => $material->getId(),
                 'createdAt' => $material->getCreatedAt()->format($this->dateFormat),

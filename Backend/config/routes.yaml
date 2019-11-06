@@ -10,6 +10,10 @@ commissions_api:
   resource: 'routes/commissions_api.yaml'
   prefix: api/
 
+tasks_api:
+  resource: 'routes/tasks_api.yaml'
+  prefix: api/
+
 index:
     path: /
     controller: App\Controller\DefaultController::index

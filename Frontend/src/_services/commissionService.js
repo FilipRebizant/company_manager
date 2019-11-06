@@ -29,7 +29,9 @@ function syncLocalChanges()
             if (typeof(obj[key]) === 'object') {
                 // console.log(obj[key]);
                 if (isPushed(obj[key])) {
-                    createCommission(obj[key])
+                    // createCommission(obj[key]
+                    // console.log(obj);
+                    // console.log('pushed');
                 }
             }
         });
@@ -45,14 +47,45 @@ function syncLocalChanges()
 
 function isPushed(obj)
 {
-    console.log(obj);
+    // console.log(obj);
     Object.keys(obj).map((key) => {
-        if (obj[key].pushed === false) {
-            return true;
-        }
+        // console.log(obj[key]);
+        Object.keys(obj[key]).map((k) => {
+                // console.log((obj[key][k]).pushed);
+            if (obj[key][k].pushed === false) {
+                // console.log('found');
+                // console.log(obj);
+                // console.log(obj[key][k]);
+
+                // Wyślij do serwera
+                pushToServer(obj[key][k]);
+
+                // Usun z listy
+                // Stworzyć nowy obiekt w localstorage, obiektow nie wysłanych
+
+                // Odśwież liste
+                return true;
+            }
+        })
     });
 
     return false;
+}
+
+
+function pushToServer(obj)
+{
+    console.log(obj);
+    const requestOptions = {
+        'method': 'POST',
+        'body': JSON.stringify(obj),
+        'headers': {
+            'Content-type': 'application-json'
+        }
+    };
+
+    return fetch(`${config.apiUrl}/${obj.objType}s`, requestOptions)
+        .catch((error => handleError(error)));
 }
 
 function createCommission(data)

@@ -42,8 +42,8 @@ class NotificationBanner extends Component {
     };
 
     updateCommissionsList = (commissions) => {
-        localStorage.removeItem('localOpenedCommissions');
-        localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+        // localStorage.removeItem('localOpenedCommissions');
+        // localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
     }
 
     pushLocalChanges = () => {
@@ -63,7 +63,6 @@ class NotificationBanner extends Component {
                 </div>
             );
         }
-
         return (<div></div>);
     }
 }

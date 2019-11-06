@@ -12,10 +12,9 @@ class AddTask extends Component {
             taskId: null,
             modalOpened: false,
             description: '',
-            employeeAssigned: null,
+            employeeAssigned: '',
             createdAt: '',
             status: "New",
-            progress: 0,
             pushed: false,
             valid: true
         }
@@ -48,7 +47,7 @@ class AddTask extends Component {
     };
 
     getNewTask = () => {
-        const {taskId, description, progress, employeeAssigned, status} = this.state;
+        const {taskId, description, employeeAssigned, status} = this.state;
         let { createdAt } = this.state;
         if (createdAt === '') {
             createdAt = getCurrentDate();
@@ -56,13 +55,13 @@ class AddTask extends Component {
 
         return {
             commissionId: getCommissionId(),
-            taskId: taskId,
+            id: taskId,
             description: description,
             employeeAssigned: employeeAssigned,
             status: status,
-            progress: progress,
             createdAt: createdAt,
-            pushed: false
+            pushed: false,
+            objType: 'task'
         };
     };
 
@@ -110,7 +109,6 @@ class AddTask extends Component {
                                 </select>
                             </div>
 
-                            <Input type="hidden" name="taskId" value={this.state.taskId} />
                             <Input type="hidden" name="status" value={this.state.status} />
                         </form>
                     </MDBModalBody>
