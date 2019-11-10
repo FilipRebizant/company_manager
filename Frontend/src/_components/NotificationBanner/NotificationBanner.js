@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {commissionService} from "../../_services";
+import {commissionService, taskService} from "../../_services";
 
 class NotificationBanner extends Component {
     state = {
@@ -28,6 +28,8 @@ class NotificationBanner extends Component {
                             // console.log(response);
                             // this.pushLocalChanges();
                             this.updateCommissionsList(response.commissions);
+
+                            // taskService.syncLocalTasks();
                             commissionService.syncLocalChanges();
                             this.setState({isDisconnected: false}, () => {
                                 return clearInterval(webPing)
@@ -42,8 +44,8 @@ class NotificationBanner extends Component {
     };
 
     updateCommissionsList = (commissions) => {
-        // localStorage.removeItem('localOpenedCommissions');
-        // localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+        localStorage.removeItem('localOpenedCommissions');
+        localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
     }
 
     pushLocalChanges = () => {

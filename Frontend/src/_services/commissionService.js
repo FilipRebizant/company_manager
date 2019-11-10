@@ -58,7 +58,7 @@ function isPushed(obj)
                 // console.log(obj[key][k]);
 
                 // Wyślij do serwera
-                pushToServer(obj[key][k]);
+                // pushToServer(obj[key][k]);
 
                 // Usun z listy
                 // Stworzyć nowy obiekt w localstorage, obiektow nie wysłanych
@@ -75,7 +75,7 @@ function isPushed(obj)
 
 function pushToServer(obj)
 {
-    console.log(obj);
+    // console.log(obj);
     const requestOptions = {
         'method': 'POST',
         'body': JSON.stringify(obj),

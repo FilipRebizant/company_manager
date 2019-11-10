@@ -30,14 +30,20 @@ class TaskController extends ApiController
     {
         $request = $this->transformJsonBody($request);
 
-        try {
-            $task = $this->taskService->create($request->request->all());
-            $taskArray = $this->taskService->transform($task);
-        } catch (ValidationException $e) {
-            return $this->respondError($e->getErrors(), Response::HTTP_BAD_REQUEST);
-        }
+//        try {
+//            $task = $this->taskService->create($request->request->all());
+//            $taskArray = $this->taskService->transform($task);
+//        } catch (ValidationException $e) {
+//            return $this->respondError($e->getErrors(), Response::HTTP_BAD_REQUEST);
+//        }
 
-        return $this->respondSuccess($taskArray, Response::HTTP_CREATED);
+//        return $this->respondSuccess($taskArray, Response::HTTP_CREATED);
+
+//        return $this->respondSuccess([], Response::HTTP_CREATED);
+
+        return $this->respondError([
+            'error' => 'test'
+        ], 400);
     }
 
     /**

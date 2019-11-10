@@ -6,6 +6,7 @@ import { AddDayReport } from "../_components/DayReports/AddDayReport";
 import { ReportsTable } from "../_components/DayReports/ReportsTable";
 import { AddTask } from "../_components/Task/AddTask";
 import { TasksList } from "../_components/Task/TasksList";
+import {NotSentTask} from "../_components/Task/NotSentTask";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -99,6 +100,19 @@ class CommissionPage extends Component {
         }
     };
 
+    renderNotSentTaskList = () => {
+        const { commissionId } = this.state;
+        const notSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
+
+        if (notSentTasks[commissionId]) {
+            console.log('render', notSentTasks[commissionId]);
+                return <NotSentTask
+                    name='tasks'
+                    items={notSentTasks[commissionId]}
+                />
+        }
+    };
+
     render() {
         const { commissionName } = this.state;
 
@@ -171,6 +185,14 @@ class CommissionPage extends Component {
                                 <MDBContainer>
                                     <h3 className="py-4">Tasks</h3>
                                     {this.renderTaskList()}
+                                </MDBContainer>
+                            </MDBCol>
+                        </MDBRow>
+                        <MDBRow>
+                            <MDBCol md="12">
+                                <MDBContainer>
+                                    <h3 className="py-4">Not sent tasks</h3>
+                                    {this.renderNotSentTaskList()}
                                 </MDBContainer>
                             </MDBCol>
                         </MDBRow>

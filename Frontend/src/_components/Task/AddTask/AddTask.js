@@ -3,6 +3,7 @@ import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalF
 import { Label } from "../../atoms/Label";
 import { Input } from "../../atoms/Input";
 import { getCurrentDate, getCommissionId } from "../../../_helpers/";
+import { taskService } from '../../../_services/';
 
 class AddTask extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class AddTask extends Component {
             description: '',
             employeeAssigned: '',
             createdAt: '',
-            status: "New",
+            status: "ToDo",
             pushed: false,
             valid: true
         }
@@ -39,9 +40,26 @@ class AddTask extends Component {
                     commissions[elem].tasks[newTask.createdAt] = [];
                 }
 
-                commissions[elem].tasks[newTask.createdAt].push(newTask);
-                localStorage.removeItem('localOpenedCommissions');
-                localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+                taskService.pushTask(newTask)
+                    .then((response) => {
+                        if (!response.ok) {
+                            let currentNotSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
+                            console.log('current', currentNotSentTasks);
+                            if (!currentNotSentTasks) {
+                                currentNotSentTasks = {};
+                            }
+                            if (!currentNotSentTasks[newTask.commissionId]) {
+                                currentNotSentTasks[newTask.commissionId] = [];
+                            }
+                            currentNotSentTasks[newTask.commissionId].push(newTask);
+                            localStorage.setItem('notSentTasks', JSON.stringify(currentNotSentTasks));
+                        }
+                        // console.log('ok', response);
+
+                    })
+                // commissions[elem].tasks[newTask.createdAt].push(newTask);
+                // localStorage.removeItem('localOpenedCommissions');
+                // localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
             }
         }
     };
