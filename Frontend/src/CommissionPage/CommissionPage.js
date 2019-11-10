@@ -30,7 +30,9 @@ class CommissionPage extends Component {
     };
 
     updateList = () => {
+        console.log('updating list...');
         this.getCommissionsData(this.state.commissionId);
+        this.renderNotSentTaskList();
     };
 
     getCommissionsData = (id) => {
@@ -103,13 +105,13 @@ class CommissionPage extends Component {
     renderNotSentTaskList = () => {
         const { commissionId } = this.state;
         const notSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
-
-        if (notSentTasks[commissionId]) {
-            console.log('render', notSentTasks[commissionId]);
+        if (notSentTasks) {
+            if (notSentTasks[commissionId]) {
                 return <NotSentTask
                     name='tasks'
                     items={notSentTasks[commissionId]}
                 />
+            }
         }
     };
 

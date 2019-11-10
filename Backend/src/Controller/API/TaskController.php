@@ -28,22 +28,19 @@ class TaskController extends ApiController
      */
     public function create(Request $request): JsonResponse
     {
-        $request = $this->transformJsonBody($request);
-
-//        try {
-//            $task = $this->taskService->create($request->request->all());
-//            $taskArray = $this->taskService->transform($task);
-//        } catch (ValidationException $e) {
-//            return $this->respondError($e->getErrors(), Response::HTTP_BAD_REQUEST);
-//        }
-
-//        return $this->respondSuccess($taskArray, Response::HTTP_CREATED);
-
+//        return $this->respondError([], 400);
 //        return $this->respondSuccess([], Response::HTTP_CREATED);
 
-        return $this->respondError([
-            'error' => 'test'
-        ], 400);
+        $request = $this->transformJsonBody($request);
+
+        try {
+            $task = $this->taskService->create($request->request->all());
+            $taskArray = $this->taskService->transform($task);
+        } catch (ValidationException $e) {
+            return $this->respondError($e->getErrors(), Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->respondSuccess($taskArray, Response::HTTP_CREATED);
     }
 
     /**

@@ -25,12 +25,12 @@ class NotificationBanner extends Component {
                     commissionService.getAll()
                         .then(response => response.json())
                         .then((response => {
-                            // console.log(response);
-                            // this.pushLocalChanges();
+                            taskService.syncLocalTasks();
+                            // TODO: Dodać synchronizacje materialu
+                            // TODO: Dodać synchronizacje raportow
+                            // TODO: Zaktualizować state po synchronizacji
+                            // commissionService.syncLocalChanges();
                             this.updateCommissionsList(response.commissions);
-
-                            // taskService.syncLocalTasks();
-                            commissionService.syncLocalChanges();
                             this.setState({isDisconnected: false}, () => {
                                 return clearInterval(webPing)
                             });

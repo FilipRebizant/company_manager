@@ -53,6 +53,7 @@ class AddTask extends Component {
                             }
                             currentNotSentTasks[newTask.commissionId].push(newTask);
                             localStorage.setItem('notSentTasks', JSON.stringify(currentNotSentTasks));
+                            this.props.updateTaskList();
                         }
                         // console.log('ok', response);
 
@@ -62,6 +63,8 @@ class AddTask extends Component {
                 // localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
             }
         }
+
+        // this.props.updateTaskList();
     };
 
     getNewTask = () => {
