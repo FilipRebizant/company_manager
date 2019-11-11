@@ -1,9 +1,7 @@
 import {config} from "../config/config";
 import {handleError} from "../_helpers";
 
-function pushTask(obj)
-{
-    // console.log(obj);
+function pushTask(obj) {
     const requestOptions = {
         'method': 'POST',
         'body': JSON.stringify(obj),
@@ -18,29 +16,27 @@ function pushTask(obj)
 
 function arrayRemove(arr, val) {
     return arr.filter(function (elem) {
-        return elem != val;
+        return elem !== val;
     })
 }
 
-function syncLocalTasks() {
+async function syncLocalTasks() {
     let notSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
     Object.keys(notSentTasks).filter((task) => {
-        let tasks = notSentTasks[task];
+        const tasks = notSentTasks[task];
         const length = notSentTasks[task].length;
+
         for (let i = 0; i < length; i++) { // For each task in commission
             pushTask(tasks[i]).then((response) => {
                 if (response.status === 201) {
-                    var result = arrayRemove(tasks, tasks[i]);
-
-                    notSentTasks[task] = result;
-                    console.log('po usunieciu', result);
-                    console.log(notSentTasks);
+                    notSentTasks[task] = arrayRemove(tasks, tasks[i]);
                     localStorage.removeItem('notSentTasks');
                     localStorage.setItem('notSentTasks', JSON.stringify(notSentTasks));
 
                     syncLocalTasks();
                 }
             });
+
             break;
         }
     });

@@ -6,7 +6,7 @@ import { AddDayReport } from "../_components/DayReports/AddDayReport";
 import { ReportsTable } from "../_components/DayReports/ReportsTable";
 import { AddTask } from "../_components/Task/AddTask";
 import { TasksList } from "../_components/Task/TasksList";
-import {NotSentTask} from "../_components/Task/NotSentTask";
+import { NotSentTask } from "../_components/Task/NotSentTask";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -30,9 +30,16 @@ class CommissionPage extends Component {
     };
 
     updateList = () => {
-        console.log('updating list...');
         this.getCommissionsData(this.state.commissionId);
         this.renderNotSentTaskList();
+        // this.renderTaskList();
+    };
+
+    pushTask = (task) => {
+        console.log(this.state.tasks);
+        console.log(task);
+        this.renderNotSentTaskList();
+        this.renderTaskList();
     };
 
     getCommissionsData = (id) => {
@@ -42,6 +49,7 @@ class CommissionPage extends Component {
         parsedCommissions.map((item) => {
             if (item.id === id) {
                 this.setState({
+                    commissionId: id,
                     commissionName: item.name,
                     material: item.material,
                     reports: item.reports,
@@ -55,10 +63,6 @@ class CommissionPage extends Component {
        const url = window.location.href;
        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
        this.getCommissionsData(id);
-
-       this.setState({
-           commissionId: id
-       });
     };
 
     renderMaterialList = () => {
@@ -105,12 +109,21 @@ class CommissionPage extends Component {
     renderNotSentTaskList = () => {
         const { commissionId } = this.state;
         const notSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
-        if (notSentTasks) {
-            if (notSentTasks[commissionId]) {
-                return <NotSentTask
-                    name='tasks'
-                    items={notSentTasks[commissionId]}
-                />
+        if (notSentTasks[commissionId]) {
+            if (notSentTasks[commissionId].length) {
+                return (
+                    <MDBRow>
+                        <MDBCol md="12">
+                            <MDBContainer>
+                                <h3 className="py-4">Not sent tasks</h3>
+                                <NotSentTask
+                                    name='tasks'
+                                    items={notSentTasks[commissionId]}
+                                />
+                            </MDBContainer>
+                        </MDBCol>
+                    </MDBRow>
+                );
             }
         }
     };
@@ -190,14 +203,9 @@ class CommissionPage extends Component {
                                 </MDBContainer>
                             </MDBCol>
                         </MDBRow>
-                        <MDBRow>
-                            <MDBCol md="12">
-                                <MDBContainer>
-                                    <h3 className="py-4">Not sent tasks</h3>
-                                    {this.renderNotSentTaskList()}
-                                </MDBContainer>
-                            </MDBCol>
-                        </MDBRow>
+
+                        {this.renderNotSentTaskList()}
+
                     </MDBTabPane>
 
                 </MDBTabContent>

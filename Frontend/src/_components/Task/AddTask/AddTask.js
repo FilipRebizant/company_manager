@@ -43,28 +43,30 @@ class AddTask extends Component {
                 taskService.pushTask(newTask)
                     .then((response) => {
                         if (!response.ok) {
-                            let currentNotSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
-                            console.log('current', currentNotSentTasks);
-                            if (!currentNotSentTasks) {
-                                currentNotSentTasks = {};
-                            }
-                            if (!currentNotSentTasks[newTask.commissionId]) {
-                                currentNotSentTasks[newTask.commissionId] = [];
-                            }
-                            currentNotSentTasks[newTask.commissionId].push(newTask);
-                            localStorage.setItem('notSentTasks', JSON.stringify(currentNotSentTasks));
-                            this.props.updateTaskList();
+                            this.saveLocally(newTask);
                         }
-                        // console.log('ok', response);
-
                     })
-                // commissions[elem].tasks[newTask.createdAt].push(newTask);
-                // localStorage.removeItem('localOpenedCommissions');
-                // localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+                    .catch((error) => {
+                        this.saveLocally(newTask);
+                    })
             }
         }
+        console.log(this.props);
+        this.props.updateTaskList(newTask);
+    };
 
-        // this.props.updateTaskList();
+    saveLocally = (newTask) => {
+        let currentNotSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
+        console.log('current', currentNotSentTasks);
+        if (!currentNotSentTasks) {
+            currentNotSentTasks = {};
+        }
+        if (!currentNotSentTasks[newTask.commissionId]) {
+            currentNotSentTasks[newTask.commissionId] = [];
+        }
+        currentNotSentTasks[newTask.commissionId].push(newTask);
+        localStorage.setItem('notSentTasks', JSON.stringify(currentNotSentTasks));
+        this.props.updateTaskList(newTask);
     };
 
     getNewTask = () => {
