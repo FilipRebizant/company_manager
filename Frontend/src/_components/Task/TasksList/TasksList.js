@@ -5,12 +5,15 @@ import {taskService} from "../../../_services";
 
 class TasksList extends Component {
 
+
+
     handleSubmit = (e) => {
         e.preventDefault();
 
         const taskId = e.target.elements.taskId.value;
         const status = e.target.elements.status.value;
         let newStatus = null;
+        let statusToChange = document.getElementById(`task${taskId}`);
 
         if (status === 'Todo') {
             newStatus = 'Pending'
@@ -22,12 +25,10 @@ class TasksList extends Component {
 
         taskService.changeStatus(taskId, newStatus)
             .then((response => {
-                console.log(response);
                 if (response.status === 204) {
-                    // TODO: remove from list
+                    statusToChange.childNodes[1].innerText = newStatus;
                 }
             }));
-
     };
 
     render() {
@@ -40,7 +41,7 @@ class TasksList extends Component {
                                 <MDBCard  id={this.props.id}>
                                     <MDBCardHeader className="d-flex justify-content-between">
                                         <p className="small">Created at: { this.props.date }</p>
-                                        <p className="small">Status: <b>{this.props.items[this.props.date][key].status}</b></p>
+                                        <p id={`task${this.props.items[this.props.date][key].id}`} className="small">Status: <b>{this.props.items[this.props.date][key].status}</b></p>
                                     </MDBCardHeader>
                                     <MDBCardBody>
                                         <MDBCardTitle>{this.props.items[this.props.date][key].employeeAssigned}</MDBCardTitle>
