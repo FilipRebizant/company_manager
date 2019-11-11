@@ -37,8 +37,6 @@ class App extends Component {
                             // TODO: Dodać synchronizacje materialu
                             // TODO: Dodać synchronizacje raportow
                             // TODO: Zaktualizować state po synchronizacji
-                            // commissionService.syncLocalChanges();
-                            // this.updateCommissionsList(response.commissions);
                             this.setState({isDisconnected: false}, () => {
                                 this.refresh();
                                 return clearInterval(webPing)

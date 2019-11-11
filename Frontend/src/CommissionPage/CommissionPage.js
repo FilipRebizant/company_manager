@@ -35,9 +35,16 @@ class CommissionPage extends Component {
         // this.renderTaskList();
     };
 
-    pushTask = (task) => {
-        console.log(this.state.tasks);
-        console.log(task);
+    refreshTaskLists = (task) => {
+        console.log('refresh list call');
+        // console.log(this.state.tasks);
+        // console.log(task);
+        let array = this.state.tasks;
+        array[task.createdAt].push(task);
+        // console.log(array);
+        this.setState({
+            tasks: array
+        });
         this.renderNotSentTaskList();
         this.renderTaskList();
     };
@@ -192,7 +199,7 @@ class CommissionPage extends Component {
                     <MDBTabPane tabId="3" role="tabpanel">
                         <MDBRow>
                             <MDBCol md="12">
-                                <AddTask updateTaskList={this.updateList}/>
+                                <AddTask updateTaskList={this.refreshTaskLists}/>
                             </MDBCol>
                         </MDBRow>
                         <MDBRow>

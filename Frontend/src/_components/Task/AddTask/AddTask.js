@@ -51,7 +51,7 @@ class AddTask extends Component {
                     })
             }
         }
-        console.log(this.props);
+
         this.props.updateTaskList(newTask);
     };
 
@@ -66,7 +66,7 @@ class AddTask extends Component {
         }
         currentNotSentTasks[newTask.commissionId].push(newTask);
         localStorage.setItem('notSentTasks', JSON.stringify(currentNotSentTasks));
-        this.props.updateTaskList(newTask);
+        // this.props.updateTaskList(newTask);
     };
 
     getNewTask = () => {
@@ -94,7 +94,6 @@ class AddTask extends Component {
         if (this.validate(newTask)) {
             this.addNewTask(newTask);
             this.resetInputFields();
-            this.props.updateTaskList();
         }
     };
 

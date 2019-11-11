@@ -46,7 +46,7 @@ class TaskService
         $this->commissionRepository = $commissionRepository;
         $this->em = $em;
         $this->validator = $validator;
-        $this->dateFormat = 'Y-m-d h:i';
+        $this->dateFormat = 'Y-m-d';
         $this->shortDateFormat = 'Y-m-d';
     }
 
