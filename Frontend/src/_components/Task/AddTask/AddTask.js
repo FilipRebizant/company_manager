@@ -44,7 +44,11 @@ class AddTask extends Component {
                     .then((response) => {
                         if (!response.ok) {
                             this.saveLocally(newTask);
+                        } else {
+                            console.log(newTask);
+                            newTask.id = response.id;
                         }
+
                     })
                     .catch((error) => {
                         this.saveLocally(newTask);
@@ -66,7 +70,6 @@ class AddTask extends Component {
         }
         currentNotSentTasks[newTask.commissionId].push(newTask);
         localStorage.setItem('notSentTasks', JSON.stringify(currentNotSentTasks));
-        // this.props.updateTaskList(newTask);
     };
 
     getNewTask = () => {

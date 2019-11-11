@@ -81,7 +81,8 @@ class TaskService
 
     public function transform(Task $task): array
     {
-    $date = $task->getCreatedAt()->format($this->shortDateFormat);
+        $date = $task->getCreatedAt()->format($this->shortDateFormat);
+
         return   [
             'id' => $task->getId(),
             'description' => $task->getDescription(),
@@ -93,7 +94,13 @@ class TaskService
 
     public function update(Task $task, array $data)
     {
+        // TODO: Implement update
+    }
 
+    public function changeStatus(Task $task, string $status)
+    {
+        $task->setStatus($status);
+        $this->save($task);
     }
 
     public function delete(Task $task)

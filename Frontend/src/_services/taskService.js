@@ -42,7 +42,24 @@ async function syncLocalTasks() {
     });
 }
 
+function changeStatus (taskId, status) {
+    const requestOptions = {
+        'method': 'PATCH',
+        'body': JSON.stringify({
+            id: taskId,
+            status: status
+        }),
+        'headers': {
+            'Content-type': 'application-json'
+        }
+    };
+
+    return fetch(`${config.apiUrl}/tasks/${taskId}`, requestOptions)
+        .catch((error => handleError(error)));
+}
+
 export const taskService = {
     pushTask,
-    syncLocalTasks
+    syncLocalTasks,
+    changeStatus
 };

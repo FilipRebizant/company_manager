@@ -102,6 +102,16 @@ class TaskController extends ApiController
         return $this->respondError(["Task could not be found"], Response::HTTP_NOT_FOUND);
     }
 
+    public function changeStatus(Request $request, TaskRepository $taskRepository)
+    {
+        $task = $taskRepository->find($request->get('id'));
+        $request = $this->transformJsonBody($request);
+        $status = $request->get('status');
+        $this->taskService->changeStatus($task, $status);
+
+        return $this->respondSuccess([], Response::HTTP_NO_CONTENT);
+    }
+
     /**
      * @param Request $request
      * @param TaskRepository $taskRepository
