@@ -3,6 +3,7 @@ function getItems(name) {
 }
 
 function setItem(item, name) {
+    localStorage.removeItem(name);
     localStorage.setItem(name, JSON.stringify(item));
 }
 

@@ -150,16 +150,6 @@ class CommissionPage extends Component {
     render() {
         const { commissionName } = this.state;
 
-        // let pageContent =
-        // <div className="spinner-border" role="status">
-        //     <span className="sr-only">Loading...</span>
-        // </div>;
-
-        // if (commissionName) {
-        //     pageContent =
-
-        // }
-
         return (
             <MDBContainer>
                 <h2 className="h2 py-4">{commissionName}</h2>

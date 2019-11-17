@@ -15,7 +15,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // this.handleConnectionChange();
+        this.handleConnectionChange();
         window.addEventListener('online', this.handleConnectionChange);
         window.addEventListener('offline', this.handleConnectionChange);
     }
@@ -33,7 +33,7 @@ class App extends Component {
                     commissionService.getAll()
                         .then(response => response.json())
                         .then((response => {
-                            // taskService.syncLocalTasks();
+                            taskService.syncLocalTasks();
                             commissionService.syncLocalChanges();
                             // TODO: Dodać synchronizacje materialu
                             // TODO: Dodać synchronizacje raportow

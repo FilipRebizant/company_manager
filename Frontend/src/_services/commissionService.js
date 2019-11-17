@@ -18,24 +18,13 @@ function getAll() {
 
 }
 
-function arrayRemove(arr, val) {
-    return arr.filter(function (elem) {
-        return elem !== val;
-    })
-}
-
 function syncLocalChanges()
 {
     let notSentCommissions = storageService.getItems('notSentCommissions');
 
-    // console.log(notSentCommissions);
-
     Object.keys(notSentCommissions).filter((commission) => {
         const commissions = notSentCommissions;
         const length = notSentCommissions.length;
-
-        // console.log(commissions);
-        // console.log(length);
 
         for (let i = 0; i < length; i++) { // For each commission in commission
             console.log(commissions);
@@ -43,11 +32,8 @@ function syncLocalChanges()
             createCommission(commissions[i]).then((response) => {
                 console.log(response);
                 if (response.status === 201) {
-                    // storageService.removeItem(commissions[i], commissions);
                     notSentCommissions[commission] = storageService.arrayRemove(commissions, commissions[i]);
                     storageService.setItem(notSentCommissions[commission], 'notSentCommissions');
-                    // localStorage.removeItem('notSentCommissions');
-                    // localStorage.setItem('notSentCommissions', JSON.stringify(notSentCommissions));
 
                     syncLocalChanges();
                 }

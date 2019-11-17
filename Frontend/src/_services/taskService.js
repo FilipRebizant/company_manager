@@ -22,24 +22,26 @@ function arrayRemove(arr, val) {
 
 async function syncLocalTasks() {
     let notSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
-    Object.keys(notSentTasks).filter((task) => {
-        const tasks = notSentTasks[task];
-        const length = notSentTasks[task].length;
+    if (notSentTasks) {
+        Object.keys(notSentTasks).filter((task) => {
+            const tasks = notSentTasks[task];
+            const length = notSentTasks[task].length;
 
-        for (let i = 0; i < length; i++) { // For each task in commission
-            pushTask(tasks[i]).then((response) => {
-                if (response.status === 201) {
-                    notSentTasks[task] = arrayRemove(tasks, tasks[i]);
-                    localStorage.removeItem('notSentTasks');
-                    localStorage.setItem('notSentTasks', JSON.stringify(notSentTasks));
+            for (let i = 0; i < length; i++) { // For each task in commission
+                pushTask(tasks[i]).then((response) => {
+                    if (response.status === 201) {
+                        notSentTasks[task] = arrayRemove(tasks, tasks[i]);
+                        localStorage.removeItem('notSentTasks');
+                        localStorage.setItem('notSentTasks', JSON.stringify(notSentTasks));
 
-                    syncLocalTasks();
-                }
-            });
+                        syncLocalTasks();
+                    }
+                });
 
-            break;
-        }
-    });
+                break;
+            }
+        });
+    }
 }
 
 function changeStatus (taskId, status) {
