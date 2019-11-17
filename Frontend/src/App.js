@@ -15,7 +15,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.handleConnectionChange();
+        // this.handleConnectionChange();
         window.addEventListener('online', this.handleConnectionChange);
         window.addEventListener('offline', this.handleConnectionChange);
     }
@@ -33,7 +33,8 @@ class App extends Component {
                     commissionService.getAll()
                         .then(response => response.json())
                         .then((response => {
-                            taskService.syncLocalTasks();
+                            // taskService.syncLocalTasks();
+                            commissionService.syncLocalChanges();
                             // TODO: Dodać synchronizacje materialu
                             // TODO: Dodać synchronizacje raportow
                             // TODO: Zaktualizować state po synchronizacji
@@ -63,8 +64,6 @@ class App extends Component {
             }));
     }
 
-
-
     render () {
         return (
             <div className="App">
@@ -72,7 +71,7 @@ class App extends Component {
                     <Navigation/>
                     <NotificationBanner isDisconnected={this.state.isDisconnected}/>
                     <Switch>
-                        <Route exact path="/" component={HomePage}/>
+                        <Route exact path="/" component={() => <HomePage needToUpdate={this.state.needToUpdate}/>}/>
                         <Route path="/commission/:id" component={ () =>
                             <CommissionPage needToUpdate={this.state.needToUpdate} updateList={this.refresh}
                         />} />

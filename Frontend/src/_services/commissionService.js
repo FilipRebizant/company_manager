@@ -1,5 +1,6 @@
 import { config } from "../config/config";
 import {handleError} from "../_helpers";
+import {storageService} from "./storageService";
 
 export const commissionService = {
     getAll,
@@ -17,25 +18,62 @@ function getAll() {
 
 }
 
+function arrayRemove(arr, val) {
+    return arr.filter(function (elem) {
+        return elem !== val;
+    })
+}
+
 function syncLocalChanges()
 {
-    console.log('trying to sync');
-    const localCommissions = JSON.parse(localStorage.getItem('localOpenedCommissions'));
+    let notSentCommissions = storageService.getItems('notSentCommissions');
 
-    Object.keys(localCommissions).map((key) => {
-        let obj = localCommissions[key];
-        Object.keys(obj).map((key) => {
-            // console.log(typeof obj[key]);
-            if (typeof(obj[key]) === 'object') {
-                // console.log(obj[key]);
-                if (isPushed(obj[key])) {
-                    // createCommission(obj[key]
-                    // console.log(obj);
-                    // console.log('pushed');
+    // console.log(notSentCommissions);
+
+    Object.keys(notSentCommissions).filter((commission) => {
+        const commissions = notSentCommissions;
+        const length = notSentCommissions.length;
+
+        // console.log(commissions);
+        // console.log(length);
+
+        for (let i = 0; i < length; i++) { // For each commission in commission
+            console.log(commissions);
+            console.log(commissions[i]);
+            createCommission(commissions[i]).then((response) => {
+                console.log(response);
+                if (response.status === 201) {
+                    // storageService.removeItem(commissions[i], commissions);
+                    notSentCommissions[commission] = storageService.arrayRemove(commissions, commissions[i]);
+                    storageService.setItem(notSentCommissions[commission], 'notSentCommissions');
+                    // localStorage.removeItem('notSentCommissions');
+                    // localStorage.setItem('notSentCommissions', JSON.stringify(notSentCommissions));
+
+                    syncLocalChanges();
                 }
-            }
-        });
+            });
+
+            break;
+        }
     });
+
+    // console.log('trying to sync');
+    // const localCommissions = JSON.parse(localStorage.getItem('localOpenedCommissions'));
+
+    // Object.keys(localCommissions).map((key) => {
+    //     let obj = localCommissions[key];
+    //     Object.keys(obj).map((key) => {
+    //         // console.log(typeof obj[key]);
+    //         if (typeof(obj[key]) === 'object') {
+    //             // console.log(obj[key]);
+    //             if (isPushed(obj[key])) {
+    //                 // createCommission(obj[key]
+    //                 // console.log(obj);
+    //                 // console.log('pushed');
+    //             }
+    //         }
+    //     });
+    // });
 
 
     const requestOptions = {
@@ -72,28 +110,17 @@ function isPushed(obj)
     return false;
 }
 
-
-function pushToServer(obj)
+function createCommission(data)
 {
-    // console.log(obj);
     const requestOptions = {
         'method': 'POST',
-        'body': JSON.stringify(obj),
+        'body': JSON.stringify(data),
         'headers': {
             'Content-type': 'application-json'
         }
     };
 
-    return fetch(`${config.apiUrl}/${obj.objType}s`, requestOptions)
-        .catch((error => handleError(error)));
-}
-
-function createCommission(data)
-{
-    const requestOptions = {
-        'method': 'POST',
-        'body': data
-    };
+    console.log(data);
 
     return fetch(`${config.apiUrl}/commissions`, requestOptions)
         .catch((error => handleError(error)));

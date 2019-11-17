@@ -38,8 +38,9 @@ class CommissionService implements ServiceInterface
         $addressFactory = new AddressFactory();
         $address = $addressFactory->create($data);
         $this->save($address);
-
-
+//        $this->em->persist($address);
+//        var_dump($data);
+//        die;
         $commission = new Commission();
         $commission->setName($data['name']);
         $createdAt = new \DateTime($data['createdAt']);

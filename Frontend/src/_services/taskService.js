@@ -58,7 +58,21 @@ function changeStatus (taskId, status) {
         .catch((error => handleError(error)));
 }
 
+function getAll(taskId, status)
+{
+    const requestOptions = {
+        'method': 'GET',
+        'headers': {
+            'Content-type': 'application-json'
+        }
+    };
+
+    return fetch(`${config.apiUrl}/commissions/${taskId}/tasks/${status}`, requestOptions)
+        .catch((error => handleError(error)));
+}
+
 export const taskService = {
+    getAll,
     pushTask,
     syncLocalTasks,
     changeStatus

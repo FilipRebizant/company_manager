@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
 import { Label } from "../atoms/Label";
 import { Input } from "../atoms/Input";
+import {commissionService, storageService} from "../../_services";
 
 class AddCommission extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class AddCommission extends Component {
             modalOpened: false,
             id: '',
             name: '',
+            postCode: '',
             town: '',
             street: '',
             houseNumber: '',
@@ -31,24 +33,6 @@ class AddCommission extends Component {
         return `${year}/${month}/${day} ${hour}:${minutes}:${seconds}`;
     };
 
-    componentDidMount() {
-        this.getOpenedCommissions();
-    }
-
-    getOpenedCommissions = () => {
-        const localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
-        const parsedCommissions = JSON.parse(localOpenedCommissions);
-        let lastId = 0;
-
-        if (parsedCommissions) {
-            lastId = parsedCommissions[parsedCommissions.length-1].id + 1;
-        }
-
-        this.setState({
-            id: lastId
-        });
-    };
-
     toggleModal = () => {
         this.setState({
             modalOpened: !this.state.modalOpened
@@ -56,10 +40,10 @@ class AddCommission extends Component {
     };
 
     handleFormSubmit = () => {
-        const {id, name, town, street, houseNumber, createdAt} = this.state;
+        const {name, postCode, town, street, houseNumber, createdAt} = this.state;
         const newItem = {
-            id: id,
             name: name,
+            postCode: postCode,
             town: town,
             street: street,
             houseNumber: houseNumber,
@@ -69,22 +53,29 @@ class AddCommission extends Component {
             tasks: {},
             pushed: false
         };
-        let localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
-
-        if (localOpenedCommissions === null) {
-            localOpenedCommissions = [];
-        } else {
-            localOpenedCommissions = JSON.parse(localOpenedCommissions);
-        }
 
         if (this.state.valid === true) {
-            localOpenedCommissions.push(newItem);
-            localStorage.setItem("localOpenedCommissions", JSON.stringify(localOpenedCommissions));
+            commissionService.createCommission(newItem)
+                .then(response => response.json()
+                .then((response) => {
+                    console.log(response);
+                    if (!response.errors) {
+                        newItem.id = response.id;
+                        storageService.addItem(newItem, 'localOpenedCommissions');
+                        this.props.addItem(newItem);
+                    } else {
+                        storageService.addItem(newItem, 'notSentCommissions');
+                        this.props.updateList();
+                    }
+                }))
+                .catch((e) => {
+                    storageService.addItem(newItem, 'notSentCommissions');
+                    this.props.updateList();
+                });
 
             this.resetInputFields();
         }
-        this.getOpenedCommissions();
-        this.props.updateList();
+
     };
 
     resetInputFields = () => {
@@ -93,6 +84,7 @@ class AddCommission extends Component {
             town: '',
             street: '',
             houseNumber: '',
+            postCode: '',
             createdAt: this.getCurrentDate()
         })
     };
@@ -122,6 +114,11 @@ class AddCommission extends Component {
                             <div className="form-group">
                                 <Label for="street"/>
                                 <Input name="street" value={this.state.street} onChange={this.handleChange}/>
+                            </div>
+
+                            <div className="form-group">
+                                <Label for="postCode"/>
+                                <Input name="postCode" value={this.state.postCode} onChange={this.handleChange}/>
                             </div>
 
                             <div className="form-group">

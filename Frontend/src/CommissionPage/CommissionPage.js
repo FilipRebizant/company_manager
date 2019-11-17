@@ -74,14 +74,18 @@ class CommissionPage extends Component {
 
     renderMaterialList = () => {
         const { material } = this.state;
-        return Object.keys(material).map((key) => {
-            return <MaterialList
-                key={key}
-                name='material'
-                date={key}
-                items={material}
-            />
-        });
+        if (material) {
+            return Object.keys(material).map((key) => {
+                return <MaterialList
+                    key={key}
+                    name='material'
+                    date={key}
+                    items={material}
+                />
+            });
+        }
+
+        return <div></div>;
     };
 
 
@@ -97,6 +101,8 @@ class CommissionPage extends Component {
                 />
             });
         }
+
+        return <div></div>;
     };
 
     renderTaskList = () => {
@@ -111,40 +117,50 @@ class CommissionPage extends Component {
                 />
             });
         }
+
+        return <div></div>;
     };
 
     renderNotSentTaskList = () => {
         const { commissionId } = this.state;
         const notSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
-        if (notSentTasks[commissionId]) {
-            if (notSentTasks[commissionId].length) {
-                return (
-                    <MDBRow>
-                        <MDBCol md="12">
-                            <MDBContainer>
-                                <h3 className="py-4">Not sent tasks</h3>
-                                <NotSentTask
-                                    name='tasks'
-                                    items={notSentTasks[commissionId]}
-                                />
-                            </MDBContainer>
-                        </MDBCol>
-                    </MDBRow>
-                );
+        if (notSentTasks) {
+            if (notSentTasks[commissionId]) {
+                if (notSentTasks[commissionId].length) {
+                    return (
+                        <MDBRow>
+                            <MDBCol md="12">
+                                <MDBContainer>
+                                    <h3 className="py-4">Not sent tasks</h3>
+                                    <NotSentTask
+                                        name='tasks'
+                                        items={notSentTasks[commissionId]}
+                                    />
+                                </MDBContainer>
+                            </MDBCol>
+                        </MDBRow>
+                    );
+                }
             }
         }
+
+        return <div></div>;
     };
 
     render() {
         const { commissionName } = this.state;
 
-        let pageContent =
-        <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>;
+        // let pageContent =
+        // <div className="spinner-border" role="status">
+        //     <span className="sr-only">Loading...</span>
+        // </div>;
 
-        if (commissionName) {
-            pageContent =
+        // if (commissionName) {
+        //     pageContent =
+
+        // }
+
+        return (
             <MDBContainer>
                 <h2 className="h2 py-4">{commissionName}</h2>
 
@@ -217,10 +233,6 @@ class CommissionPage extends Component {
 
                 </MDBTabContent>
             </MDBContainer>
-        }
-
-        return (
-            pageContent
         );
     }
 }

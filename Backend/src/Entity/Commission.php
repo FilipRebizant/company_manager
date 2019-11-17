@@ -19,11 +19,6 @@ class Commission
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Client", mappedBy="commission")
-     */
-    private $client;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -76,7 +71,6 @@ class Commission
 
     public function __construct()
     {
-        $this->client = new ArrayCollection();
         $this->material = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->reports = new ArrayCollection();
@@ -85,37 +79,6 @@ class Commission
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|Client[]
-     */
-    public function getClient(): Collection
-    {
-        return $this->client;
-    }
-
-    public function addClient(Client $client): self
-    {
-        if (!$this->client->contains($client)) {
-            $this->client[] = $client;
-            $client->setCommision($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClient(Client $client): self
-    {
-        if ($this->client->contains($client)) {
-            $this->client->removeElement($client);
-            // set the owning side to null (unless already changed)
-            if ($client->getCommision() === $this) {
-                $client->setCommision(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getName(): ?string

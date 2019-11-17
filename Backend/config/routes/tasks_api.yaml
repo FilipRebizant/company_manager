@@ -3,6 +3,11 @@ showTasks:
     controller: App\Controller\API\TaskController::showAll
     methods:    GET
 
+getTasksWithStatus:
+    path:       /commissions/{id}/tasks/{status}
+    controller: App\Controller\API\TaskController::getTaskWithStatus
+    methods:    GET
+
 createTask:
     path:       /tasks
     controller: App\Controller\API\TaskController::create

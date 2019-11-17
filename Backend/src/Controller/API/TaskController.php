@@ -28,9 +28,6 @@ class TaskController extends ApiController
      */
     public function create(Request $request): JsonResponse
     {
-//        return $this->respondError([], 400);
-//        return $this->respondSuccess([], Response::HTTP_CREATED);
-
         $request = $this->transformJsonBody($request);
 
         try {
@@ -110,6 +107,18 @@ class TaskController extends ApiController
         $this->taskService->changeStatus($task, $status);
 
         return $this->respondSuccess([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function getTaskWithStatus(Request $request, TaskRepository $taskRepository)
+    {
+        var_dump($request->request->all());
+//        $request = $this->transformJsonBody($request);
+        $tasks = $taskRepository->findBy([
+            'status' => $request->get('status'),
+            'commissionId' => $request->get('id'),
+        ]);
+
+        return $this->respondSuccess(['tasks' => $tasks]);
     }
 
     /**

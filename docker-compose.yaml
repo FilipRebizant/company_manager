@@ -6,12 +6,13 @@ services:
       dockerfile: ./docker/php-fpm/Dockerfile
       context: ./
     volumes:
-      - ./Backend:/var/www/html:cached
+      - ./Backend:/var/www/html
 
   nginx:
     image: nginx:stable
     volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+#      - ./docker/nginx/default.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./public/build/:/var/www/html/public/build:ro
     depends_on:
       - php-fpm
@@ -19,19 +20,34 @@ services:
     ports:
       - "8000:80"
 
-  react:
-      container_name: react
-      build:
-        context: ./
-        dockerfile: ./docker/node/Dockerfile
-      volumes:
-        - ./FrontEnd:/var/www/html:cached
-      environment:
-        - NODE_ENV=development
-      stop_signal: SIGINT
-      command: npm run start
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin:4.7
+      container_name: phpmyadmin
+      restart: always
+      depends_on:
+        - db
       ports:
-        - "80:3000"
+        - "30002:80"
+      environment:
+        PMA_HOST: db
+        MYSQL_ROOT_PASSWORD: 'password'
+      volumes:
+        - /sessions
+
+#  react:
+#      container_name: react
+#      build:
+#        context: ./
+#        dockerfile: ./docker/node/Dockerfile
+#      volumes:
+#        - ./FrontEnd:/var/www/html
+#      environment:
+#        - NODE_ENV=development
+#        - CHOKIDAR_USEPOLLING=true
+#      stop_signal: SIGINT
+#      command: npm start
+#      ports:
+#        - "3000:3000"
 
   db:
     container_name: mysql8
@@ -45,5 +61,3 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - '3306:3306'
-    expose:
-      - '3306'

@@ -28,6 +28,10 @@ class CommissionController extends ApiController
      */
     public function create(Request $request): JsonResponse
     {
+
+//        return $this->respondError([
+//            'error' => 'test'
+//        ], 400);
         $request = $this->transformJsonBody($request);
 
         try {
