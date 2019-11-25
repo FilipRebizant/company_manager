@@ -14,6 +14,10 @@ tasks_api:
   resource: 'routes/tasks_api.yaml'
   prefix: api/
 
+materials_api:
+  resource: 'routes/materials_api.yaml'
+  prefix: api/
+
 index:
     path: /
     controller: App\Controller\DefaultController::index
