@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
-import { commissionService } from "../../_services";
 
 class NotificationBanner extends Component {
-
     render() {
-        const { isDisconnected } = this.props;
+        // const { isDisconnected } = this.props;
 
-        if (isDisconnected) {
+        if (this.props.isDisconnected) {
             return (
                 <div className="alert alert-danger">
-                    You are offline
-                    <div>
-                        <button onClick={commissionService.syncLocalChanges} className="btn btn-primary">Sync me</button>
-                    </div>
+                    You are offline <button onClick={this.props.tryToSync}>Try to sync</button>
                 </div>
             );
         }
+
         return (<div></div>);
     }
 }

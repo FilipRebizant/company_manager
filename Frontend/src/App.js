@@ -5,7 +5,7 @@ import { HomePage } from './HomePage';
 import { CommissionPage } from "./CommissionPage";
 import { Navigation } from "./_components/Navigation";
 import { NotificationBanner } from "./_components/NotificationBanner";
-import { commissionService, taskService } from "./_services";
+import {commissionService, materialService, storageService, taskService} from "./_services";
 import {AddUser} from "./_components/AddUser";
 
 class App extends Component {
@@ -16,9 +16,9 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // this.handleConnectionChange();
-        // window.addEventListener('online', this.handleConnectionChange);
-        // window.addEventListener('offline', this.handleConnectionChange);
+        this.handleConnectionChange();
+        window.addEventListener('online', this.handleConnectionChange);
+        window.addEventListener('offline', this.handleConnectionChange);
     }
 
     componentWillUnmount() {
@@ -28,28 +28,37 @@ class App extends Component {
 
     handleConnectionChange = () => {
         const condition = navigator.onLine ? 'online' : 'offline';
+        console.log(condition);
         if (condition === 'online') {
-            const webPing = setInterval(
-                () => {
-                    commissionService.getAll()
-                        .then(response => response.json())
-                        .then((response => {
-                            taskService.syncLocalTasks();
-                            commissionService.syncLocalChanges();
-                            // TODO: Dodać synchronizacje materialu
+            console.log('should be fine');
+            this.setState({isDisconnected: false});
+            // TODO:: check if there are changes and sync
+
+            if (storageService.getItems('notSentMaterials')) {
+                if (storageService.getItems('notSentMaterials').length) {
+                    materialService.syncLocalMaterials().then(
+                        this.refresh()
+                    );
+                }
+            }
+        }
+            //                 taskService.syncLocalTasks().then(
+                                // this.refresh()
+                            // );
                             // TODO: Dodać synchronizacje raportow
                             // TODO: Zaktualizować state po synchronizacji
-                            this.setState({isDisconnected: false}, () => {
-                                this.refresh();
-                                return clearInterval(webPing)
-                            });
-                        }))
-                        .catch(() => this.setState({isDisconnected: true, needToUpdate: false}))
-                }, 2000);
-            return;
+         else {
+            // TODO:: Ping
+            // const webPing = setInterval(
+            //     () => {
+            //         commissionService.getAll()
+            //             .then(() => {
+                            this.setState({isDisconnected: true});
+            //             })
+            //             .catch(() => this.setState({isDisconnected: true}))
+            //     }, 2000);
+            // return;
         }
-
-        return this.setState({ isDisconnected: true });
     };
 
     refresh() {
@@ -70,7 +79,7 @@ class App extends Component {
             <div className="App">
                 <Router>
                     <Navigation/>
-                    <NotificationBanner isDisconnected={this.state.isDisconnected}/>
+                    <NotificationBanner isDisconnected={this.state.isDisconnected} tryToSync={this.handleConnectionChange}/>
                     <Switch>
                         <Route exact path="/" component={() => <HomePage needToUpdate={this.state.needToUpdate}/>}/>
                         <Route path="/commission/:id" component={ () =>
@@ -83,7 +92,7 @@ class App extends Component {
                 </Router>
             </div>
         );
-        }
-
+    }
 }
+
 export default App;

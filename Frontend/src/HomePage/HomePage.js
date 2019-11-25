@@ -16,7 +16,7 @@ class HomePage extends Component {
 
     componentDidMount() {
         this.getOpenedCommissions();
-        this.getCommissionsFromStorage();
+        // this.getCommissionsFromStorage();
     };
 
     getOpenedCommissions = () => {
