@@ -64,8 +64,6 @@ class MaterialService
 
     public function transform(Material $material): array
     {
-        $date = $material->getCreatedAt()->format($this->shortDateFormat);
-
         return [
             'id' => $material->getId(),
             'name' => $material->getName(),
@@ -73,12 +71,6 @@ class MaterialService
             'quantity' => $material->getQuantity(),
             'createdAt' => $material->getCreatedAt()->format($this->dateFormat),
         ];
-    }
-
-    public function changeStatus(Material $material, string $status)
-    {
-        $material->setStatus($status);
-        $this->save($material);
     }
 
     public function delete(Material $material)

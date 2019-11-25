@@ -18,7 +18,7 @@ class CommissionPage extends Component {
             tasks: null,
             commissionName: null,
             commissionId: '',
-            activeTab: "3"
+            activeTab: "1"
         };
     }
 

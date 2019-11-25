@@ -3,6 +3,7 @@ import { MDBBtn, MDBIcon } from 'mdbreact';
 import { Label } from "../../atoms/Label/index";
 import { Input } from "../../atoms/Input/index";
 import { getCommissionId, getCurrentDate } from "../../../_helpers";
+import { materialService, storageService} from "../../../_services";
 
 class AddMaterial extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class AddMaterial extends Component {
             name: '',
             code: '',
             quantity: '',
-            date: '',
+            createdAt: '',
             additionalInfo: ''
         }
     }
@@ -26,7 +27,7 @@ class AddMaterial extends Component {
             name: '',
             code: '',
             quantity: '',
-            date: '',
+            createdAt: '',
             additionalInfo: ''
         })
     };
@@ -36,27 +37,43 @@ class AddMaterial extends Component {
     };
 
     addNewItem = (newItem) => {
+        materialService.pushMaterial(newItem)
+            .then((response => {
+                console.log(response);
+                if (response.ok) {
+                    newItem.id = response.id;
+                } else {
+                    this.saveLocally(newItem);
+                }
+            }))
+            .catch((e) => {
+                this.saveLocally(newItem);
+            });
+
         let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
 
         for (let elem in commissions) {
-
             if (commissions[elem].id === newItem.commissionId) {
-                if (!commissions[elem].material[newItem.date]) {
-                    commissions[elem].material[newItem.date] = [];
+                if (!commissions[elem].material[newItem.createdAt]) {
+                    commissions[elem].material[newItem.createdAt] = [];
                 }
 
-                commissions[elem].material[newItem.date].push(newItem);
+                commissions[elem].material[newItem.createdAt].push(newItem);
                 localStorage.removeItem('localOpenedCommissions');
                 localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
             }
         }
     };
 
-    getNewItem = () => {
-        const {name, code, quantity, additionalInfo} = this.state;
-        let { date } = this.state;
-        if (date === '') {
-            date = getCurrentDate();
+    saveLocally = (newMaterial) => {
+        storageService.addItem(newMaterial, 'notSentMaterials');
+    };
+
+    prepareNewItem = () => {
+        const {name, code, quantity} = this.state;
+        let { createdAt } = this.state;
+        if (createdAt === '') {
+            createdAt = getCurrentDate();
         }
 
         return {
@@ -64,15 +81,13 @@ class AddMaterial extends Component {
             name: name,
             code: code,
             quantity: quantity,
-            date: date,
-            additionalInfo: additionalInfo,
-            pushed: false
+            createdAt: createdAt
         };
     };
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        const newItem = this.getNewItem();
+        const newItem = this.prepareNewItem();
 
         if (this.validate(newItem)) {
             this.addNewItem(newItem);
@@ -102,13 +117,8 @@ class AddMaterial extends Component {
                 </div>
 
                 <div className="form-group">
-                    <Label for="date"/>
-                    <Input type="date" name="date" value={this.state.date} onChange={this.handleChange} />
-                </div>
-
-                <div className="form-group">
-                    <Label for="additionalInfo"/>
-                    <Input name="additionalInfo" value={this.state.additionalInfo} onChange={this.handleChange} />
+                    <Label for="createdAt"/>
+                    <Input type="date" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
                 </div>
 
                 <Input type="hidden" value={this.state.commissionId} />

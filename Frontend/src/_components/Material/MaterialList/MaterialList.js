@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBHamburgerToggler, MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import { MDBHamburgerToggler, MDBTable, MDBTableHead } from 'mdbreact';
 
 const MaterialList = (props) => {
     const style = {
@@ -14,18 +14,13 @@ const MaterialList = (props) => {
             sort: 'asc'
         },
         {
-            label: 'Added at',
-            field: 'addedAt',
+            label: 'Name',
+            field: 'name',
             sort: 'asc'
         },
         {
             label: 'Code',
             field: 'last',
-            sort: 'asc'
-        },
-        {
-            label: 'Name',
-            field: 'name',
             sort: 'asc'
         },
         {
@@ -42,7 +37,6 @@ const MaterialList = (props) => {
         } else {
             hiddenPart.classList.add("hiddenContent");
         }
-
     };
 
     let wrapper = React.createRef();
@@ -53,10 +47,23 @@ const MaterialList = (props) => {
                 <div>{props.date}</div>
                 <MDBHamburgerToggler color="#000000" id={`${props.name}-${props.date}`} onClick={toggleVisibilityContent} />
             </div>
-            <div className="hiddenContentContainer hiddenContent table-responsive">
-                <MDBTable>
+            <div className="hiddenContentContainer hiddenContent">
+                <MDBTable responsive>
                     <MDBTableHead columns={columns} />
-                    <MDBTableBody rows={props.items[props.date]} />
+                    <tbody>
+                        { Object.keys(props.items[props.date]).map((key) => {
+                                return <React.Fragment key={key}>
+                                    <tr>
+                                        <td>{parseInt(key)+1}</td>
+                                        <td>{props.items[props.date][key].name}</td>
+                                        <td>{props.items[props.date][key].code}</td>
+                                        <td>{props.items[props.date][key].quantity}</td>
+                                    </tr>
+                                </React.Fragment>
+                            })
+                        }
+                    </tbody>
+
                 </MDBTable>
             </div>
         </div>
