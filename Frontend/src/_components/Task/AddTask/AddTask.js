@@ -3,13 +3,13 @@ import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalF
 import { Label } from "../../atoms/Label";
 import { Input } from "../../atoms/Input";
 import { getCurrentDate, getCommissionId } from "../../../_helpers/";
-import { taskService } from '../../../_services/';
+import {storageService, taskService} from '../../../_services/';
 
 class AddTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commissionId: null,
+            commissionId: '',
             taskId: null,
             modalOpened: false,
             description: '',
@@ -32,28 +32,36 @@ class AddTask extends Component {
     };
 
     addNewTask = (newTask) => {
-        let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
+        let commissions =  storageService.getItems('localOpenedCommissions');
 
-        for (let elem in commissions) {
-            if (commissions[elem].id === newTask.commissionId) {
-                if (!commissions[elem].tasks[newTask.createdAt]) {
-                    commissions[elem].tasks[newTask.createdAt] = [];
-                }
+        if (commissions) {
+            for (let elem in commissions) {
+                if (commissions[elem].id === newTask.commissionId) {
+                    if (!commissions[elem].tasks[newTask.createdAt]) {
+                        commissions[elem].tasks[newTask.createdAt] = [];
+                    }
 
-                taskService.pushTask(newTask)
-                    .then((response) => {
-                        if (!response.ok) {
+                    taskService.pushTask(newTask)
+                        .then((response) => {
+                            console.log(response);
+                            if (!response.ok) {
+                                this.saveLocally(newTask);
+                            } else {
+                                console.log(newTask);
+                                newTask.id = response.id;
+                            }
+
+                        })
+                        .catch((error) => {
                             this.saveLocally(newTask);
-                        } else {
-                            console.log(newTask);
-                            newTask.id = response.id;
-                        }
-
-                    })
-                    .catch((error) => {
-                        this.saveLocally(newTask);
-                    })
+                        })
+                }
             }
+        } else {
+            // storageService.addItem(newTask, )
+            // if (!commissions[elem].tasks[newTask.createdAt]) {
+            //     commissions[elem].tasks[newTask.createdAt] = [];
+            // }
         }
 
         this.props.updateTaskList(newTask);
@@ -61,7 +69,7 @@ class AddTask extends Component {
 
     saveLocally = (newTask) => {
         let currentNotSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
-        console.log('current', currentNotSentTasks);
+
         if (!currentNotSentTasks) {
             currentNotSentTasks = {};
         }

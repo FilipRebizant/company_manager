@@ -5,10 +5,12 @@ import {taskService} from "../../../_services";
 
 class TasksList extends Component {
 
+
     loadTasks = (status) => {
+    console.log(this.props);
         let loaders = document.querySelectorAll('.loader');
 
-        taskService.getAll(this.props.id, status)
+        taskService.getTasksWithStatus(this.props.id, status)
             .then((response) => {
                 for (var loader of loaders) {
                     loader.classList.add('d-none');
@@ -26,6 +28,7 @@ class TasksList extends Component {
     };
 
     componentDidMount() {
+        console.log(this.props);
         this.loadTasks('todo');
         // this.loadTasks('pending');
         // this.loadTasks('done');
@@ -67,7 +70,7 @@ class TasksList extends Component {
                     } else if (props.items[props.date][key].status === 'Pending') {
                         text = 'Set Done';
                     }
-
+                    console.log(props);
                     return (
                         <React.Fragment key={key}>
                             <form action="" className="mb-5" onSubmit={this.handleSubmit}>

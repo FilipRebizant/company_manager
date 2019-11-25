@@ -6,6 +6,7 @@ import { CommissionPage } from "./CommissionPage";
 import { Navigation } from "./_components/Navigation";
 import { NotificationBanner } from "./_components/NotificationBanner";
 import { commissionService, taskService } from "./_services";
+import {AddUser} from "./_components/AddUser";
 
 class App extends Component {
 
@@ -15,9 +16,9 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.handleConnectionChange();
-        window.addEventListener('online', this.handleConnectionChange);
-        window.addEventListener('offline', this.handleConnectionChange);
+        // this.handleConnectionChange();
+        // window.addEventListener('online', this.handleConnectionChange);
+        // window.addEventListener('offline', this.handleConnectionChange);
     }
 
     componentWillUnmount() {
@@ -73,8 +74,11 @@ class App extends Component {
                     <Switch>
                         <Route exact path="/" component={() => <HomePage needToUpdate={this.state.needToUpdate}/>}/>
                         <Route path="/commission/:id" component={ () =>
-                            <CommissionPage needToUpdate={this.state.needToUpdate} updateList={this.refresh}
-                        />} />
+                            <CommissionPage needToUpdate={this.state.needToUpdate} updateList={this.refresh}/>}
+                        />
+                        <Route path="/addUser" component={ () =>
+                            <AddUser />
+                        } />
                     </Switch>
                 </Router>
             </div>

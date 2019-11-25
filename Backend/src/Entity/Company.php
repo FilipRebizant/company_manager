@@ -37,7 +37,12 @@ class Company
     private $UpdatedAt;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Address", mappedBy="Company", cascade={"persist", "remove"})
+     * OneToOne(targetEntity="App\Entity\Address", mappedBy="Company", cascade={"persist", "remove"})
+     */
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Address")
+     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
      */
     private $address;
 

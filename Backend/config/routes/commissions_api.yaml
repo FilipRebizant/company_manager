@@ -22,3 +22,14 @@ deleteCommission:
     path:       /commissions/{id}
     controller: App\Controller\API\CommissionController::delete
     methods:    DELETE
+
+getTasksFromCommission:
+    path:       /commissions/{id}/tasks
+    controller: App\Controller\API\TaskController::getTasksFromCommission
+    methods:    GET
+
+getTasksWithStatus:
+    path:       /commissions/{id}/tasks/{status}
+    controller: App\Controller\API\TaskController::getTaskWithStatus
+    methods:    GET
+

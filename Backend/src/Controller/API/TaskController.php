@@ -111,11 +111,18 @@ class TaskController extends ApiController
 
     public function getTaskWithStatus(Request $request, TaskRepository $taskRepository)
     {
-        var_dump($request->request->all());
-//        $request = $this->transformJsonBody($request);
         $tasks = $taskRepository->findBy([
             'status' => $request->get('status'),
-            'commissionId' => $request->get('id'),
+            'commission' => $request->get('id'),
+        ]);
+
+        return $this->respondSuccess(['tasks' => $tasks]);
+    }
+
+    public function getTasksFromCommission(Request $request, TaskRepository $taskRepository)
+    {
+        $tasks = $taskRepository->findBy([
+            'commission' => $request->get('id'),
         ]);
 
         return $this->respondSuccess(['tasks' => $tasks]);

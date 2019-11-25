@@ -7,6 +7,7 @@ import { ReportsTable } from "../_components/DayReports/ReportsTable";
 import { AddTask } from "../_components/Task/AddTask";
 import { TasksList } from "../_components/Task/TasksList";
 import { NotSentTask } from "../_components/Task/NotSentTask";
+import {storageService, taskService} from "../_services";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -32,16 +33,21 @@ class CommissionPage extends Component {
     updateList = () => {
         this.getCommissionsData(this.state.commissionId);
         this.renderNotSentTaskList();
-        // this.renderTaskList();
+        this.renderTaskList();
     };
 
     refreshTaskLists = (task) => {
-        console.log('refresh list call');
-        // console.log(this.state.tasks);
-        // console.log(task);
         let array = this.state.tasks;
+
+        if (!array) {
+            array = [];
+        }
+
+        if (!array[task.createdAt]) {
+            array[task.createdAt] = [];
+        }
+
         array[task.createdAt].push(task);
-        // console.log(array);
         this.setState({
             tasks: array
         });
@@ -50,26 +56,32 @@ class CommissionPage extends Component {
     };
 
     getCommissionsData = (id) => {
-        const localOpenedCommissions = localStorage.getItem('localOpenedCommissions');
-        const parsedCommissions = JSON.parse(localOpenedCommissions);
-
-        parsedCommissions.map((item) => {
-            if (item.id === id) {
-                this.setState({
-                    commissionId: id,
-                    commissionName: item.name,
-                    material: item.material,
-                    reports: item.reports,
-                    tasks: item.tasks
-                })
-            }
-        });
+        const commissions = storageService.getItems('localOpenedCommissions');
+        if (commissions) {
+            commissions.map((item) => {
+                if (item.id === id) {
+                    this.setState({
+                        commissionId: id,
+                        commissionName: item.name,
+                        material: item.material,
+                        reports: item.reports,
+                        tasks: item.tasks
+                    })
+                }
+            });
+        }
     };
 
     componentDidMount() {
        const url = window.location.href;
        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
        this.getCommissionsData(id);
+
+       // this.loadTasks(id);
+    };
+
+    loadTasks = (id) => {
+        taskService.getTasks(id);
     };
 
     renderMaterialList = () => {

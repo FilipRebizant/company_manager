@@ -60,7 +60,7 @@ function changeStatus (taskId, status) {
         .catch((error => handleError(error)));
 }
 
-function getAll(taskId, status)
+function getTasksWithStatus(commissionId, status)
 {
     const requestOptions = {
         'method': 'GET',
@@ -69,13 +69,27 @@ function getAll(taskId, status)
         }
     };
 
-    return fetch(`${config.apiUrl}/commissions/${taskId}/tasks/${status}`, requestOptions)
+    return fetch(`${config.apiUrl}/commissions/${commissionId}/tasks/${status}`, requestOptions)
+        .catch((error => handleError(error)));
+}
+
+function getTasks(commissionId)
+{
+    const requestOptions = {
+        'method': 'GET',
+        'headers': {
+            'Content-type': 'application-json'
+        }
+    };
+
+    return fetch(`${config.apiUrl}/commissions/${commissionId}/tasks`, requestOptions)
         .catch((error => handleError(error)));
 }
 
 export const taskService = {
-    getAll,
+    getTasksWithStatus,
     pushTask,
     syncLocalTasks,
-    changeStatus
+    changeStatus,
+    getTasks
 };

@@ -31,6 +31,10 @@ class Navigation extends Component {
                 </NavItem>
 
                 <NavItem>
+                    <MDBNavLink to="/addUser" className="nav-item nav-link">Add User</MDBNavLink>
+                </NavItem>
+
+                <NavItem>
                     <MDBNavLink to="/commission" className="nav-item nav-link">Commission</MDBNavLink>
                 </NavItem>
             </MDBNavbarNav>;
