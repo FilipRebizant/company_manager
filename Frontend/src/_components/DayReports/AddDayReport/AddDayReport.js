@@ -3,13 +3,14 @@ import { MDBBtn, MDBIcon } from 'mdbreact';
 import { Label } from "../../atoms/Label/index";
 import { Input } from "../../atoms/Input/index";
 import { getCommissionId, getCurrentDate, countTimeDifference } from "../../../_helpers";
+import {reportService, storageService} from "../../../_services";
 
 class AddDayReport extends Component {
     constructor(props) {
         super(props);
         this.state = {
             commissionId: '',
-            date: '',
+            createdAt: '',
             startedAt: '',
             finishedAt: '',
             addedBy: "John Doe",
@@ -19,7 +20,7 @@ class AddDayReport extends Component {
 
     resetInputFields = () => {
         this.setState({
-            date: '',
+            createdAt: '',
             startedAt: '',
             finishedAt: '',
             dayDescription: ''
@@ -34,18 +35,18 @@ class AddDayReport extends Component {
         return true;
     };
 
-    getNewReport = () => {
+    prepareNewReport = () => {
         const {startedAt, finishedAt, dayDescription, addedBy} = this.state;
         const summary = countTimeDifference(startedAt, finishedAt);
-        let { date } = this.state;
+        let { createdAt } = this.state;
 
-        if (date === '') {
-            date = getCurrentDate();
+        if (createdAt === '') {
+            createdAt = getCurrentDate();
         }
 
         return {
             commissionId: getCommissionId(),
-            date: date,
+            createdAt: createdAt,
             startedAt: startedAt,
             finishedAt: finishedAt,
             hoursSum: summary,
@@ -56,30 +57,45 @@ class AddDayReport extends Component {
     };
 
     addNewReport = (newReport) => {
+        reportService.pushReport(newReport)
+            .then((response => {
+                if (response.ok) {
+                    newReport.id = response.id;
+                } else {
+                    this.saveLocally(newReport);
+                }
+            }))
+            .catch((e) => {
+                this.saveLocally(newReport);
+            });
+
         let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
 
         for (let elem in commissions) {
             if (commissions[elem].id === newReport.commissionId) {
-                if (!commissions[elem].reports[newReport.date]) {
-                    commissions[elem].reports[newReport.date] = [];
+                if (!commissions[elem].reports[newReport.createdAt]) {
+                    commissions[elem].reports[newReport.createdAt] = [];
                 }
 
-                commissions[elem].reports[newReport.date].push(newReport);
+                commissions[elem].reports[newReport.createdAt].push(newReport);
                 localStorage.removeItem('localOpenedCommissions');
                 localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
             }
         }
+    };
 
+    saveLocally = (newReport) => {
+        storageService.addItem(newReport, 'notSentReports');
     };
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        const newReport = this.getNewReport();
+        const newReport = this.prepareNewReport();
 
         if (this.validate(newReport)) {
             this.addNewReport(newReport);
+            // this.resetInputFields();
             this.props.updateList();
-            this.resetInputFields();
         }
     };
 
@@ -99,8 +115,8 @@ class AddDayReport extends Component {
                 </div>
 
                 <div className="form-group">
-                    <Label for="date"/>
-                    <Input type="date" name="date" value={this.state.date} onChange={this.handleChange} />
+                    <Label for="createdAt"/>
+                    <Input type="date" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
                 </div>
 
                 <div className="form-group">

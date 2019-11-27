@@ -18,6 +18,10 @@ materials_api:
   resource: 'routes/materials_api.yaml'
   prefix: api/
 
+reports_api:
+  resource: 'routes/reports_api.yaml'
+  prefix: api/
+
 index:
     path: /
     controller: App\Controller\DefaultController::index
