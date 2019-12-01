@@ -1,13 +1,11 @@
 import {config} from "../config/config";
-import {handleError} from "../_helpers";
+import {authHeaders, handleError} from "../_helpers";
 
 function pushTask(obj) {
     const requestOptions = {
         'method': 'POST',
         'body': JSON.stringify(obj),
-        'headers': {
-            'Content-type': 'application-json'
-        }
+        'headers': authHeaders()
     };
 
     return fetch(`${config.apiUrl}/tasks`, requestOptions)
@@ -51,9 +49,7 @@ function changeStatus (taskId, status) {
             id: taskId,
             status: status
         }),
-        'headers': {
-            'Content-type': 'application-json'
-        }
+        'headers': authHeaders()
     };
 
     return fetch(`${config.apiUrl}/tasks/${taskId}`, requestOptions)
@@ -64,9 +60,7 @@ function getTasksWithStatus(commissionId, status)
 {
     const requestOptions = {
         'method': 'GET',
-        'headers': {
-            'Content-type': 'application-json'
-        }
+        'headers': authHeaders()
     };
 
     return fetch(`${config.apiUrl}/commissions/${commissionId}/tasks/${status}`, requestOptions)
@@ -77,9 +71,7 @@ function getTasks(commissionId)
 {
     const requestOptions = {
         'method': 'GET',
-        'headers': {
-            'Content-type': 'application-json'
-        }
+        'headers': authHeaders()
     };
 
     return fetch(`${config.apiUrl}/commissions/${commissionId}/tasks`, requestOptions)

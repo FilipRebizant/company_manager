@@ -1,5 +1,5 @@
 import { config } from "../config/config";
-import {handleError} from "../_helpers";
+import {authHeaders, handleError} from "../_helpers";
 import {storageService} from "./storageService";
 
 export const commissionService = {
@@ -10,7 +10,8 @@ export const commissionService = {
 
 function getAll() {
     const requestOptions = {
-        'method': 'GET'
+        'method': 'GET',
+        'headers': authHeaders()
     };
 
     return fetch(`${config.apiUrl}/commissions`, requestOptions)
@@ -101,9 +102,7 @@ function createCommission(data)
     const requestOptions = {
         'method': 'POST',
         'body': JSON.stringify(data),
-        'headers': {
-            'Content-type': 'application-json'
-        }
+        'headers': authHeaders()
     };
 
     console.log(data);

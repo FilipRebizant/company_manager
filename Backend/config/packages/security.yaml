@@ -32,4 +32,5 @@ security:
 
     access_control:
         - { path: ^/api/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/tasks/, roles: IS_AUTHENTICATED_FULLY, methods: post }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

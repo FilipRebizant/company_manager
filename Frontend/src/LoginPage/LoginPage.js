@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { authenticationService } from '../_services';
-import {MDBCol, MDBRow} from "mdbreact";
+import { authService } from '../_services';
+import { MDBCol, MDBRow } from "mdbreact";
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -20,17 +20,17 @@ class LoginPage extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        // authenticationService
-        //     .login(this.state.username, this.state.password)
-        //     .then((result) => {
-        //         this.props.history.push('/');
-        //     })
-        //     .catch((error) => {
-        //         this.setState({
-        //             isShowingError: true,
-        //             error: error
-        //         });
-        //     });
+        authService
+            .login(this.state.username, this.state.password)
+            .then((result) => {
+                this.props.history.push('/');
+            })
+            .catch((error) => {
+                this.setState({
+                    isShowingError: true,
+                    error: error
+                });
+            });
     }
 
     // Update state values
