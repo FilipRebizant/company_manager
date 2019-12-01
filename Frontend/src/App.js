@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 import { HomePage } from './HomePage';
 import { CommissionPage } from "./CommissionPage";
+import { LoginPage } from "./LoginPage";
 import { Navigation } from "./_components/Navigation";
 import { NotificationBanner } from "./_components/NotificationBanner";
 import {commissionService, materialService, storageService, taskService} from "./_services";
@@ -88,6 +89,7 @@ class App extends Component {
                         <Route path="/addUser" component={ () =>
                             <AddUser />
                         } />
+                        <Route path="/login" component={LoginPage}/>
                     </Switch>
                 </Router>
             </div>
