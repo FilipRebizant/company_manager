@@ -225,9 +225,12 @@ class User implements UserInterface
      *
      * @return (Role|string)[] The user roles
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return [$this->role];
+        $roles[] = $this->role;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     /**

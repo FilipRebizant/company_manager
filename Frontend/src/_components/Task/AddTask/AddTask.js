@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
 import { Label } from "../../atoms/Label";
 import { Input } from "../../atoms/Input";
-import { getCurrentDate, getCommissionId } from "../../../_helpers/";
+import {getCurrentDate, getCommissionId, handleResponse} from "../../../_helpers/";
 import {storageService, taskService} from '../../../_services/';
 
 class AddTask extends Component {
@@ -10,14 +10,16 @@ class AddTask extends Component {
         super(props);
         this.state = {
             commissionId: '',
-            taskId: null,
+            taskId: "",
             modalOpened: false,
             description: '',
             employeeAssigned: '',
             createdAt: '',
             status: "ToDo",
             pushed: false,
-            valid: true
+            valid: true,
+            isShowingError: false,
+            error: ''
         }
     }
 
@@ -33,38 +35,45 @@ class AddTask extends Component {
 
     addNewTask = (newTask) => {
         let commissions =  storageService.getItems('localOpenedCommissions');
-
-        if (commissions) {
-            for (let elem in commissions) {
-                if (commissions[elem].id === newTask.commissionId) {
-                    if (!commissions[elem].tasks[newTask.createdAt]) {
-                        commissions[elem].tasks[newTask.createdAt] = [];
-                    }
-
-                    taskService.pushTask(newTask)
-                        .then((response) => {
-                            console.log(response);
-                            if (!response.ok) {
-                                this.saveLocally(newTask);
-                            } else {
-                                console.log(newTask);
-                                newTask.id = response.id;
-                            }
-
-                        })
-                        .catch((error) => {
-                            this.saveLocally(newTask);
-                        })
+        taskService.pushTask(newTask)
+            .then(handleResponse)
+            .then((response) => {
+                console.log(response);
+                if (!response.ok) {
+                    this.saveLocally(newTask);
+                } else {
+                    console.log(newTask);
+                    newTask.id = response.id;
                 }
-            }
-        } else {
+
+            })
+            .catch((error) => {
+                if (error.status === 401) {
+                    this.saveLocally(newTask);
+                }
+                this.setState({
+                    isShowingError: true,
+                    error: error.statusText
+                });
+            });
+
+        // if (commissions) {
+        //     for (let elem in commissions) {
+        //         if (commissions[elem].id === newTask.commissionId) {
+        //             if (!commissions[elem].tasks[newTask.createdAt]) {
+        //                 commissions[elem].tasks[newTask.createdAt] = [];
+        //             }
+        //
+        //         }
+        //     }
+        // } else {
             // storageService.addItem(newTask, )
             // if (!commissions[elem].tasks[newTask.createdAt]) {
             //     commissions[elem].tasks[newTask.createdAt] = [];
             // }
-        }
+        // }
 
-        this.props.updateTaskList(newTask);
+        // this.props.updateTaskList(newTask);
     };
 
     saveLocally = (newTask) => {
@@ -80,7 +89,7 @@ class AddTask extends Component {
         localStorage.setItem('notSentTasks', JSON.stringify(currentNotSentTasks));
     };
 
-    getNewTask = () => {
+    prepareNewTask = () => {
         const {taskId, description, employeeAssigned, status} = this.state;
         let { createdAt } = this.state;
         if (createdAt === '') {
@@ -100,7 +109,7 @@ class AddTask extends Component {
     };
 
     handleFormSubmit = () => {
-        const newTask = this.getNewTask();
+        const newTask = this.prepareNewTask();
 
         if (this.validate(newTask)) {
             this.addNewTask(newTask);
@@ -121,12 +130,20 @@ class AddTask extends Component {
     };
 
     render() {
+        let errorContainer;
+
+        if (this.state.isShowingError) {
+            errorContainer = <div className="alert alert-danger" id="loginErrorContainer">{this.state.error}</div>;
+        }
+
         return (
             <MDBContainer>
                 <MDBBtn className="btn btn-outline-blue" onClick={this.toggleModal}>Add Task</MDBBtn>
                 <MDBModal isOpen={this.state.modalOpened} toggle={this.toggleModal}>
                     <MDBModalHeader className="justify-content-center" toggle={this.modalOpened}>Add Task</MDBModalHeader>
                     <MDBModalBody>
+                        {errorContainer}
+
                         <form onSubmit={this.handleFormSubmit}>
 
                             <div className="form-group">

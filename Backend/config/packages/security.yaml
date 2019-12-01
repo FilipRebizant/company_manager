@@ -24,6 +24,7 @@ security:
                failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         api:
+           provider: entity_provider
            pattern:   ^/api
            stateless: true
            guard:
@@ -32,5 +33,5 @@ security:
 
     access_control:
         - { path: ^/api/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/tasks/, roles: IS_AUTHENTICATED_FULLY, methods: post }
+        - { path: ^/api/tasks/, roles: ROLE_ADMIN, methods: ['POST'] }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

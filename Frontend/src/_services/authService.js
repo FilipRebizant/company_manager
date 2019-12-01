@@ -23,8 +23,8 @@ function login(username, password) {
 
     return fetch(`${config.apiUrl}/auth/login`, requestOptions)
         .then(handleResponse)
+        .then((response) => response.json())
         .then(response => {
-
             let user = JSON.stringify({
                 "token": response.token
             });

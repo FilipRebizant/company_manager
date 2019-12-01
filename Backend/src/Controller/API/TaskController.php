@@ -25,9 +25,12 @@ class TaskController extends ApiController
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function create(Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $request = $this->transformJsonBody($request);
 
         try {
@@ -71,8 +74,7 @@ class TaskController extends ApiController
             $tasksArray[] = $this->taskService->transform($task);
         }
 
-        return $this->respondSuccess(['tasks' => $tasksArray], 200);
-//        return $this->respondSuccess(['tasks' => $tasksArray], Response::HTTP_OK);
+        return $this->respondSuccess(['tasks' => $tasksArray], Response::HTTP_OK);
     }
 
     /**

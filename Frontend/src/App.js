@@ -6,11 +6,11 @@ import { CommissionPage } from "./CommissionPage";
 import { LoginPage } from "./LoginPage";
 import { Navigation } from "./_components/Navigation";
 import { NotificationBanner } from "./_components/NotificationBanner";
-import {commissionService, materialService, storageService, taskService} from "./_services";
+import {authService, commissionService, materialService, storageService, taskService} from "./_services";
 import {AddUser} from "./_components/AddUser";
+import {PrivateRoute} from "./_components/Auth";
 
 class App extends Component {
-
     state = {
         isDisconnected: false,
         needToUpdate: false
@@ -34,6 +34,7 @@ class App extends Component {
             console.log('should be fine');
             this.setState({isDisconnected: false});
             // TODO:: check if there are changes and sync
+            this.refresh();
 
             if (storageService.getItems('notSentMaterials')) {
                 if (storageService.getItems('notSentMaterials').length) {
@@ -82,11 +83,11 @@ class App extends Component {
                     <Navigation/>
                     <NotificationBanner isDisconnected={this.state.isDisconnected} tryToSync={this.handleConnectionChange}/>
                     <Switch>
-                        <Route exact path="/" component={() => <HomePage needToUpdate={this.state.needToUpdate}/>}/>
-                        <Route path="/commission/:id" component={ () =>
+                        <PrivateRoute exact path="/" component={() => <HomePage needToUpdate={this.state.needToUpdate}/>}/>
+                        <PrivateRoute path="/commission/:id" component={ () =>
                             <CommissionPage needToUpdate={this.state.needToUpdate} updateList={this.refresh}/>}
                         />
-                        <Route path="/addUser" component={ () =>
+                        <PrivateRoute path="/addUser" component={ () =>
                             <AddUser />
                         } />
                         <Route path="/login" component={LoginPage}/>

@@ -2,10 +2,11 @@
 
 namespace App\Controller\API;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class ApiController
+class ApiController extends AbstractController
 {
     /**
      * @param array $data

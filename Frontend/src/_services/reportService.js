@@ -1,5 +1,5 @@
 import { config } from "../config/config";
-import {authHeaders, handleError} from "../_helpers";
+import {authHeaders, handleError, handleResponse} from "../_helpers";
 import { storageService } from "./storageService";
 
 function getReports(commissionId)
@@ -22,6 +22,7 @@ function pushReport(report)
     };
 
     return fetch(`${config.apiUrl}/reports`, requestOptions)
+        .then(handleResponse)
         .catch((error => handleError(error)));
 }
 

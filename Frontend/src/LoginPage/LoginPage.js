@@ -26,9 +26,12 @@ class LoginPage extends React.Component {
                 this.props.history.push('/');
             })
             .catch((error) => {
+                if (error.message){
+
+                }
                 this.setState({
                     isShowingError: true,
-                    error: error
+                    error: "Wrong credentials"
                 });
             });
     }
@@ -54,7 +57,7 @@ class LoginPage extends React.Component {
 
         return (
             <MDBRow center>
-                <MDBCol md="6">
+                <MDBCol md="12">
                     <form method="post" className="login__form"
                           onSubmit={this.handleFormSubmit}>
                         {errorContainer}
@@ -81,7 +84,7 @@ class LoginPage extends React.Component {
                         </div>
 
                         <div className="form-group">
-                            <button className="btn btn-lg btn-primary" type="submit">
+                            <button className="btn btn-outline-primary" type="submit">
                                 Sign in
                             </button>
                         </div>

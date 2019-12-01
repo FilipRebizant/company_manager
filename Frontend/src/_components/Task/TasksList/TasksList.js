@@ -7,7 +7,7 @@ class TasksList extends Component {
 
 
     loadTasks = (status) => {
-    console.log(this.props);
+    // console.log(this.props);
         let loaders = document.querySelectorAll('.loader');
 
         taskService.getTasksWithStatus(this.props.id, status)
@@ -15,7 +15,7 @@ class TasksList extends Component {
                 for (var loader of loaders) {
                     loader.classList.add('d-none');
                 }
-                console.log(response);
+                // console.log(response);
                 // if (response && response.tasks.length > 0) {
                 //     let currState = Object.assign({},  this.state);
                 //     const status = response.tasks[0].status;
@@ -28,7 +28,7 @@ class TasksList extends Component {
     };
 
     componentDidMount() {
-        console.log(this.props);
+        // console.log(this.props);
         this.loadTasks('todo');
         // this.loadTasks('pending');
         // this.loadTasks('done');
@@ -70,7 +70,7 @@ class TasksList extends Component {
                     } else if (props.items[props.date][key].status === 'Pending') {
                         text = 'Set Done';
                     }
-                    console.log(props);
+
                     return (
                         <React.Fragment key={key}>
                             <form action="" className="mb-5" onSubmit={this.handleSubmit}>

@@ -1,6 +1,6 @@
 import { config } from "../config/config";
-import {authHeaders, handleError} from "../_helpers";
-import {storageService} from "./storageService";
+import { authHeaders, handleError, handleResponse } from "../_helpers";
+import { storageService } from "./storageService";
 
 export const commissionService = {
     getAll,
@@ -15,12 +15,11 @@ function getAll() {
     };
 
     return fetch(`${config.apiUrl}/commissions`, requestOptions)
+        .then(handleResponse)
         .catch((error => handleError(error)));
-
 }
 
-function syncLocalChanges()
-{
+function syncLocalChanges() {
     let notSentCommissions = storageService.getItems('notSentCommissions');
 
     Object.keys(notSentCommissions).filter((commission) => {
@@ -43,59 +42,8 @@ function syncLocalChanges()
             break;
         }
     });
-
-    // console.log('trying to sync');
-    // const localCommissions = JSON.parse(localStorage.getItem('localOpenedCommissions'));
-
-    // Object.keys(localCommissions).map((key) => {
-    //     let obj = localCommissions[key];
-    //     Object.keys(obj).map((key) => {
-    //         // console.log(typeof obj[key]);
-    //         if (typeof(obj[key]) === 'object') {
-    //             // console.log(obj[key]);
-    //             if (isPushed(obj[key])) {
-    //                 // createCommission(obj[key]
-    //                 // console.log(obj);
-    //                 // console.log('pushed');
-    //             }
-    //         }
-    //     });
-    // });
-
-
-    const requestOptions = {
-      'method': 'POST'
-    };
-
-    // return fetch(`${config.apiUrl}/commissions`, requestOptions);
 }
 
-function isPushed(obj)
-{
-    // console.log(obj);
-    Object.keys(obj).map((key) => {
-        // console.log(obj[key]);
-        Object.keys(obj[key]).map((k) => {
-                // console.log((obj[key][k]).pushed);
-            if (obj[key][k].pushed === false) {
-                // console.log('found');
-                // console.log(obj);
-                // console.log(obj[key][k]);
-
-                // Wyślij do serwera
-                // pushToServer(obj[key][k]);
-
-                // Usun z listy
-                // Stworzyć nowy obiekt w localstorage, obiektow nie wysłanych
-
-                // Odśwież liste
-                return true;
-            }
-        })
-    });
-
-    return false;
-}
 
 function createCommission(data)
 {

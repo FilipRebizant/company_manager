@@ -15,8 +15,8 @@ class HomePage extends Component {
     }
 
     componentDidMount() {
-        this.getOpenedCommissions();
-        // this.getCommissionsFromStorage();
+        // this.getOpenedCommissions();
+        this.getCommissionsFromStorage();
     };
 
     getOpenedCommissions = () => {
@@ -36,32 +36,29 @@ class HomePage extends Component {
         this.renderNotSentCommissions();
     }
 
-    loadCommissionsFromServer = () => {
-        const commissionsPromise = commissionService.getAll();
-
-        commissionsPromise.then(response => {
-            if (response.status === 200) {
-                return response
-            }
-        }).then(response => response.json()
-            .then((response => {
-                if (!response.errors) {
-
-                    console.log(response);
-                    console.log(response.commissions);
-                    this.setState({
-                        openedCommissions: response.commissions
-                    })
-                } else {
-                    this.getCommissionsFromStorage();
-                }
-            })))
-            .catch(error => {
-                this.getCommissionsFromStorage()
-            });
-
-        return false;
-    };
+    // loadCommissionsFromServer = () => {
+    //     const commissionsPromise = commissionService.getAll();
+    //
+    //     commissionsPromise.then(response => {
+    //         if (response.status === 200) {
+    //             return response
+    //         }
+    //     }).then(response => response.json()
+    //         .then((response => {
+    //             if (!response.errors) {
+    //                 this.setState({
+    //                     openedCommissions: response.commissions
+    //                 })
+    //             } else {
+    //                 this.getCommissionsFromStorage();
+    //             }
+    //         })))
+    //         .catch(error => {
+    //             this.getCommissionsFromStorage()
+    //         });
+    //
+    //     return false;
+    // };
 
     getCommissionsFromStorage = () => {
         this.setState({
@@ -72,7 +69,6 @@ class HomePage extends Component {
 
     addItem = (item) => {
         let { openedCommissions, notSentCommissions } = this.state;
-        console.log(item);
         if (!openedCommissions) {
             const local =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
             if (local) {
@@ -82,7 +78,6 @@ class HomePage extends Component {
             }
         }
         openedCommissions.push(item);
-        console.log(openedCommissions);
 
         this.setState({openedCommissions: openedCommissions});
     };

@@ -1,15 +1,21 @@
-// import { authenticationService } from '../_services';
 
 export function handleResponse(response) {
+    if (401 === response.status) {
+        const error = {
+            status: 401,
+            statusText: "Token has expired"
+        };
 
-    return response.json().then(response => {
+        return Promise.reject(error);
+    }
 
-        if ([401, 403].indexOf(response.code) !== -1) {
-            const error = (response && response.message || response.error.message);
+    if (response.status === 403) {
+        const error = {
+          status: 403,
+          statusText: "You don't have permission to do this action"
+        };
+        return Promise.reject(error);
+    }
 
-            return Promise.reject(error);
-        }
-
-        return response.json();
-    });
+    return response;
 }
