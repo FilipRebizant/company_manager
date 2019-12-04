@@ -1,6 +1,6 @@
 security_api:
   resource: 'routes/security_api.yaml'
-#  prefix: api/
+  prefix: api/
 
 users_api:
   resource: 'routes/users_api.yaml'
@@ -25,7 +25,6 @@ materials_api:
 reports_api:
   resource: 'routes/reports_api.yaml'
   prefix: api/
-
 
 index:
     path: /

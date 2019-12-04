@@ -34,21 +34,6 @@ services:
       volumes:
         - /sessions
 
-#  react:
-#      container_name: react
-#      build:
-#        context: ./
-#        dockerfile: ./docker/node/Dockerfile
-#      volumes:
-#        - ./FrontEnd:/var/www/html
-#      environment:
-#        - NODE_ENV=development
-#        - CHOKIDAR_USEPOLLING=true
-#      stop_signal: SIGINT
-#      command: npm start
-#      ports:
-#        - "3000:3000"
-
   db:
     container_name: mysql8
     image: mysql:8

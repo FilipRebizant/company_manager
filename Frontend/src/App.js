@@ -83,8 +83,8 @@ class App extends Component {
                     <Navigation/>
                     <NotificationBanner isDisconnected={this.state.isDisconnected} tryToSync={this.handleConnectionChange}/>
                     <Switch>
-                        <PrivateRoute exact path="/" component={() => <HomePage needToUpdate={this.state.needToUpdate}/>}/>
-                        <PrivateRoute path="/commission/:id" component={ () =>
+                        <Route exact path="/" component={() => <HomePage needToUpdate={this.state.needToUpdate}/>}/>
+                        <Route path="/commission/:id" component={ () =>
                             <CommissionPage needToUpdate={this.state.needToUpdate} updateList={this.refresh}/>}
                         />
                         <PrivateRoute path="/addUser" component={ () =>

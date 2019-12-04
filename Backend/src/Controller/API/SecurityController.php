@@ -2,30 +2,38 @@
 
 namespace App\Controller\API;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use App\Service\AuthService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\Request;
 
-class SecurityController
+class SecurityController extends ApiController
 {
-    /** @var JWTTokenManagerInterface  */
-    private $jwtManager;
-
-    public function __construct(JWTTokenManagerInterface $jwtManager)
+    /**
+     * @return JsonResponse
+     */
+    public function getCurrentUser(): JsonResponse
     {
-        $this->jwtManager = $jwtManager;
+        $user = $this->getUser();
+        
+        return new JsonResponse([
+            'user' => $user->toString(),
+            'role' => $user->getRoles()[0],
+        ], 200);
     }
 
-    public function login(AuthenticationUtils $authenticationUtils): JsonResponse
+    /**
+     * @param Request $request
+     * @param AuthService $authService
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function register(Request $request, AuthService $authService): JsonResponse
     {
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-//        var_dump($lastUsername);
-//        die;
+        $request = $this->transformJsonBody($request);
+        $authService->register($request->request->all());
 
-        return new JsonResponse([
-            'username' => $lastUsername
-        ], 200);
+        return $this->respondSuccess([], 201);
     }
 }

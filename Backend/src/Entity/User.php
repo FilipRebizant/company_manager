@@ -65,6 +65,11 @@ class User implements UserInterface
     private $role;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $salary;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="user")
      */
     private $reports;
@@ -106,6 +111,25 @@ class User implements UserInterface
     public function getEmail(): ?string
     {
         return $this->email;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSalary(): int
+    {
+        return $this->salary;
+    }
+
+    /**
+     * @param int $salary
+     * @return User
+     */
+    public function setSalary(int $salary): self
+    {
+        $this->salary = $salary;
+
+        return $this;
     }
 
     public function setEmail(string $email): self
@@ -202,6 +226,17 @@ class User implements UserInterface
                 $report->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @param string $role
+     * @return User
+     */
+    public function setRole(string $role): self
+    {
+        $this->role = 'ROLE_' . strtoupper($role);
 
         return $this;
     }

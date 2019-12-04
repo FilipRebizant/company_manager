@@ -6,19 +6,21 @@ import {
     NavItem,
     MDBNavbarNav, MDBNavLink
 } from 'mdbreact';
-import {authService} from "../../_services";
 
+import {authService} from "../../_services";
 
 class Navigation extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            collapse: false,
+            isWideEnough: false,
             currentUser: null
         };
     }
 
     toggleCollapse = () => {
-        this.setState({ isOpen: !this.state.isOpen });
+        this.setState({ collapse: !this.state.collapse });
     };
 
     componentDidMount() {
@@ -46,44 +48,50 @@ class Navigation extends Component {
     }
 
     render() {
-        let navItems;
-        if (this.state.currentUser) {
+        let navItems, addUserItem;
+        let { currentUser } = this.state;
+
+        if (currentUser ) {
+        console.log(Object.keys(currentUser));
             navItems =
-                <MDBNavbarNav className="justify-content-md-between">
-                    <ul className="d-flex pl-0">
-                        <NavItem>
-                            <MDBNavLink to="/" className="nav-item nav-link">Home</MDBNavLink>
-                        </NavItem>
-
-                        <NavItem>
-                            <MDBNavLink to="/addUser" className="nav-item nav-link">Add User</MDBNavLink>
-                        </NavItem>
-                    </ul>
-
-                    <ul>
-                        <NavItem>
-                            <MDBNavLink onClick={this.logout} to="/login" className="nav-item nav-link">Logout</MDBNavLink>
-                        </NavItem>
-                    </ul>
-
-                </MDBNavbarNav>;
-        } else {
-            navItems =
-                <MDBNavbarNav className="justify-content-md-end">
-
+                <ul className="d-flex list-inline">
                     <NavItem>
-                        <MDBNavLink to="/login" className="nav-item nav-link">Login</MDBNavLink>
+                        <div className="nav-item nav-link">{console.log(currentUser)}</div>
                     </NavItem>
 
+                    <NavItem>
+                        <MDBNavLink onClick={this.logout} to="/login" className="nav-item nav-link">Logout</MDBNavLink>
+                    </NavItem>
+                </ul>
 
-            </MDBNavbarNav>;
+            if (currentUser.role === "ROLE_ADMIN") {
+                addUserItem =
+                    <NavItem>
+                        <MDBNavLink to="/addUser" className="nav-item nav-link">Add User</MDBNavLink>
+                    </NavItem>;
+            }
+        } else {
+            navItems =
+                <NavItem>
+                    <MDBNavLink to="/login" className="nav-item nav-link">Login</MDBNavLink>
+                </NavItem>
         }
 
         return (
             <Navbar color="bg-dark navbar-dark" expand="md" scrolling>
-                {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick}/>}
+                {!this.state.isWideEnough && <NavbarToggler onClick={this.toggleCollapse}/>}
                 <Collapse isOpen={this.state.collapse} navbar>
-                    {navItems}
+                    <MDBNavbarNav className="justify-content-md-between">
+                        <ul className="d-flex pl-0">
+                            <NavItem>
+                                <MDBNavLink to="/" className="nav-item nav-link">Home</MDBNavLink>
+                            </NavItem>
+                            {addUserItem}
+                        </ul>
+
+                        {navItems}
+
+                    </MDBNavbarNav>
                 </Collapse>
             </Navbar>
         );
