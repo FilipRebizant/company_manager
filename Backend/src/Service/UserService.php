@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Service\Exception\ValidationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserService
@@ -15,14 +16,18 @@ class UserService
     /** @var ValidatorInterface $validator */
     private $validator;
 
+    /** @var UserPasswordEncoderInterface  */
+    private $encoder;
+
     /**
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator)
+    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator, UserPasswordEncoderInterface $encoder)
     {
         $this->em = $em;
         $this->validator = $validator;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -38,54 +43,15 @@ class UserService
                 'username'  => (string)$user->getUsername(),
                 'firstName' => (string)$user->getFirstName(),
                 'lastName'  => (string)$user->getLastName(),
+                'salary' => $user->getSalary(),
+                'role' => $user->printRole(),
+                'email' => $user->getEmail(),
                 'createdAt' => (string)$user->getCreatedAt()->format('d.m.Y H:i:s'),
             ];
 
         } catch (\Exception $e) {
             throw new ValidationException("",0, $e);
         }
-    }
-
-    /**
-     * @param array $data
-     * @return User
-     * @throws \Exception
-     */
-    public function create(array $data): User
-    {
-        // Create User instance
-        try {
-            $user = new User();
-            $user
-                ->setFirstName($data['firstName'])
-                ->setLastName($data['lastName'])
-                ->setEmail($data['email'])
-                ->setUsername($data['username'])
-                ->setCreatedAt(new \DateTimeImmutable())
-                ->setActive(0);
-
-            // Validate
-            $errors = $this->validator->validate($user);
-
-            // If there are errors
-            if (count($errors) > 0) {
-                $errorArray = [];
-
-                foreach ($errors as $error) {
-                    $errorArray[] = [$error->getPropertyPath() => $error->getMessage()];
-                }
-
-                throw new ValidationException("", 0, null, $errorArray);
-            }
-        } catch (\Exception $e) {
-            throw new ValidationException("", 0, null, ["Bad request " . $e->getMessage()]);
-        }
-
-        // Save User
-        $this->em->persist($user);
-        $this->em->flush();
-
-        return $user;
     }
 
     /**
@@ -100,6 +66,9 @@ class UserService
             ->setFirstName($data['firstName'])
             ->setLastName($data['lastName'])
             ->setEmail($data['email'])
+            ->setSalary($data['salary'])
+            ->setRole($data['role'])
+
             ->setUsername($data['username'])
             ->setUpdatedAt(new \DateTimeImmutable());
 

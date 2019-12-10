@@ -9,6 +9,7 @@ import { NotificationBanner } from "./_components/NotificationBanner";
 import {authService, commissionService, materialService, storageService, taskService} from "./_services";
 import {AddUser} from "./_components/AddUser";
 import {PrivateRoute} from "./_components/Auth";
+import {UsersPage} from "./UsersPage/UsersPage";
 
 class App extends Component {
     state = {
@@ -79,6 +80,7 @@ class App extends Component {
     render () {
         return (
             <div className="App">
+
                 <Router>
                     <Navigation/>
                     <NotificationBanner isDisconnected={this.state.isDisconnected} tryToSync={this.handleConnectionChange}/>
@@ -90,9 +92,13 @@ class App extends Component {
                         <PrivateRoute path="/addUser" component={ () =>
                             <AddUser />
                         } />
+
+                        <PrivateRoute path="/users" component={UsersPage} />
                         <Route path="/login" component={LoginPage}/>
                     </Switch>
                 </Router>
+                <div className="background-wrapper">
+                </div>
             </div>
         );
     }

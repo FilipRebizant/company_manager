@@ -29,7 +29,6 @@ function login(username, password) {
 
             const token = response.token;
 
-
             fetch(`${config.apiUrl}/auth/user`, {
                 headers: {
                     Authorization: `Bearer ${token}`

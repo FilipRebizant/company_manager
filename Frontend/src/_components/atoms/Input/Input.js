@@ -7,7 +7,7 @@ const Input = (props) => {
             id={props.name}
             name={props.name}
             value={props.value}
-            className="form-control"
+            className="form-control form-control-sm"
             onChange={props.onChange}
         />
     );

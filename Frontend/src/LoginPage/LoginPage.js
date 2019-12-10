@@ -2,6 +2,7 @@ import React from 'react';
 
 import { authService } from '../_services';
 import { MDBCol, MDBRow } from "mdbreact";
+import Spinner from "../_components/Spinner/Spinner";
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -10,7 +11,8 @@ class LoginPage extends React.Component {
             isShowingError: false,
             username: '',
             password: '',
-            error: ''
+            error: '',
+            logging: false
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -20,6 +22,7 @@ class LoginPage extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
+        this.setState({logging: true});
         authService
             .login(this.state.username, this.state.password)
             .then((result) => {
@@ -50,9 +53,13 @@ class LoginPage extends React.Component {
 
     render() {
         let errorContainer;
-
+        const { isShowingError, logging } = this.state;
         if (this.state.isShowingError) {
             errorContainer = <div className="alert alert-danger" id="loginErrorContainer">{this.state.error}</div>;
+        }
+
+        if (logging) {
+            return <Spinner />
         }
 
         return (

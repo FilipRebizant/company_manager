@@ -15,7 +15,8 @@ class Navigation extends Component {
         this.state = {
             collapse: false,
             isWideEnough: false,
-            currentUser: null
+            currentUser: null,
+            name: null
         };
     }
 
@@ -38,9 +39,17 @@ class Navigation extends Component {
         }
 
         // Handle auth
-        authService.currentUser.subscribe(x => this.setState({
-            currentUser: x,
-        }));
+        authService.currentUser.subscribe(x => {
+            if (typeof x === 'string') {
+                this.setState({
+                    currentUser: JSON.parse(x),
+                })
+            } else {
+                this.setState({
+                    currentUser: x,
+                })
+            }
+        });
     }
 
     logout() {
@@ -48,15 +57,14 @@ class Navigation extends Component {
     }
 
     render() {
-        let navItems, addUserItem;
+        let navItems, adminItems;
         let { currentUser } = this.state;
 
         if (currentUser ) {
-        console.log(Object.keys(currentUser));
             navItems =
                 <ul className="d-flex list-inline">
                     <NavItem>
-                        <div className="nav-item nav-link">{console.log(currentUser)}</div>
+                        <div className="nav-item nav-link">{currentUser.user}</div>
                     </NavItem>
 
                     <NavItem>
@@ -65,10 +73,16 @@ class Navigation extends Component {
                 </ul>
 
             if (currentUser.role === "ROLE_ADMIN") {
-                addUserItem =
-                    <NavItem>
-                        <MDBNavLink to="/addUser" className="nav-item nav-link">Add User</MDBNavLink>
-                    </NavItem>;
+                adminItems =
+                    <React.Fragment>
+                        <NavItem>
+                            <MDBNavLink to="/addUser" className="nav-item nav-link">Add User</MDBNavLink>
+                        </NavItem>
+
+                        <NavItem>
+                            <MDBNavLink to="/users" className="nav-item nav-link">Users</MDBNavLink>
+                        </NavItem>
+                    </React.Fragment>
             }
         } else {
             navItems =
@@ -86,7 +100,7 @@ class Navigation extends Component {
                             <NavItem>
                                 <MDBNavLink to="/" className="nav-item nav-link">Home</MDBNavLink>
                             </NavItem>
-                            {addUserItem}
+                            {adminItems}
                         </ul>
 
                         {navItems}

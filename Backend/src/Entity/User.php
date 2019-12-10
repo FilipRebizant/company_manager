@@ -268,6 +268,13 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    public function printRole(): string
+    {
+        $role = str_replace('ROLE_', '', $this->role);
+
+        return strtolower($role);
+    }
+
     /**
      * Returns the salt that was originally used to encode the password.
      *

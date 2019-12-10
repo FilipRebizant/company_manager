@@ -24,25 +24,6 @@ class UserController extends ApiController
 
     /**
      * @param Request $request
-     * @return JsonResponse
-     * @throws \Exception
-     */
-    public function create(Request $request): JsonResponse
-    {
-        $request = $this->transformJsonBody($request);
-
-        try {
-            $user = $this->userService->create($request->request->all());
-            $userArray = $this->userService->transform($user);
-        } catch (ValidationException $e) {
-            return $this->respondError($e->getErrors(), Response::HTTP_BAD_REQUEST);
-        }
-
-        return $this->respondSuccess($userArray, Response::HTTP_CREATED);
-    }
-
-    /**
-     * @param Request $request
      * @param UserRepository $userRepository
      * @return JsonResponse
      * @throws ValidationException
@@ -67,6 +48,8 @@ class UserController extends ApiController
      */
     public function showAll(UserRepository $userRepository): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $users = $userRepository->findAll();
         $userArray = [];
 
