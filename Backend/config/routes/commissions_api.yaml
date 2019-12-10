@@ -33,3 +33,10 @@ getTasksWithStatus:
     controller: App\Controller\API\TaskController::getTaskWithStatus
     methods:    GET
 
+
+showCostsSummary:
+    path:       /commissions/{id}/summary
+    controller: App\Controller\API\CommissionController::showCostsSummary
+    methods:    GET
+
+

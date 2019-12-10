@@ -2,12 +2,6 @@ import { config } from "../config/config";
 import { authHeaders, handleError, handleResponse } from "../_helpers";
 import { storageService } from "./storageService";
 
-export const commissionService = {
-    getAll,
-    createCommission,
-    syncLocalChanges
-};
-
 function getAll() {
     const requestOptions = {
         'method': 'GET',
@@ -58,3 +52,22 @@ function createCommission(data)
     return fetch(`${config.apiUrl}/commissions`, requestOptions)
         .catch((error => handleError(error)));
 }
+
+function getWorkingHoursSummary(id)
+{
+    const requestOptions = {
+        'method': 'GET',
+        'headers': authHeaders()
+    };
+
+    return fetch(`${config.apiUrl}/commissions/${id}/summary`, requestOptions)
+        .then(handleResponse)
+        .catch((error => handleError(error)));
+}
+
+export const commissionService = {
+    getAll,
+    createCommission,
+    syncLocalChanges,
+    getWorkingHoursSummary
+};

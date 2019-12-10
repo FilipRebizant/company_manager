@@ -8,6 +8,7 @@ import { AddTask } from "../_components/Task/AddTask";
 import { TasksList } from "../_components/Task/TasksList";
 import { NotSentTask } from "../_components/Task/NotSentTask";
 import {storageService, taskService} from "../_services";
+import {CostsSummary} from "../_components/CostsSummary/CostsSummary";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class CommissionPage extends Component {
             tasks: null,
             commissionName: null,
             commissionId: '',
-            activeTab: "2"
+            activeTab: "4"
         };
     }
 
@@ -182,6 +183,11 @@ class CommissionPage extends Component {
                             Tasks
                         </MDBNavLink>
                     </MDBNavItem>
+                    <MDBNavItem>
+                        <MDBNavLink to="#" active={this.state.activeTab === "4"} onClick={this.toggleTab("4")} role="tab" >
+                            Costs summary
+                        </MDBNavLink>
+                    </MDBNavItem>
                 </MDBNav>
 
                 <MDBTabContent activeItem={this.state.activeTab} >
@@ -231,6 +237,10 @@ class CommissionPage extends Component {
 
                         {this.renderNotSentTaskList()}
 
+                    </MDBTabPane>
+
+                    <MDBTabPane tabId="4" role="tabpanel">
+                        <CostsSummary />
                     </MDBTabPane>
 
                 </MDBTabContent>

@@ -18,4 +18,25 @@ class CommissionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commission::class);
     }
+
+    public function countGeneralSummary($id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT SUM(r.hours_summary) as summary, u.first_name as firstName, u.last_name as lastName, u.salary
+            FROM commission c
+            INNER JOIN report r ON r.commission_id = c.id
+            INNER JOIN user u ON r.user_id = u.id
+            WHERE c.id = :id
+            GROUP BY u.first_name, u.last_name, u.salary
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            'id' => $id
+        ]);
+
+        return $stmt->fetchAll();
+    }
 }

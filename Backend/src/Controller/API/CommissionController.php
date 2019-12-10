@@ -116,4 +116,22 @@ class CommissionController extends ApiController
 
         return $this->respondError(["Commission could not be found"], Response::HTTP_NOT_FOUND);
     }
+
+    public function showCostsSummary(Request $request, CommissionRepository $commissionRepository): JsonResponse
+    {
+        $id = $request->get('id');
+        $generalSummary = $commissionRepository->countGeneralSummary($id);
+        $totalHoursSummary = 0;
+        $totalCost = 0;
+        foreach ($generalSummary as $item) {
+            $totalCost += $item['summary'] * $item['salary'];
+            $totalHoursSummary += $item['summary'];
+        }
+
+        return $this->respondSuccess([
+            'totalHoursSummary' => $totalHoursSummary,
+            'totalCost' => $totalCost,
+            'generalSummary' => $generalSummary,
+        ], Response::HTTP_OK);
+    }
 }

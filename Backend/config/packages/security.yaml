@@ -23,15 +23,16 @@ security:
                success_handler: lexik_jwt_authentication.handler.authentication_success
                failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
-        api:
-           provider: entity_provider
-           pattern:   ^/api
-           stateless: true
-           guard:
-               authenticators:
-                   - lexik_jwt_authentication.jwt_token_authenticator
+#        api:
+#           provider: entity_provider
+#           pattern:   ^/api
+#           stateless: true
+#           guard:
+#               authenticators:
+#                   - lexik_jwt_authentication.jwt_token_authenticator
 
     access_control:
         - { path: ^/api/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/tasks/, roles: ROLE_ADMIN, methods: ['POST'] }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
