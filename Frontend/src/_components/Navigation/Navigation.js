@@ -92,11 +92,11 @@ class Navigation extends Component {
         }
 
         return (
-            <Navbar color="bg-dark navbar-dark" expand="md" scrolling>
+            <Navbar color=" navbar-dark" className="main-backgound-color" expand="md" scrolling>
                 {!this.state.isWideEnough && <NavbarToggler onClick={this.toggleCollapse}/>}
                 <Collapse isOpen={this.state.collapse} navbar>
                     <MDBNavbarNav className="justify-content-md-between">
-                        <ul className="d-flex pl-0">
+                        <ul className="nav-wrapper">
                             <NavItem>
                                 <MDBNavLink to="/" className="nav-item nav-link">Home</MDBNavLink>
                             </NavItem>

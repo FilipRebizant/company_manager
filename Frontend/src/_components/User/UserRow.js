@@ -79,12 +79,11 @@ class UserRow extends Component {
                     <Input type="number" name="salary" value={salary} onChange={this.handleChange}/>
                 </td>
                 <td className="form-group">
-                    <label></label>
+                    <label>&nbsp;</label>
                     <div onClick={this.handleSubmit} className="edit-button-wrapper">
                         <MDBIcon icon="edit" className="blue-text"/>Edit
                     </div>
                 </td>
-
             </tr>
         )
     }

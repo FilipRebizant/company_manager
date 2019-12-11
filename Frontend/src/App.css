@@ -57,6 +57,11 @@
   bottom: -100vh;
 }
 
+.main-backgound-color {
+  background: rgb(21, 111, 196);
+  color: #ffffff;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
@@ -165,4 +170,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.nav-wrapper {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
 }

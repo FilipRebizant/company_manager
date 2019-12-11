@@ -45,7 +45,7 @@ class Task
 
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=20)
      */
     private $status;
 
@@ -58,6 +58,11 @@ class Task
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $priority;
 
     public function __construct()
     {
@@ -153,14 +158,40 @@ class Task
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return Task
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriority(): string
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param string $priority
+     * @return Task
+     */
+    public function setPriority(string $priority): self
+    {
+        $this->priority = $priority;
 
         return $this;
     }

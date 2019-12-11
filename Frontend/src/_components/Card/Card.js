@@ -4,7 +4,7 @@ import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBNavLink, MDBCardHea
 const Card = (props) => {
     return (
         <MDBCard style={{ width: "22rem" }} id={props.id}>
-            <MDBCardHeader>
+            <MDBCardHeader className="main-backgound-color">
                 <p className="small">Created at: { props.createdAt }</p>
             </MDBCardHeader>
             <MDBCardBody>

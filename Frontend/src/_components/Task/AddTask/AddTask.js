@@ -19,7 +19,8 @@ class AddTask extends Component {
             pushed: false,
             valid: true,
             isShowingError: false,
-            error: ''
+            error: '',
+
         }
     }
 

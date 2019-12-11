@@ -19,7 +19,6 @@ class CostsSummary extends Component {
         commissionService.getWorkingHoursSummary(id)
             .then(response => response.json())
             .then((response => {
-                console.log(response);
                 this.setState({
                     employees: response.generalSummary,
                     totalCost: response.totalCost,
@@ -43,11 +42,13 @@ class CostsSummary extends Component {
                         <div className="table-responsive">
                             <table className="table">
                                 <thead>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Hours Summary</th>
-                                    <th>Salary</th>
-                                    <th>Cost</th>
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Hours Summary</th>
+                                        <th>Salary</th>
+                                        <th>Cost</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     {
@@ -62,7 +63,7 @@ class CostsSummary extends Component {
                                         })
                                     }
                                     <tr>
-                                        <td colspan="5">Cost in total: <b>{totalCost}</b> USD</td>
+                                        <td colSpan="5">Cost in total: <b>{totalCost}</b> USD</td>
                                     </tr>
                                     <tr>
                                         <td colSpan="5">Working Hours in total: <b>{totalHoursSummary}</b></td>
