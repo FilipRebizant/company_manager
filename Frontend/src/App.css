@@ -27,34 +27,29 @@
 /*}*/
 
 .background-wrapper {
-  position: relative;
-  height: 70px;
-  /*width: 600px;*/
-  /*background: #e0efe3;*/
+  position: fixed;
+  height: 200px;
+  bottom: 0;
+  z-index: -1;
+  width: 110%;
+  overflow: hidden;
 }
-
-/*.background-wrapper:before {*/
-  /*content: "";*/
-  /*display: block;*/
-  /*position: absolute;*/
-  /*border-radius: 100% 50%;*/
-  /*width: 340px;*/
-  /*height: 80px;*/
-  /*background-color: white;*/
-  /*right: -5px;*/
-  /*top: 40px;*/
-/*}*/
 
 .background-wrapper:after {
   content: "";
   display: block;
   position: absolute;
   border-radius: 100% 50%;
-  width: 100%;
-  height: 100vh;
+  width: 104%;
+  height: 35vh;
   background: linear-gradient(180deg, rgba(10,8,140,0.028448879551820738) 0%, rgba(5,108,196,1) 0%, rgba(3,151,220,1) 78%, rgba(2,174,233,1) 84%, rgba(0,212,255,1) 94%);
   left: 0;
-  bottom: -100vh;
+}
+
+@media all and (max-width: 768px) {
+  .background-wrapper {
+    display: none;
+  }
 }
 
 .main-backgound-color {

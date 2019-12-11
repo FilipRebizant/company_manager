@@ -97,8 +97,7 @@ class App extends Component {
                         <Route path="/login" component={LoginPage}/>
                     </Switch>
                 </Router>
-                <div className="background-wrapper">
-                </div>
+                <footer className="background-wrapper"></footer>
             </div>
         );
     }

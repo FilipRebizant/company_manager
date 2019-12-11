@@ -49,9 +49,9 @@ const ReportsTable = (props) => {
 
     return (
         <div ref={wrapper} style={style}>
-            <div className="card-header d-flex justify-content-between">
+            <div className="card-header d-flex justify-content-between main-backgound-color">
                 <div>{props.date}</div>
-                <MDBHamburgerToggler color="#000000" id={`${props.name}-${props.date}`} onClick={toggleVisibilityContent} />
+                <MDBHamburgerToggler color="#ffffff" id={`${props.name}-${props.date}`} onClick={toggleVisibilityContent} />
             </div>
             <div className="hiddenContentContainer hiddenContent">
                 <MDBTable responsive>
