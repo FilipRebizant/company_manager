@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Card } from '../_components/Card';
-import { AddCommission } from "../_components/AddCommission";
+import { Commission } from '../_modules/CommissionSection/Commission';
+import { AddCommission } from "../_modules/CommissionSection/AddCommission";
 import { commissionService } from "../_services/commissionService";
 import {storageService} from "../_services";
 
@@ -94,7 +94,7 @@ class HomePage extends Component {
 
         if (openedCommissions) {
             return Object.keys(openedCommissions).map((key) =>
-                <Card
+                <Commission
                     key={key}
                     id={openedCommissions[key].id}
                     title={openedCommissions[key].name}
@@ -115,7 +115,7 @@ class HomePage extends Component {
 
         if (notSentCommissions) {
             return Object.keys(notSentCommissions).map((key) =>
-                <Card
+                <Commission
                     key={key}
                     id={notSentCommissions[key].id}
                     title={notSentCommissions[key].name}

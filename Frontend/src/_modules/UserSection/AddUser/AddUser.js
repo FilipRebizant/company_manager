@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { MDBContainer, MDBBtn, MDBModalBody } from 'mdbreact';
-import { Label } from "../atoms/Label";
-import { Input } from "../atoms/Input";
-import {authService} from "../../_services";
+import { Label } from "../../../_components/atoms/Label/index";
+import { Input } from "../../../_components/atoms/Input/index";
+import {authService} from "../../../_services/index";
 
 class AddUser extends Component {
     constructor(props) {

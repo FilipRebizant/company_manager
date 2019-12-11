@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader
 } from 'mdbreact';
-import {taskService} from "../../../_services";
+import {taskService} from "../../../_services/index";
 
 class TasksList extends Component {
 
@@ -58,6 +58,11 @@ class TasksList extends Component {
             }));
     };
 
+    handleAssign = (e) => {
+        e.preventDefault();
+        console.log('assigned');
+    }
+
     render() {
         const props = this.props;
         return(
@@ -78,6 +83,7 @@ class TasksList extends Component {
                                     <MDBCardHeader className="d-flex justify-content-between">
                                         <p className="small">Created at: { props.date }</p>
                                         <p id={`task${props.items[props.date][key].id}`} className="small">Status: <b>{props.items[props.date][key].status}</b></p>
+                                        <button onClick={this.handleAssign}>Assign to me</button>
                                     </MDBCardHeader>
                                     <MDBCardBody>
                                         <MDBCardTitle>{props.items[props.date][key].employeeAssigned}</MDBCardTitle>

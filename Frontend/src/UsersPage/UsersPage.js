@@ -4,7 +4,7 @@ import { userService } from '../_services';
 import { MDBCol, MDBRow } from "mdbreact";
 import { MDBContainer, MDBCard } from 'mdbreact';
 
-import { UserRow } from "../_components/User/UserRow";
+import { UserRow } from "../_modules/UserSection/User/UserRow";
 import Spinner from "../_components/Spinner/Spinner";
 
 class UsersPage extends React.Component {

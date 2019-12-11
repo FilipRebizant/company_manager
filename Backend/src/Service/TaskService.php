@@ -57,11 +57,14 @@ class TaskService
      */
     public function create(array $data): Task
     {
-        $name = explode(" ", $data['employeeAssigned']);
-        $user = $this->userRepository->findOneBy([
-            'firstName' => $name[0],
-            'lastName' => $name[1],
-        ]);
+        $user = null;
+        if (!empty($data['employeeAssigned'])) {
+            $name = explode(" ", $data['employeeAssigned']);
+            $user = $this->userRepository->findOneBy([
+                'firstName' => $name[0],
+                'lastName' => $name[1],
+            ]);
+        }
 
         $commission = $this->commissionRepository->find($data['commissionId']);
         $createdAt = new \DateTime($data['createdAt']);
@@ -73,6 +76,7 @@ class TaskService
         $task->setStartDate(new DateTimeImmutable());
         $task->setUser($user);
         $task->setCommission($commission);
+        $task->setPriority($data['priority']);
 
         $this->save($task);
 
@@ -82,13 +86,16 @@ class TaskService
     public function transform(Task $task): array
     {
         $date = $task->getCreatedAt()->format($this->shortDateFormat);
-
+        $user = null;
+        if ($task->getUser()) {
+            $user = $task->getUser()->toString();
+        }
         return   [
             'id' => $task->getId(),
             'description' => $task->getDescription(),
             'createdAt' => $task->getCreatedAt()->format($this->dateFormat),
             'status' => $task->getStatus(),
-            'employeeAssigned' => $task->getUser()->toString(),
+            'employeeAssigned' => $user,
         ];
     }
 

@@ -7,7 +7,7 @@ import { LoginPage } from "./LoginPage";
 import { Navigation } from "./_components/Navigation";
 import { NotificationBanner } from "./_components/NotificationBanner";
 import {authService, commissionService, materialService, storageService, taskService} from "./_services";
-import {AddUser} from "./_components/AddUser";
+import {AddUser} from "./_modules/UserSection/AddUser";
 import {PrivateRoute} from "./_components/Auth";
 import {UsersPage} from "./UsersPage/UsersPage";
 

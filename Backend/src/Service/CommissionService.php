@@ -38,9 +38,7 @@ class CommissionService implements ServiceInterface
         $addressFactory = new AddressFactory();
         $address = $addressFactory->create($data);
         $this->save($address);
-//        $this->em->persist($address);
-//        var_dump($data);
-//        die;
+
         $commission = new Commission();
         $commission->setName($data['name']);
         $createdAt = new \DateTime($data['createdAt']);
@@ -60,6 +58,10 @@ class CommissionService implements ServiceInterface
     {
         $tasks = [];
         foreach ($commission->getTasks() as $task) {
+            $user = null;
+            if ($task->getUser()) {
+                $user = $task->getUser()->toString();
+            }
             $date = $task->getCreatedAt()->format($this->shortDateFormat);
             $tasks[$date][] =
             [
@@ -67,7 +69,7 @@ class CommissionService implements ServiceInterface
                 'description' => $task->getDescription(),
                 'createdAt' => $task->getCreatedAt()->format($this->dateFormat),
                 'status' => $task->getStatus(),
-                'employeeAssigned' => $task->getUser()->toString(),
+                'employeeAssigned' => $user,
             ];
         }
 

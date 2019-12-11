@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
-import { Label } from "../../atoms/Label/index";
-import { Input } from "../../atoms/Input/index";
-import { getCommissionId, getCurrentDate, countTimeDifference } from "../../../_helpers";
-import {reportService, storageService} from "../../../_services";
+import { Label } from "../../../_components/atoms/Label/index";
+import { Input } from "../../../_components/atoms/Input/index";
+import { getCommissionId, getCurrentDate, countTimeDifference } from "../../../_helpers/index";
+import {reportService, storageService} from "../../../_services/index";
 
 class AddDayReport extends Component {
     constructor(props) {

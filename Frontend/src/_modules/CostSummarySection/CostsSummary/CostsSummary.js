@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
-import {commissionService} from "../../_services";
-import Spinner from "../Spinner/Spinner";
+import {commissionService} from "../../../_services/index";
+import Spinner from "../../../_components/Spinner/Spinner";
 
 class CostsSummary extends Component {
     constructor(props) {

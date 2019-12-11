@@ -1,7 +1,7 @@
 import React from 'react';
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBNavLink, MDBCardHeader } from 'mdbreact';
 
-const Card = (props) => {
+const Commission = (props) => {
     return (
         <MDBCard style={{ width: "22rem" }} id={props.id}>
             <MDBCardHeader className="main-backgound-color">
@@ -17,4 +17,4 @@ const Card = (props) => {
     )
 };
 
-export { Card };
+export { Commission };

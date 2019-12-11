@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBNavLink } from "mdbreact";
-import { MaterialList } from "../_components/Material/MaterialList";
-import { AddMaterial } from "../_components/Material/AddMaterial";
-import { AddDayReport } from "../_components/DayReports/AddDayReport";
-import { ReportsTable } from "../_components/DayReports/ReportsTable";
-import { AddTask } from "../_components/Task/AddTask";
-import { TasksList } from "../_components/Task/TasksList";
-import { NotSentTask } from "../_components/Task/NotSentTask";
+import { MaterialList } from "../_modules/MaterialSection/MaterialList";
+import { AddMaterial } from "../_modules/MaterialSection/AddMaterial";
+import { AddDayReport } from "../_modules/ReportSection/AddDayReport";
+import { ReportsTable } from "../_modules/ReportSection/ReportsTable";
+import { AddTask } from "../_modules/TaskSection/AddTask";
+import { TasksList } from "../_modules/TaskSection/TasksList";
+import { NotSentTask } from "../_modules/TaskSection/NotSentTask";
 import {storageService, taskService} from "../_services";
-import {CostsSummary} from "../_components/CostsSummary/CostsSummary";
+import {CostsSummary} from "../_modules/CostSummarySection/CostsSummary/CostsSummary";
 
 class CommissionPage extends Component {
     constructor(props) {

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { MDBIcon } from 'mdbreact';
-import { Input } from "../atoms/Input";
-import { Label } from "../atoms/Label";
-import {userService} from "../../_services";
-import {firstLetterToUpperCase} from "../../_helpers";
+import { Input } from "../../../_components/atoms/Input/index";
+import { Label } from "../../../_components/atoms/Label/index";
+import {userService} from "../../../_services/index";
+import {firstLetterToUpperCase} from "../../../_helpers/index";
 
 class UserRow extends Component {
     constructor(props) {

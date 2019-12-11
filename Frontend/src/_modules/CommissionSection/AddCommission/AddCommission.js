@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
-import { Label } from "../atoms/Label";
-import { Input } from "../atoms/Input";
-import {commissionService, storageService} from "../../_services";
+import { Label } from "../../../_components/atoms/Label/index";
+import { Input } from "../../../_components/atoms/Input/index";
+import {commissionService, storageService} from "../../../_services/index";
 
 class AddCommission extends Component {
     constructor(props) {

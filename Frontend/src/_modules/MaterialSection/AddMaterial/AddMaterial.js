@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
-import { Label } from "../../atoms/Label/index";
-import { Input } from "../../atoms/Input/index";
-import { getCommissionId, getCurrentDate } from "../../../_helpers";
-import { materialService, storageService} from "../../../_services";
+import { Label } from "../../../_components/atoms/Label/index";
+import { Input } from "../../../_components/atoms/Input/index";
+import { getCommissionId, getCurrentDate } from "../../../_helpers/index";
+import { materialService, storageService} from "../../../_services/index";
 
 class AddMaterial extends Component {
     constructor(props) {
