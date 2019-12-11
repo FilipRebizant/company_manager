@@ -37,7 +37,7 @@ function login(username, password) {
                 .then(response => {
                     let user = JSON.stringify({
                         "token": token,
-                        "user": response.user,
+                        "name": response.name,
                         "role": response.role
                     });
                     localStorage.setItem('currentUser', user);

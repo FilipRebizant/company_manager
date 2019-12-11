@@ -90,12 +90,14 @@ class TaskService
         if ($task->getUser()) {
             $user = $task->getUser()->toString();
         }
+
         return   [
             'id' => $task->getId(),
             'description' => $task->getDescription(),
             'createdAt' => $task->getCreatedAt()->format($this->dateFormat),
             'status' => $task->getStatus(),
             'employeeAssigned' => $user,
+            'priority' => $priority,
         ];
     }
 

@@ -16,7 +16,7 @@ class SecurityController extends ApiController
         $user = $this->getUser();
         
         return new JsonResponse([
-            'user' => $user->toString(),
+            'name' => $user->toString(),
             'role' => $user->getRoles()[0],
         ], 200);
     }

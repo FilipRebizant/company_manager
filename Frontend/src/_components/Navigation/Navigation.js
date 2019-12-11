@@ -64,7 +64,7 @@ class Navigation extends Component {
             navItems =
                 <ul className="d-flex list-inline">
                     <NavItem>
-                        <div className="nav-item nav-link">{currentUser.user}</div>
+                        <div className="nav-item nav-link">{currentUser.name}</div>
                     </NavItem>
 
                     <NavItem>
