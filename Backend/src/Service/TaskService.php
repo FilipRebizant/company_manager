@@ -97,7 +97,7 @@ class TaskService
             'createdAt' => $task->getCreatedAt()->format($this->dateFormat),
             'status' => $task->getStatus(),
             'employeeAssigned' => $user,
-            'priority' => $priority,
+            'priority' => $task->getPriority(),
         ];
     }
 

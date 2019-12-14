@@ -64,6 +64,12 @@ class Task
      */
     private $priority;
 
+    /**
+     * @ORM\Column(type="integer", length=20, nullable=true)
+     */
+    private $estimatedCost;
+
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -185,16 +191,17 @@ class Task
         switch ($this->priority) {
             case 0:
                 return 'Low';
-//                break;
+                break;
             case 1:
                 return 'Medium';
-//                break;
+                break;
             case 2:
                 return 'High';
-//                break;
+                break;
+            default:
+                return 'Low';
+                break;
         }
-
-//        return $this->priority;
     }
 
     /**
@@ -204,6 +211,25 @@ class Task
     public function setPriority(string $priority): self
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getEstimatedCost(): ?int
+    {
+        return $this->estimatedCost;
+    }
+
+    /**
+     * @param int $estimatedCost
+     * @return Task
+     */
+    public function setEstimatedCost(int $estimatedCost): self
+    {
+        $this->estimatedCost = $estimatedCost;
 
         return $this;
     }
