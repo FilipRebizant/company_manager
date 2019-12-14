@@ -103,7 +103,26 @@ class TaskService
 
     public function update(Task $task, array $data)
     {
-        // TODO: Implement update
+        $user = null;
+        if (!empty($data['employeeAssigned'])) {
+            $name = explode(" ", $data['employeeAssigned']);
+            $user = $this->userRepository->findOneBy([
+                'firstName' => $name[0],
+                'lastName' => $name[1],
+            ]);
+        }
+        $task->setStatus($data['status']);
+        $task->setUser($user);
+        $task->setUpdatedAt(new DateTimeImmutable());
+        $task->setDescription($data['description']);
+        $task->setPriority($data['priority']);
+        if ($data['status'] === 'Done') {
+            $task->setEndDate(new DateTimeImmutable());
+        }
+
+        $this->save($task);
+
+        return $task;
     }
 
     public function changeStatus(Task $task, string $status)

@@ -84,12 +84,13 @@ class TaskController extends ApiController
      */
     public function update(Request $request, TaskRepository $taskRepository): JsonResponse
     {
-        $data = $this->transformJsonBody($request);
         $task = $taskRepository->find($request->get('id'));
+        $request = $this->transformJsonBody($request);
+//        return $this->respondSuccess([$request->request->all()]);
 
         if (!is_null($task)) {
             try {
-                $updatedTask = $this->taskService->update($task, $data->request->all());
+                $updatedTask = $this->taskService->update($task, $request->request->all()['task']);
                 $taskArray = $this->taskService->transform($updatedTask);
 
                 return $this->respondSuccess([$taskArray]);
@@ -136,7 +137,12 @@ class TaskController extends ApiController
         return $this->respondSuccess(['tasks' => $tasksArray], Response::HTTP_OK);
     }
 
-    public function getTasksFromCommission(Request $request, TaskRepository $taskRepository)
+    /**
+     * @param Request $request
+     * @param TaskRepository $taskRepository
+     * @return JsonResponse
+     */
+    public function getTasksFromCommission(Request $request, TaskRepository $taskRepository): JsonResponse
     {
         $tasks = $taskRepository->findBy([
             'commission' => $request->get('id'),

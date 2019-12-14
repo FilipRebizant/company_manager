@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBNavLink } from "mdbreact";
 import { MaterialList } from "../_modules/MaterialSection/MaterialList";
 import { AddMaterial } from "../_modules/MaterialSection/AddMaterial";
@@ -10,7 +10,8 @@ import { NotSentTask } from "../_modules/TaskSection/NotSentTask";
 import { storageService, taskService } from "../_services";
 import { CostsSummary } from "../_modules/CostSummarySection/CostsSummary/CostsSummary";
 
-class CommissionPage extends Component {
+class CommissionPage extends PureComponent {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -19,6 +20,7 @@ class CommissionPage extends Component {
             tasks: null,
             commissionName: null,
             commissionId: '',
+            currentUser: null,
             activeTab: "3"
         };
     }
@@ -34,56 +36,59 @@ class CommissionPage extends Component {
     updateList = () => {
         // this.getCommissionsData(this.state.commissionId);
         // this.renderNotSentTaskList();
-        // this.renderTaskList();
-    };
-
-    refreshTaskLists = (task) => {
-        let array = this.state.tasks;
-
-        if (!array) {
-            array = [];
-        }
-
-        if (!array[task.createdAt]) {
-            array[task.createdAt] = [];
-        }
-
-        array[task.createdAt].push(task);
-        this.setState({
-            tasks: array
-        });
-        this.renderNotSentTaskList();
         this.renderTaskList();
     };
+
+    // refreshTaskLists = (task) => {
+    //     let array = this.state.tasks;
+    //
+    //     if (!array) {
+    //         array = [];
+    //     }
+    //
+    //     if (!array[task.createdAt]) {
+    //         array[task.createdAt] = [];
+    //     }
+    //
+    //     array[task.createdAt].push(task);
+    //     this.setState({
+    //         tasks: array
+    //     });
+    //     this.renderNotSentTaskList();
+    //     this.renderTaskList();
+    // };
 
     getCommissionsData = (id) => {
         const commissions = storageService.getItems('localOpenedCommissions');
         if (commissions) {
             commissions.map((item) => {
                 if (item.id === id) {
-                    this.setState({
-                        commissionId: id,
-                        commissionName: item.name,
-                        material: item.material,
-                        reports: item.reports,
-                        tasks: item.tasks
-                    })
+                    if (this._isMounted) {
+                        this.setState({
+                            commissionId: id,
+                            commissionName: item.name,
+                            material: item.material,
+                            reports: item.reports,
+                            tasks: item.tasks
+                        })
+                    }
                 }
             });
         }
     };
 
     componentDidMount() {
-       const url = window.location.href;
-       const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
-       this.getCommissionsData(id);
+        this._isMounted = true;
+        const url = window.location.href;
+        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
+        this.getCommissionsData(id);
 
-       // this.loadTasks(id);
+        // this.loadTasks(id);
     };
 
-    // loadTasks = (id) => {
-    //     taskService.getTasks(id);
-    // };
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     renderMaterialList = () => {
         const { material } = this.state;
@@ -231,7 +236,7 @@ class CommissionPage extends Component {
                             <MDBCol md="12">
                                 <MDBContainer>
                                     <h3 className="py-4">Tasks</h3>
-                                    {this.renderTaskList()}
+                                    <TasksList />
                                 </MDBContainer>
                             </MDBCol>
                         </MDBRow>

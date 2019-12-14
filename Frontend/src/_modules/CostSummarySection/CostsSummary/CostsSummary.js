@@ -14,13 +14,11 @@ class CostsSummary extends Component {
             isShowingAlert: false,
             alert: '',
             alertStatus: '',
+            shouldRender: true
         }
     }
 
-    componentDidMount() {
-        const url = window.location.href;
-        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
-        this._isMounted = true;
+    loadSummary = (id) => {
         commissionService.getWorkingHoursSummary(id)
             .then(response => response.json())
             .then((response => {
@@ -32,14 +30,21 @@ class CostsSummary extends Component {
                     });
                 }
             })).catch(() => {
-                if (this._isMounted) {
-                    this.setState({
-                        isShowingAlert: true,
-                        alert: 'Summary isn\'t available offline',
-                        alertStatus: 'danger'
-                    });
-                }
-            });
+            if (this._isMounted) {
+                this.setState({
+                    isShowingAlert: true,
+                    alert: 'Summary isn\'t available offline',
+                    alertStatus: 'danger'
+                });
+            }
+        });
+    };
+
+    componentDidMount() {
+        this._isMounted = true;
+        const url = window.location.href;
+        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
+        this.loadSummary(id);
     }
 
     componentWillUnmount() {

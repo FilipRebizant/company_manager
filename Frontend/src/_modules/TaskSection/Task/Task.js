@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader
-} from 'mdbreact';
-import {storageService, taskService} from "../../../_services/index";
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader, MDBIcon } from 'mdbreact';
+import { storageService, taskService } from "../../../_services/index";
 
 class Task extends Component {
 
@@ -16,26 +15,32 @@ class Task extends Component {
             createdAt: props.createdAt,
             description: props.description,
             currentUser: null,
-            buttonText: null
+            index: props.index
         };
-    }
-
-    componentDidMount() {
-        let currentUser = storageService.getItems('currentUser');
-        this.setState({
-            employeeAssigned: currentUser.name
-        });
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
+        const { id, status, index } = this.state;
+        let nextStatus;
 
-        // taskService.changeStatus(taskId, newStatus)
-        //     .then((response => {
-        //         if (response.status === 204) {
-        //             statusToChange.childNodes[1].innerText = newStatus;
-        //         }
-        //     }));
+        switch (status) {
+            case 'Todo':
+                nextStatus = 'Pending';
+                break;
+            case 'Pending':
+                nextStatus = 'Done';
+                break;
+            default:
+                nextStatus = 'Todo';
+                break;
+        }
+        taskService.changeStatus(id, nextStatus)
+            .then((response => {
+                if (response.status === 204) {
+                    this.props.handleTaskUpdate(index, status, nextStatus);
+                }
+            }));
     };
 
     handleAssign = (e) => {
@@ -44,49 +49,70 @@ class Task extends Component {
         this.setState({
             employeeAssigned: currentUser.name
         });
+        const task = {
+            id: this.state.id,
+            priority: this.state.priority,
+            status: this.state.status,
+            employeeAssigned: currentUser.name,
+            createdAt: this.state.createdAt,
+            description: this.state.description,
+        };
+        taskService.editTask(task);
     };
 
-    getButtonText = () => {
-      let { buttonText, status } = this.state;
+    getButton = () => {
+         let { buttonText, status, employeeAssigned } = this.state;
 
-      switch (status) {
-          case 'Todo':
-              buttonText = 'Set Pending';
-              break;
-          case 'Pending':
-              buttonText = 'Set Done';
-              break;
-          default:
-              buttonText = 'Set Todo';
-              break;
-      }
+         if (!employeeAssigned) {
+             return <div></div>;
+         }
 
+         switch (status) {
+             case 'Todo':
+                 buttonText = 'Set Pending';
+                 break;
+             case 'Pending':
+                 buttonText = 'Set Done';
+                 break;
+             default:
+                 buttonText = 'Set Todo';
+                 break;
+         }
+
+         return <button className="btn btn-sm btn-blue">{ buttonText }</button>
     };
 
     render() {
-        const { id, description, status, priority, createdAt, buttonText } = this.state;
+        const { id, description, status, priority, createdAt } = this.state;
         let { employeeAssigned } = this.state;
-        let text = 'Set Todo';
 
-
-        if (!employeeAssigned) {
-            employeeAssigned = <button onClick={this.handleAssign}>Assign to me</button>;
+        if (employeeAssigned === null) {
+            employeeAssigned = <button className="btn btn-sm btn-outline-blue" onClick={this.handleAssign}>Assign to me <MDBIcon icon="check" /></button>;
+        } else {
+            employeeAssigned = <div className="employee-wrapper">
+                <MDBIcon icon="user-alt" />
+                <span className="employee-name">{employeeAssigned}</span>
+            </div>;
         }
+
         return(
             <div className="d-flex justify-content-around flex-wrap-reverse">
-                <form action="" className="mb-5" onSubmit={this.handleSubmit}>
+                <form action="" className="mb-5" onSubmit={this.handleSubmit} style={{width: '100%'}}>
                     <MDBCard id={id}>
-                        <MDBCardHeader className="d-flex justify-content-between">
-                            <p className="small">Created at: { createdAt }</p>
+                        <MDBCardHeader className="card-header--upper">
+                            <span className="small">Created at: <p className="mb-0">{ createdAt }</p> </span>
+                            { employeeAssigned }
+                            </MDBCardHeader>
+                        <MDBCardHeader className="card-header--lower">
                             <p className="small">Status: <b>{ status }</b></p>
-                            <p className="small">Priority: { priority }</p>
+                            <p className="small">Priority: <b>{ priority }</b></p>
                         </MDBCardHeader>
                         <MDBCardBody>
-                            <MDBCardTitle>{ employeeAssigned }</MDBCardTitle>
+                            <MDBCardTitle></MDBCardTitle>
                             <MDBCardText>{ description }</MDBCardText>
                         </MDBCardBody>
                         <div className="custom-control custom-checkbox">
-                            <button className="btn btn-black">{ buttonText }</button>
+                            { this.getButton() }
                         </div>
                     </MDBCard>
                 </form>

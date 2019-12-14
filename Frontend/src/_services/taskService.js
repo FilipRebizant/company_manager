@@ -56,8 +56,7 @@ function changeStatus (taskId, status) {
         .catch((error => handleError(error)));
 }
 
-function getTasksWithStatus(commissionId, status)
-{
+function getTasksWithStatus(commissionId, status) {
     const requestOptions = {
         'method': 'GET',
         'headers': authHeaders()
@@ -67,8 +66,7 @@ function getTasksWithStatus(commissionId, status)
         .catch((error => handleError(error)));
 }
 
-function getTasks(commissionId)
-{
+function getTasks(commissionId) {
     const requestOptions = {
         'method': 'GET',
         'headers': authHeaders()
@@ -78,10 +76,25 @@ function getTasks(commissionId)
         .catch((error => handleError(error)));
 }
 
+function editTask(task) {
+    console.log(task);
+    const requestOptions = {
+        'method': 'PUT',
+        'headers': authHeaders(),
+        'body': JSON.stringify({
+            task
+        }),
+    };
+
+    return fetch(`${config.apiUrl}/tasks/${task.id}`, requestOptions)
+        .catch((error => handleError(error)));
+}
+
 export const taskService = {
     getTasksWithStatus,
     pushTask,
     syncLocalTasks,
     changeStatus,
-    getTasks
+    getTasks,
+    editTask
 };

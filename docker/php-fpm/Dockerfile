@@ -12,6 +12,7 @@ RUN apt-get update && \
 
 COPY ./Backend/composer.json /var/www/html/
 COPY ./Backend/composer.lock /var/www/html/
+COPY ./docker/php-fpm/config/config.ini /usr/local/etc/php-fpm.d/www.conf
 
 RUN composer install
 
