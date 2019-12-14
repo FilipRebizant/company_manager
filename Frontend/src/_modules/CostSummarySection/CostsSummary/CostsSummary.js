@@ -4,31 +4,54 @@ import {commissionService} from "../../../_services/index";
 import Spinner from "../../../_components/Spinner/Spinner";
 
 class CostsSummary extends Component {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
             totalHoursSummary: 0,
             employees: null,
-            total: 0
+            total: 0,
+            isShowingAlert: false,
+            alert: '',
+            alertStatus: '',
         }
     }
 
     componentDidMount() {
         const url = window.location.href;
         const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
+        this._isMounted = true;
         commissionService.getWorkingHoursSummary(id)
             .then(response => response.json())
             .then((response => {
-                this.setState({
-                    employees: response.generalSummary,
-                    totalCost: response.totalCost,
-                    totalHoursSummary: response.totalHoursSummary
-                });
-            }));
+                if (this._isMounted) {
+                    this.setState({
+                        employees: response.generalSummary,
+                        totalCost: response.totalCost,
+                        totalHoursSummary: response.totalHoursSummary
+                    });
+                }
+            })).catch(() => {
+                if (this._isMounted) {
+                    this.setState({
+                        isShowingAlert: true,
+                        alert: 'Summary isn\'t available offline',
+                        alertStatus: 'danger'
+                    });
+                }
+            });
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render() {
-        const { employees, totalCost, totalHoursSummary } = this.state;
+        const { employees, totalCost, totalHoursSummary, isShowingAlert, alert, alertStatus } = this.state;
+
+        if (isShowingAlert) {
+            return <div className={`alert my-5 alert-${alertStatus}`}>{alert}</div>;
+        }
 
         if (!employees) {
             return <Spinner />

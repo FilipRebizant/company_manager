@@ -5,6 +5,7 @@ import {storageService, taskService} from "../../../_services/index";
 
 class Task extends Component {
 
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -12,10 +13,10 @@ class Task extends Component {
             priority: props.priority,
             status: props.status,
             employeeAssigned: props.employeeAssigned,
-            date: props.date,
+            createdAt: props.createdAt,
             description: props.description,
             currentUser: null,
-            buttonText: 'Set Pending'
+            buttonText: null
         };
     }
 
@@ -45,16 +46,28 @@ class Task extends Component {
         });
     };
 
+    getButtonText = () => {
+      let { buttonText, status } = this.state;
+
+      switch (status) {
+          case 'Todo':
+              buttonText = 'Set Pending';
+              break;
+          case 'Pending':
+              buttonText = 'Set Done';
+              break;
+          default:
+              buttonText = 'Set Todo';
+              break;
+      }
+
+    };
+
     render() {
-        const { id, description, status, priority, date, buttonText } = this.state;
+        const { id, description, status, priority, createdAt, buttonText } = this.state;
         let { employeeAssigned } = this.state;
         let text = 'Set Todo';
 
-        // if (props.items[props.date][key].status === 'Todo') {
-        //     text = 'Set Pending';
-        // } else if (props.items[props.date][key].status === 'Pending') {
-        //     text = 'Set Done';
-        // }
 
         if (!employeeAssigned) {
             employeeAssigned = <button onClick={this.handleAssign}>Assign to me</button>;
@@ -64,7 +77,7 @@ class Task extends Component {
                 <form action="" className="mb-5" onSubmit={this.handleSubmit}>
                     <MDBCard id={id}>
                         <MDBCardHeader className="d-flex justify-content-between">
-                            <p className="small">Created at: { date }</p>
+                            <p className="small">Created at: { createdAt }</p>
                             <p className="small">Status: <b>{ status }</b></p>
                             <p className="small">Priority: { priority }</p>
                         </MDBCardHeader>

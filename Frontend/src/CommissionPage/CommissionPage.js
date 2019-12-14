@@ -7,8 +7,8 @@ import { ReportsTable } from "../_modules/ReportSection/ReportsTable";
 import { AddTask } from "../_modules/TaskSection/AddTask";
 import { TasksList } from "../_modules/TaskSection/TasksList";
 import { NotSentTask } from "../_modules/TaskSection/NotSentTask";
-import {storageService, taskService} from "../_services";
-import {CostsSummary} from "../_modules/CostSummarySection/CostsSummary/CostsSummary";
+import { storageService, taskService } from "../_services";
+import { CostsSummary } from "../_modules/CostSummarySection/CostsSummary/CostsSummary";
 
 class CommissionPage extends Component {
     constructor(props) {
@@ -32,9 +32,9 @@ class CommissionPage extends Component {
     };
 
     updateList = () => {
-        this.getCommissionsData(this.state.commissionId);
-        this.renderNotSentTaskList();
-        this.renderTaskList();
+        // this.getCommissionsData(this.state.commissionId);
+        // this.renderNotSentTaskList();
+        // this.renderTaskList();
     };
 
     refreshTaskLists = (task) => {
@@ -81,9 +81,9 @@ class CommissionPage extends Component {
        // this.loadTasks(id);
     };
 
-    loadTasks = (id) => {
-        taskService.getTasks(id);
-    };
+    // loadTasks = (id) => {
+    //     taskService.getTasks(id);
+    // };
 
     renderMaterialList = () => {
         const { material } = this.state;
@@ -162,6 +162,11 @@ class CommissionPage extends Component {
 
     render() {
         const { commissionName } = this.state;
+        const addTaskSection = <MDBRow>
+                                    <MDBCol md="12">
+                                        <AddTask updateTaskList={this.refreshTaskLists}/>
+                                    </MDBCol>
+                                </MDBRow>;
 
         return (
             <MDBContainer>
@@ -221,11 +226,7 @@ class CommissionPage extends Component {
                     </MDBTabPane>
 
                     <MDBTabPane tabId="3" role="tabpanel">
-                        <MDBRow>
-                            <MDBCol md="12">
-                                <AddTask updateTaskList={this.refreshTaskLists}/>
-                            </MDBCol>
-                        </MDBRow>
+                        { addTaskSection }
                         <MDBRow>
                             <MDBCol md="12">
                                 <MDBContainer>

@@ -4,8 +4,7 @@ import {Task} from "../Task";
 import {handleResponse} from "../../../_helpers";
 
 class TasksList extends Component {
-
-
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -32,12 +31,13 @@ class TasksList extends Component {
                     }
                     console.log(response);
                     if (response && response.tasks.length > 0) {
+                        if (this._isMounted) {
+                            let currState = Object.assign({}, this.state);
+                            const status = response.tasks[0].status;
+                            currState.tasks[status.toString()] = response.tasks;
 
-                        // let currState = Object.assign({}, this.state);
-                        // const status = response.tasks[0].status;
-                        //
-                        // currState.tasks[status.toString()] = response.tasks;
-                        // this.setState(currState);
+                            this.setState(currState);
+                        }
                     }
 
                 })
@@ -45,63 +45,48 @@ class TasksList extends Component {
     };
 
     componentDidMount() {
+        this._isMounted = true;
         // console.log(this.props);
         const url = window.location.href;
         const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
         // console.log(id);
-        this.setState({
-            commissionId: id
-        });
+        if (this._isMounted) {
+            this.setState({
+                commissionId: id
+            });
+        }
         // console.log(this.state.commissionId);
 
         this.loadTasks(id, 'todo');
-        // this.loadTasks('pending');
-        // this.loadTasks('done');
+        this.loadTasks(id, 'pending');
+        // this.loadTasks(id, 'done');
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-
-        const taskId = e.target.elements.taskId.value;
-        const status = e.target.elements.status.value;
-        let newStatus = 'Todo';
-        let statusToChange = document.getElementById(`task${taskId}`);
-
-        if (status === 'Todo') {
-            newStatus = 'Pending'
-        }
-
-        if (status === 'Pending') {
-            newStatus = 'Done'
-        }
-
-        taskService.changeStatus(taskId, newStatus)
-            .then((response => {
-                if (response.status === 204) {
-                    statusToChange.childNodes[1].innerText = newStatus;
-                }
-            }));
-    };
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     render() {
-        const props = this.props;
+        const { tasks } = this.state;
         return(
             <div className="d-flex justify-content-around flex-wrap-reverse">
-                { Object.keys(props.items[props.date]).map((key) => {
-                    return (
-                      <Task
-                        key={key}
-                        id={'id'}
-                        date={'date'}
-                        status={'status'}
-                        priority={'priority'}
-                        employeeAssigned={null}
-                        description={"Description"}
-                      />
-                    )
+                { Object.keys(tasks).map((set, index) => {
+                    return <ul key={index}>
+                        {tasks[set].map((task, i) => {
+                            return  <Task
+                                    key={i}
+                                    id={task.id}
+                                    createdAt={'date'}
+                                    status={task.status}
+                                    priority={task.priority}
+                                    employeeAssigned={this.employeeAssigned}
+                                    description={"Description"}
+                                  />
+                        })}
+                    </ul>
                 })}
             </div>
-        )
+        );
     }
 }
 

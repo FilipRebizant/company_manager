@@ -174,9 +174,9 @@ class AddTask extends Component {
                             <div className="form-group">
                                 <Label for="priority"/>
                                 <select defaultValue={"1"} className="form-control" name="priority" id="priority" onChange={this.handleChange}>
-                                    <option value="1">Low</option>
-                                    <option value="2">Medium</option>
-                                    <option value="3">High</option>
+                                    <option value="0">Low</option>
+                                    <option value="1">Medium</option>
+                                    <option value="2">High</option>
                                 </select>
                             </div>
 

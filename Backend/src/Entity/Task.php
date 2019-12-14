@@ -140,7 +140,10 @@ class Task
         return $this;
     }
 
-    public function getStatus(): ?string
+    /**
+     * @return string
+     */
+    public function getStatus(): string
     {
         return $this->status;
     }

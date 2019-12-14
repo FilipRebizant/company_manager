@@ -101,6 +101,11 @@ class TaskController extends ApiController
         return $this->respondError(["Task could not be found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @param Request $request
+     * @param TaskRepository $taskRepository
+     * @return JsonResponse
+     */
     public function changeStatus(Request $request, TaskRepository $taskRepository)
     {
         $task = $taskRepository->find($request->get('id'));
@@ -111,6 +116,11 @@ class TaskController extends ApiController
         return $this->respondSuccess([], Response::HTTP_NO_CONTENT);
     }
 
+    /**
+     * @param Request $request
+     * @param TaskRepository $taskRepository
+     * @return JsonResponse
+     */
     public function getTaskWithStatus(Request $request, TaskRepository $taskRepository)
     {
         $tasks = $taskRepository->findBy([
@@ -118,7 +128,12 @@ class TaskController extends ApiController
             'commission' => $request->get('id'),
         ]);
 
-        return $this->respondSuccess(['tasks' => $tasks]);
+        $tasksArray = [];
+        foreach ($tasks as $task) {
+            $tasksArray[] = $this->taskService->transform($task);
+        }
+
+        return $this->respondSuccess(['tasks' => $tasksArray], Response::HTTP_OK);
     }
 
     public function getTasksFromCommission(Request $request, TaskRepository $taskRepository)
@@ -127,7 +142,12 @@ class TaskController extends ApiController
             'commission' => $request->get('id'),
         ]);
 
-        return $this->respondSuccess(['tasks' => $tasks]);
+        $tasksArray = [];
+        foreach ($tasks as $task) {
+            $tasksArray[] = $this->taskService->transform($task);
+        }
+
+        return $this->respondSuccess(['tasks' => $tasksArray], Response::HTTP_OK);
     }
 
     /**
