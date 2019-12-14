@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {taskService} from "../../../_services/index";
 import {Task} from "../Task";
 import {handleResponse} from "../../../_helpers";
+import Spinner from "../../../_components/Spinner/Spinner";
 
 class TasksList extends Component {
     _isMounted = false;
@@ -21,13 +22,14 @@ class TasksList extends Component {
     loadTasks = (id, status) => {
         let loaders = document.querySelectorAll('.loader');
 
+        console.log(loaders);
             taskService.getTasksWithStatus(id, status)
                 .then(handleResponse)
                 .then(response => response.json())
                 .then((response) => {
-                    // for (var loader of loaders) {
-                    //     loader.classList.add('d-none');
-                    // }
+                    for (var loader of loaders) {
+                        loader.classList.add('d-none');
+                    }
                     // console.log(response);
                     if (response && response.tasks.length > 0) {
                         if (this._isMounted) {
@@ -103,7 +105,9 @@ class TasksList extends Component {
                                     index={i}
                                   />
                         })}
+                        <Spinner />
                     </ul>
+
                 })}
             </div>
         );
