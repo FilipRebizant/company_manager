@@ -100,7 +100,7 @@ class Task extends Component {
                 <form action="" className="mb-5" onSubmit={this.handleSubmit} style={{width: '100%'}}>
                     <MDBCard id={id}>
                         <MDBCardHeader className="card-header--upper">
-                            <span className="small">Created at: <p className="mb-0">{ createdAt }</p> </span>
+                            {/*<span className="small">Created at: <p className="mb-0">{ createdAt }</p> </span>*/}
                             { employeeAssigned }
                             </MDBCardHeader>
                         <MDBCardHeader className="card-header--lower">
