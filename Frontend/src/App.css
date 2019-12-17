@@ -178,7 +178,8 @@
   flex-direction: column;
   position: absolute;
   top: -25px;
-  background: rgba(0,0,0,.03);
+  background: rgb(247, 247, 247);
+  /*box-shadow: 0 -3px 18px 0 rgba(0, 0, 0, 0.10);*/
   padding: 7px;
   border-radius: 50%;
 }
