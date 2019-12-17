@@ -1,18 +1,5 @@
-App\Entity\User:
+App\Entity\Client:
     properties:
-        company:
-            - NotBlank:
-                message: 'Username can not be empty'
-            - Length:
-                min: 2
-                max: 50
-                minMessage: 'Too short username, min {{ limit }}'
-                maxMessage: 'You have entered too long username, max {{ limit }}'
-            - Regex:
-                pattern: '/\d/'
-                match: false
-                message: 'Your name cannot contain a number'
-#            - App\Validator\Constraints\UniqueCredentials: ~
         firstName:
             - NotBlank:
                 message: 'First name can not be empty'

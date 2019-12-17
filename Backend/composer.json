@@ -15,7 +15,8 @@
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "4.3.*",
         "symfony/validator": "4.3.*",
-        "symfony/yaml": "4.3.*"
+        "symfony/yaml": "4.3.*",
+        "symfony/doctrine-bridge": "4.3.*@dev"
     },
     "require-dev": {
         "symfony/debug": "4.3.*",

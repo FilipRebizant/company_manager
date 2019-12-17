@@ -40,12 +40,6 @@ class Client
 
     /**
      * @ORM\Column(nullable=true)
-     * @ORM\OneToOne(targetEntity="App\Entity\Company")
-     */
-    private $company;
-
-    /**
-     * @ORM\Column(nullable=true)
      * @ORM\ManyToOne(targetEntity="App\Entity\Commission", inversedBy="client")
      */
     private $commission;
@@ -104,31 +98,6 @@ class Client
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * @return null|Company
-     */
-    public function getCompany(): ?Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(?Company $company): self
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->company->contains($company)) {
-            $this->company->removeElement($company);
-
-        }
 
         return $this;
     }

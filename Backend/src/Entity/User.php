@@ -296,4 +296,9 @@ class User implements UserInterface
     public function eraseCredentials(): void
     {
     }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
 }
