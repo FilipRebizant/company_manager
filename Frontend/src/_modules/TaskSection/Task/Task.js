@@ -3,8 +3,8 @@ import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader, MDBIcon
 import { storageService, taskService } from "../../../_services/index";
 
 class Task extends Component {
-
     _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -15,14 +15,20 @@ class Task extends Component {
             createdAt: props.createdAt,
             description: props.description,
             currentUser: null,
-            index: props.index
+            index: props.index,
+            buttonDisabled: false
         };
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
+
+        if (this._isMounted) {
+            this.setState({buttonDisabled: true});
+        }
         const { id, status, index } = this.state;
         let nextStatus;
+        console.log(index);
 
         switch (status) {
             case 'Todo':
@@ -38,6 +44,9 @@ class Task extends Component {
         taskService.changeStatus(id, nextStatus)
             .then((response => {
                 if (response.status === 204) {
+                    console.log(response.status);
+                    console.log('old', status);
+                    console.log('new', nextStatus);
                     this.props.handleTaskUpdate(index, status, nextStatus);
                 }
             }));
@@ -46,9 +55,7 @@ class Task extends Component {
     handleAssign = (e) => {
         e.preventDefault();
         let currentUser = storageService.getItems('currentUser');
-        this.setState({
-            employeeAssigned: currentUser.name
-        });
+
         const task = {
             id: this.state.id,
             priority: this.state.priority,
@@ -57,11 +64,25 @@ class Task extends Component {
             createdAt: this.state.createdAt,
             description: this.state.description,
         };
-        taskService.editTask(task);
+        taskService.editTask(task).then(response => {
+            if (response.ok) {
+                this.setState({
+                    employeeAssigned: currentUser.name
+                });
+            }
+        });
     };
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     getButton = () => {
-         let { buttonText, status, employeeAssigned } = this.state;
+         let { buttonText, status, employeeAssigned, buttonDisabled } = this.state;
 
          if (!employeeAssigned) {
              return <div></div>;
@@ -79,11 +100,11 @@ class Task extends Component {
                  break;
          }
 
-         return <button className="btn btn-sm btn-blue">{ buttonText }</button>
+         return <button disabled={buttonDisabled} className="btn btn-sm btn-blue">{ buttonText }</button>
     };
 
     render() {
-        const { id, description, status, priority, createdAt } = this.state;
+        const { id, description, status, priority } = this.state;
         let { employeeAssigned } = this.state;
 
         if (employeeAssigned === null) {
@@ -96,11 +117,10 @@ class Task extends Component {
         }
 
         return(
-            <div className="d-flex justify-content-around flex-wrap-reverse">
+            <div className="d-flex justify-content-around flex-wrap-reverse" id={this.state.index}>
                 <form action="" className="mb-5" onSubmit={this.handleSubmit} style={{width: '100%'}}>
                     <MDBCard id={id}>
                         <MDBCardHeader className="card-header--upper">
-                            {/*<span className="small">Created at: <p className="mb-0">{ createdAt }</p> </span>*/}
                             { employeeAssigned }
                             </MDBCardHeader>
                         <MDBCardHeader className="card-header--lower">
@@ -108,7 +128,6 @@ class Task extends Component {
                             <p className="small">Priority: <b>{ priority }</b></p>
                         </MDBCardHeader>
                         <MDBCardBody>
-                            <MDBCardTitle></MDBCardTitle>
                             <MDBCardText>{ description }</MDBCardText>
                         </MDBCardBody>
                         <div className="custom-control custom-checkbox">

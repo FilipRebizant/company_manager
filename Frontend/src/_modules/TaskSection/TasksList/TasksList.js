@@ -22,30 +22,27 @@ class TasksList extends Component {
     loadTasks = (id, status) => {
         let loaders = document.querySelectorAll('.loader');
 
-        console.log(loaders);
-            taskService.getTasksWithStatus(id, status)
-                .then(handleResponse)
-                .then(response => response.json())
-                .then((response) => {
-                    for (var loader of loaders) {
-                        loader.classList.add('d-none');
+        taskService.getTasksWithStatus(id, status)
+            .then(handleResponse)
+            .then(response => response.json())
+            .then((response) => {
+                for (var loader of loaders) {
+                    loader.classList.add('d-none');
+                }
+                if (response && response.tasks.length > 0) {
+                    if (this._isMounted) {
+                        // console.log('will change state');
+                        console.log(response.tasks);
+                        let currState = Object.assign({}, this.state);
+                        const status = response.tasks[0].status;
+                        currState.tasks[status.toString()] = response.tasks;
+
+                        this.setState(currState);
+                        // console.log('state changed');
                     }
-                    // console.log(response);
-                    if (response && response.tasks.length > 0) {
-                        if (this._isMounted) {
-                            console.log('will change state');
-                            console.log(response.tasks);
-                            let currState = Object.assign({}, this.state);
-                            const status = response.tasks[0].status;
-                            currState.tasks[status.toString()] = response.tasks;
+                }
 
-                            this.setState(currState);
-                            console.log('state changed');
-                        }
-                    }
-
-                })
-
+            })
     };
 
     componentDidMount() {
@@ -68,26 +65,28 @@ class TasksList extends Component {
     }
 
     handleTaskUpdate = (index, status, newStatus) => {
-        const currentTaskList = Object.assign([], this.state.tasks[status.toString()]);
+        const currentTaskList = this.state.tasks[status];
         const currentState = Object.assign({}, this.state);
         let elem = currentTaskList[index];
 
         // Remove from old list
-        currentTaskList.splice(index, 1);
-        currentState.tasks[status.toString()] = currentTaskList;
+        delete currentTaskList[index];
+        currentState.tasks[status] = currentTaskList;
 
         // Add to new list
         elem.status = newStatus;
-        currentState.tasks[newStatus.toString()].push(elem);
+        currentState.tasks[newStatus].push(elem);
 
-        this.setState({
-           currentState
-        });
+        if (this._isMounted) {
+            this.setState({
+                currentState
+            });
+        }
     };
 
     render() {
-        console.log(this.state.tasks);
         const { tasks } = this.state;
+
         return(
             <div className="d-flex justify-content-around flex-wrap-reverse">
                 { Object.keys(tasks).map((set, index) => {

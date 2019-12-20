@@ -20,7 +20,7 @@ class App extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-        this.handleConnectionChange();
+        // this.handleConnectionChange();
         window.addEventListener('online', this.handleConnectionChange);
         window.addEventListener('offline', this.handleConnectionChange);
     }
@@ -32,12 +32,14 @@ class App extends Component {
     }
 
     handleConnectionChange = () => {
-        if (this._isMounted) {
+
             const condition = navigator.onLine ? 'online' : 'offline';
             console.log(condition);
             if (condition === 'online') {
                 console.log('should be fine');
-                this.setState({isDisconnected: false});
+                // if (this._isMounted) {
+                //     this.setState({isDisconnected: false});
+                // }
                 // TODO:: check if there are changes and sync
                 this.refresh();
 
@@ -60,13 +62,15 @@ class App extends Component {
                 //     () => {
                 //         commissionService.getAll()
                 //             .then(() => {
-                this.setState({isDisconnected: true});
+                if (this._isMounted) {
+                    this.setState({isDisconnected: true});
+                }
                 //             })
                 //             .catch(() => this.setState({isDisconnected: true}))
                 //     }, 2000);
                 // return;
             }
-        }
+
     };
 
     refresh() {
@@ -89,11 +93,15 @@ class App extends Component {
                     <Navigation/>
                     <NotificationBanner isDisconnected={this.state.isDisconnected} tryToSync={this.handleConnectionChange}/>
                     <Switch>
-                        <Route exact path="/" component={() => <HomePage needToUpdate={this.state.needToUpdate}/>}/>
+                        <Route exact path="/" component={HomePage} />
+                            // needToUpdate={this.state.needToUpdate}/>
+
+
                         <Route path="/commission/:id" component={ () =>
-                            <CommissionPage
+                            <CommissionPage />
                                 // needToUpdate={this.state.needToUpdate}
-                                updateList={this.refresh}/>}
+                                // updateList={this.refresh}
+                            }
                         />
                         <PrivateRoute path="/addUser" component={ () =>
                             <AddUser />

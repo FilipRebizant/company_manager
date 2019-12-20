@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBNavLink } from "mdbreact";
 import { MaterialList } from "../_modules/MaterialSection/MaterialList";
 import { AddMaterial } from "../_modules/MaterialSection/AddMaterial";
@@ -7,7 +7,7 @@ import { ReportsTable } from "../_modules/ReportSection/ReportsTable";
 import { AddTask } from "../_modules/TaskSection/AddTask";
 import { TasksList } from "../_modules/TaskSection/TasksList";
 import { NotSentTask } from "../_modules/TaskSection/NotSentTask";
-import { storageService, taskService } from "../_services";
+import { storageService } from "../_services";
 import { CostsSummary } from "../_modules/CostSummarySection/CostsSummary/CostsSummary";
 
 class CommissionPage extends PureComponent {

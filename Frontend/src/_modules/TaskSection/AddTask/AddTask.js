@@ -18,12 +18,14 @@ class AddTask extends Component {
             employeeAssigned: '',
             createdAt: '',
             status: 'ToDo',
+            priority: '1',
+            estimatedTime: 0,
             valid: true,
             isShowingAlert: false,
             alert: '',
             alertStatus: '',
-            priority: '1',
-            isShowingLoader: false
+            isShowingLoader: false,
+
         }
     }
 
@@ -96,7 +98,7 @@ class AddTask extends Component {
     };
 
     prepareNewTask = () => {
-        const {taskId, description, employeeAssigned, status, priority} = this.state;
+        const {taskId, description, employeeAssigned, status, priority, estimatedTime} = this.state;
         let { createdAt } = this.state;
         if (createdAt === '') {
             createdAt = getCurrentDate();
@@ -109,7 +111,8 @@ class AddTask extends Component {
             employeeAssigned: employeeAssigned,
             status: status,
             createdAt: createdAt,
-            priority: priority
+            priority: priority,
+            estimatedTime: estimatedTime
         };
     };
 
@@ -126,7 +129,8 @@ class AddTask extends Component {
         this.setState({
             taskId: '',
             description: '',
-            employeeAssigned: ''
+            employeeAssigned: '',
+            estimatedTime: '',
         })
     };
 
@@ -138,7 +142,16 @@ class AddTask extends Component {
         let alertContainer;
         let spinnerContainer;
 
-        const { isShowingAlert, isShowingLoader, alert, alertStatus } = this.state;
+        const {
+            isShowingAlert,
+            isShowingLoader,
+            alert,
+            alertStatus,
+            estimatedTime,
+            description,
+            employeeAssigned
+        } = this.state;
+
         if (isShowingAlert) {
             alertContainer = <div className={`alert alert-${alertStatus}`} id="loginErrorContainer">{alert}</div>;
         }
@@ -160,12 +173,12 @@ class AddTask extends Component {
 
                             <div className="form-group">
                                 <Label for="description"/>
-                                <textarea className="form-control" rows="3" name="description" value={this.state.description} onChange={this.handleChange}/>
+                                <textarea className="form-control" rows="3" name="description" value={description} onChange={this.handleChange}/>
                             </div>
 
                             <div className="form-group">
                                 <Label for="employeeAssigned"/>
-                                <select value={this.state.employeeAssigned} className="form-control" name="employeeAssigned" id="employeeAssigned" onChange={this.handleChange}>
+                                <select value={employeeAssigned} className="form-control" name="employeeAssigned" id="employeeAssigned" onChange={this.handleChange}>
                                     <option value=""></option>
                                     <option value="John Doe">John Doe</option>
                                 </select>
@@ -180,7 +193,11 @@ class AddTask extends Component {
                                 </select>
                             </div>
 
-                            <Input type="hidden" name="status" value={this.state.status} />
+                            <div className="form-group">
+                                <Label for="estimatedTime"/>
+                                <Input type="number" name="estimatedTime" value={estimatedTime} onChange={this.handleChange}/>
+                            </div>
+
                         </form>
                     </MDBModalBody>
                     <MDBModalFooter>
