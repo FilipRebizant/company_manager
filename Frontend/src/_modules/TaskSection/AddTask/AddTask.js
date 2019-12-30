@@ -3,11 +3,12 @@ import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalF
 import { Label } from "../../../_components/atoms/Label/index";
 import { Input } from "../../../_components/atoms/Input/index";
 import {getCurrentDate, getCommissionId, handleResponse} from "../../../_helpers/index";
-import {storageService, taskService} from '../../../_services/index';
+import {storageService, taskService, userService} from '../../../_services/index';
 import Spinner from "../../../_components/Spinner/Spinner";
 
 
 class AddTask extends Component {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -15,18 +16,35 @@ class AddTask extends Component {
             taskId: '',
             modalOpened: false,
             description: '',
-            employeeAssigned: '',
+            employeeAssigned: "false",
             createdAt: '',
             status: 'ToDo',
-            priority: '1',
+            priority: '0',
             estimatedTime: 0,
             valid: true,
             isShowingAlert: false,
             alert: '',
             alertStatus: '',
             isShowingLoader: false,
-
+            showEstimation: false,
+            users: []
         }
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
+            userService.getUsers()
+                .then(response => response.json())
+                .then((response) => {
+                    console.log(response);
+                    this.setState({
+                        users: response.users
+                    });
+                });
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     toggleModal = () => {
@@ -135,12 +153,33 @@ class AddTask extends Component {
     };
 
     handleChange = (e) => {
-        this.setState({[e.target.name]: e.target.value});
+        let employeeSelected = ("false" != this.state.employeeAssigned);
+
+        if (employeeSelected) {
+            this.setState({
+                    [e.target.name]: e.target.value,
+                    showEstimation: true
+                });
+        } else {
+            this.setState({
+                [e.target.name]: e.target.value,
+                showEstimation: false
+            });
+        }
+    };
+
+    estimateCost = () => {
+        const { estimatedTime, users, employeeAssigned } = this.state;
+        let salary = 0;
+        if (users[employeeAssigned]) {
+            salary = users[employeeAssigned].salary
+        }
+
+        return estimatedTime * salary;
     };
 
     render() {
-        let alertContainer;
-        let spinnerContainer;
+        let alertContainer, spinnerContainer, estimationContainer;
 
         const {
             isShowingAlert,
@@ -149,7 +188,9 @@ class AddTask extends Component {
             alertStatus,
             estimatedTime,
             description,
-            employeeAssigned
+            employeeAssigned,
+            showEstimation,
+            users
         } = this.state;
 
         if (isShowingAlert) {
@@ -160,7 +201,12 @@ class AddTask extends Component {
            spinnerContainer = <Spinner notFullHeight/>
         }
 
+        if (showEstimation) {
+            estimationContainer = <div className="alert alert-info">Estimated Cost: { this.estimateCost() } USD</div>
+        }
+
         return (
+
             <MDBContainer>
                 <MDBBtn className="btn btn-outline-blue" onClick={this.toggleModal}>Add Task</MDBBtn>
                 <MDBModal isOpen={this.state.modalOpened} toggle={this.toggleModal}>
@@ -179,8 +225,10 @@ class AddTask extends Component {
                             <div className="form-group">
                                 <Label for="employeeAssigned"/>
                                 <select value={employeeAssigned} className="form-control" name="employeeAssigned" id="employeeAssigned" onChange={this.handleChange}>
-                                    <option value=""></option>
-                                    <option value="John Doe">John Doe</option>
+                                    <option value={false}></option>
+                                    {users.map((user, index) => {
+                                        return <option key={index} value={index}>{user.firstName} {user.lastName}</option>
+                                    })}
                                 </select>
                             </div>
 
@@ -197,6 +245,8 @@ class AddTask extends Component {
                                 <Label for="estimatedTime"/>
                                 <Input type="number" name="estimatedTime" value={estimatedTime} onChange={this.handleChange}/>
                             </div>
+
+                            { estimationContainer }
 
                         </form>
                     </MDBModalBody>

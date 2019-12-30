@@ -64,7 +64,7 @@ const ReportsTable = (props) => {
                                 <td>{props.items[props.date][key].addedBy}</td>
                                 <td>{props.items[props.date][key].startedAt}</td>
                                 <td>{props.items[props.date][key].finishedAt}</td>
-                                <td>{props.items[props.date][key].hoursSum}</td>
+                                <td>{props.items[props.date][key].hoursSum} hours</td>
                             </tr>
                             <tr className="table__row-full-width">
                                 <td className="table__data-highlighted"

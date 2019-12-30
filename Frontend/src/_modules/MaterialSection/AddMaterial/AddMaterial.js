@@ -14,7 +14,8 @@ class AddMaterial extends Component {
             code: '',
             quantity: '',
             createdAt: '',
-            additionalInfo: ''
+            additionalInfo: '',
+            buttonDisabled: true
         }
     }
 

@@ -14,7 +14,8 @@ class AddDayReport extends Component {
             startedAt: '',
             finishedAt: '',
             addedBy: "John Doe",
-            dayDescription: ''
+            dayDescription: '',
+            buttonDisabled: true,
         }
     }
 
@@ -124,7 +125,7 @@ class AddDayReport extends Component {
                     <textarea
                         className="form-control"
                         name="dayDescription"
-                        rows="5"
+                        rows="3"
                         value={this.state.dayDescription}
                         onChange={this.handleChange} ></textarea>
                 </div>

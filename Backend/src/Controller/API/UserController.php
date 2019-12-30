@@ -2,6 +2,7 @@
 
 namespace App\Controller\API;
 
+use App\Entity\User;
 use App\Service\Exception\ValidationException;
 use App\Repository\UserRepository;
 use App\Service\UserService;
@@ -98,6 +99,34 @@ class UserController extends ApiController
             $this->userService->delete($user);
 
             return $this->respondSuccess(['result' => 'User has been deleted'], Response::HTTP_OK);
+        }
+
+        return $this->respondError(["User could not be found"], Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return JsonResponse
+     */
+    public function getSalary(Request $request, UserRepository $userRepository): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $data = $this->transformJsonBody($request);
+        var_dump($data);
+
+        if (!empty($data['employeeAssigned'])) {
+            $name = explode(" ", $data['employeeAssigned']);
+            /** @var User $user */
+            $user = $userRepository->findOneBy([
+                'firstName' => $name[0],
+                'lastName' => $name[1],
+            ]);
+
+            return $this->respondSuccess([
+                'salary' => $user->getSalary()
+            ], Response::HTTP_OK);
         }
 
         return $this->respondError(["User could not be found"], Response::HTTP_NOT_FOUND);

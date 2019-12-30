@@ -63,7 +63,6 @@ const MaterialList = (props) => {
                             })
                         }
                     </tbody>
-
                 </MDBTable>
             </div>
         </div>

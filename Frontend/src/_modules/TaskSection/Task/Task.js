@@ -28,7 +28,6 @@ class Task extends Component {
         }
         const { id, status, index } = this.state;
         let nextStatus;
-        console.log(index);
 
         switch (status) {
             case 'Todo':
@@ -44,9 +43,6 @@ class Task extends Component {
         taskService.changeStatus(id, nextStatus)
             .then((response => {
                 if (response.status === 204) {
-                    console.log(response.status);
-                    console.log('old', status);
-                    console.log('new', nextStatus);
                     this.props.handleTaskUpdate(index, status, nextStatus);
                 }
             }));

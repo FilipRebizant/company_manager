@@ -31,14 +31,11 @@ class TasksList extends Component {
                 }
                 if (response && response.tasks.length > 0) {
                     if (this._isMounted) {
-                        // console.log('will change state');
-                        console.log(response.tasks);
                         let currState = Object.assign({}, this.state);
                         const status = response.tasks[0].status;
                         currState.tasks[status.toString()] = response.tasks;
 
                         this.setState(currState);
-                        // console.log('state changed');
                     }
                 }
 
@@ -46,7 +43,6 @@ class TasksList extends Component {
     };
 
     componentDidMount() {
-        console.log('mounting tasks');
         this._isMounted = true;
         const url = window.location.href;
         const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
@@ -106,7 +102,6 @@ class TasksList extends Component {
                         })}
                         <Spinner />
                     </ul>
-
                 })}
             </div>
         );

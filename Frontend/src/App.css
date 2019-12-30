@@ -208,3 +208,7 @@
 .card-header--lower .small {
   margin-bottom: 0;
 }
+
+.table {
+  background-color: #ffffff;
+}

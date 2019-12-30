@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import {commissionService} from "../../../_services/index";
 import Spinner from "../../../_components/Spinner/Spinner";
+import {config} from "../../../config/config";
 
 class CostsSummary extends Component {
     _isMounted = false;
@@ -86,12 +87,12 @@ class CostsSummary extends Component {
                                                 <td>{employee.lastName}</td>
                                                 <td>{employee.summary}</td>
                                                 <td>{employee.salary}</td>
-                                                <td><b>{ employee.summary * employee.salary }</b> USD</td>
+                                                <td><b>{ employee.summary * employee.salary }</b> {config.currency}</td>
                                             </tr>
                                         })
                                     }
                                     <tr>
-                                        <td colSpan="5">Cost in total: <b>{totalCost}</b> USD</td>
+                                        <td colSpan="5">Cost in total: <b>{totalCost}</b> {config.currency}</td>
                                     </tr>
                                     <tr>
                                         <td colSpan="5">Working Hours in total: <b>{totalHoursSummary}</b></td>

@@ -13,6 +13,11 @@ showUser:
     controller: App\Controller\API\UserController::show
     methods:    GET
 
+showUsersSalary:
+    path:       /users/{employee}/salary
+    controller: App\Controller\API\UserController::getSalary
+    methods:    GET
+
 updateUser:
     path:       /users/{id}
     controller: App\Controller\API\UserController::update
