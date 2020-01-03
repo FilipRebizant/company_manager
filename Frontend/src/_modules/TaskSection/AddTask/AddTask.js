@@ -139,7 +139,7 @@ class AddTask extends Component {
 
         if (this.validate(newTask)) {
             this.addNewTask(newTask);
-            // this.resetInputFields();
+            this.resetInputFields();
         }
     };
 
@@ -234,7 +234,7 @@ class AddTask extends Component {
 
                             <div className="form-group">
                                 <Label for="priority"/>
-                                <select defaultValue={"1"} className="form-control" name="priority" id="priority" onChange={this.handleChange}>
+                                <select defaultValue={"0"} className="form-control" name="priority" id="priority" onChange={this.handleChange}>
                                     <option value="0">Low</option>
                                     <option value="1">Medium</option>
                                     <option value="2">High</option>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader, MDBIcon } from 'mdbreact';
+import { MDBCard, MDBCardBody, MDBCardText, MDBCardHeader, MDBIcon, MDBModal, MDBContainer, MDBModalFooter, MDBModalBody, MDBBtn } from 'mdbreact';
 import { storageService, taskService } from "../../../_services/index";
 
 class Task extends Component {
@@ -16,7 +16,8 @@ class Task extends Component {
             description: props.description,
             currentUser: null,
             index: props.index,
-            buttonDisabled: false
+            buttonDisabled: false,
+            deleteModalIsOpen: false
         };
     }
 
@@ -71,6 +72,8 @@ class Task extends Component {
 
     componentDidMount() {
         this._isMounted = true;
+        let currentUser = storageService.getItems('currentUser');
+        this.setState({currentUser: currentUser});
     }
 
     componentWillUnmount() {
@@ -99,8 +102,23 @@ class Task extends Component {
          return <button disabled={buttonDisabled} className="btn btn-sm btn-blue">{ buttonText }</button>
     };
 
+    handleRemove = () => {
+        const { index, status, id } = this.state;
+        taskService.deleteTask(id).then(response => {
+           if (response.ok) {
+                this.props.handleRemove(index, status);
+           }
+        });
+    };
+
+    showRemovePopUp = () => {
+        this.setState({
+            deleteModalIsOpen: !this.state.deleteModalIsOpen
+        });
+    };
+
     render() {
-        const { id, description, status, priority } = this.state;
+        const { id, description, status, priority, currentUser } = this.state;
         let { employeeAssigned } = this.state;
 
         if (employeeAssigned === null) {
@@ -111,14 +129,22 @@ class Task extends Component {
                 <span className="employee-name">{employeeAssigned}</span>
             </div>;
         }
+        let deleteTaskButton;
+        console.log(currentUser);
+        if (currentUser && currentUser.role === 'ROLE_ADMIN') {
+            deleteTaskButton = <span onClick={this.showRemovePopUp} className="deleteIcon"><MDBIcon icon="trash" size="1x" className="red-text" /></span>
+        }
 
         return(
             <div className="d-flex justify-content-around flex-wrap-reverse" id={this.state.index}>
                 <form action="" className="mb-5" onSubmit={this.handleSubmit} style={{width: '100%'}}>
                     <MDBCard id={id}>
-                        <MDBCardHeader className="card-header--upper">
+                        <MDBCardHeader >
+                            <div className="card-header--upper">
                             { employeeAssigned }
-                            </MDBCardHeader>
+                            </div>
+                            { deleteTaskButton }
+                        </MDBCardHeader>
                         <MDBCardHeader className="card-header--lower">
                             <p className="small">Status: <b>{ status }</b></p>
                             <p className="small">Priority: <b>{ priority }</b></p>
@@ -131,6 +157,15 @@ class Task extends Component {
                         </div>
                     </MDBCard>
                 </form>
+                <MDBContainer>
+                    <MDBModal isOpen={this.state.deleteModalIsOpen} toggle={this.showRemovePopUp} centered>
+                        <MDBModalBody toggle={this.showRemovePopUp}>Are you sure you want to remove this task?</MDBModalBody>
+                        <MDBModalFooter>
+                            <MDBBtn color="outline-primary" onClick={this.handleRemove}>Yes</MDBBtn>
+                            <MDBBtn color="outline-danger" onClick={this.showRemovePopUp}>No</MDBBtn>
+                        </MDBModalFooter>
+                    </MDBModal>
+                </MDBContainer>
             </div>
         )
     }

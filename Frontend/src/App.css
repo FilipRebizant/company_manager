@@ -218,3 +218,10 @@
   background: rgb(21, 111, 196);
   color: #ffffff;
 }
+
+.card-header .deleteIcon {
+  position: absolute;
+  right: 25px;
+  top: 1px;
+  cursor:pointer;
+}

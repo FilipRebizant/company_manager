@@ -57,15 +57,7 @@ class TaskService
      */
     public function create(array $data): Task
     {
-        $user = null;
-        if (!empty($data['employeeAssigned'])) {
-            $name = explode(" ", $data['employeeAssigned']);
-            $user = $this->userRepository->findOneBy([
-                'firstName' => $name[0],
-                'lastName' => $name[1],
-            ]);
-        }
-
+        $user = $this->userRepository->find($data['employeeAssigned']);
         $commission = $this->commissionRepository->find($data['commissionId']);
         $createdAt = new \DateTime($data['createdAt']);
 
@@ -133,7 +125,8 @@ class TaskService
 
     public function delete(Task $task)
     {
-
+        $this->em->remove($task);
+        $this->em->flush();
     }
 
     public function save($entity): void

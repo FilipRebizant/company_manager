@@ -80,6 +80,21 @@ class TasksList extends Component {
         }
     };
 
+    handleRemove = (index, status) => {
+        const currentTaskList = this.state.tasks[status];
+        const currentState = Object.assign({}, this.state);
+
+        // Remove from old list
+        delete currentTaskList[index];
+        currentState.tasks[status] = currentTaskList;
+
+        if (this._isMounted) {
+            this.setState({
+                currentState
+            });
+        }
+    };
+
     render() {
         const { tasks } = this.state;
 
@@ -97,6 +112,7 @@ class TasksList extends Component {
                                     employeeAssigned={task.employeeAssigned}
                                     description={task.description}
                                     handleTaskUpdate={(i, status, newStatus) => this.handleTaskUpdate(i, status, newStatus)}
+                                    handleRemove={(index, status) => this.handleRemove(index, status)}
                                     index={i}
                                   />
                         })}

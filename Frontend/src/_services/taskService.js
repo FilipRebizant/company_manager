@@ -90,11 +90,22 @@ function editTask(task) {
         .catch((error => handleError(error)));
 }
 
+function deleteTask(id) {
+    const requestOptions = {
+        'method': 'DELETE',
+        'headers': authHeaders(),
+    };
+
+    return fetch(`${config.apiUrl}/tasks/${id}`, requestOptions)
+        .catch((error => handleError(error)));
+}
+
 export const taskService = {
     getTasksWithStatus,
     pushTask,
     syncLocalTasks,
     changeStatus,
     getTasks,
-    editTask
+    editTask,
+    deleteTask
 };
