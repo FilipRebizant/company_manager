@@ -15,14 +15,32 @@ class CommissionPage extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            material: null,
-            reports: null,
-            tasks: null,
+            material: [],
+            reports: [],
+            tasks: {
+                Todo: [],
+                Pending: [],
+                Done: []
+            },
+            newTask: null,
             commissionName: null,
             commissionId: '',
             currentUser: null,
             activeTab: "3"
         };
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
+        const url = window.location.href;
+        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
+        this.getCommissionsData(id);
+        let currentUser = storageService.getItems('currentUser');
+        this.setState({currentUser: currentUser});
+    };
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     toggleTab = tab => e => {
@@ -33,30 +51,8 @@ class CommissionPage extends PureComponent {
         }
     };
 
-    updateList = () => {
-        // this.getCommissionsData(this.state.commissionId);
-        // this.renderNotSentTaskList();
-        this.renderTaskList();
-    };
-
-    refreshTaskLists = (task) => {
-        let array = this.state.tasks;
-        console.log(task);
-
-
-        if (!array) {
-            array = [];
-        }
-
-        if (!array[task.createdAt]) {
-            array[task.createdAt] = [];
-        }
-
-        array[task.createdAt].push(task);
-        this.setState({
-            tasks: array
-        });
-        this.renderNotSentTaskList();
+    addTask = (task) => {
+        this.setState({newTask: task});
         this.renderTaskList();
     };
 
@@ -79,67 +75,34 @@ class CommissionPage extends PureComponent {
         }
     };
 
-    componentDidMount() {
-        this._isMounted = true;
-        const url = window.location.href;
-        const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
-        this.getCommissionsData(id);
-        let currentUser = storageService.getItems('currentUser');
-        this.setState({currentUser: currentUser});
-        // this.loadTasks(id);
-    };
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
     renderMaterialList = () => {
         const { material } = this.state;
-        if (material) {
-            return Object.keys(material).map((key) => {
-                return <MaterialList
-                    key={key}
-                    name='material'
-                    date={key}
-                    items={material}
-                />
-            });
-        }
 
-        return <div></div>;
+        return Object.keys(material).map((key) => {
+            return <MaterialList
+                key={key}
+                name='material'
+                date={key}
+                items={material}
+            />
+        });
     };
-
 
     renderReportsList = () => {
         const { reports } = this.state;
-        if (reports) {
-            return Object.keys(reports).map((key) => {
-                return <ReportsTable
-                    key={key}
-                    name='reports'
-                    date={key}
-                    items={reports}
-                />
-            });
-        }
 
-        return <div></div>;
+        return Object.keys(reports).map((key) => {
+            return <ReportsTable
+                key={key}
+                name='reports'
+                date={key}
+                items={reports}
+            />
+        });
     };
 
     renderTaskList = () => {
-        const { tasks } = this.state;
-        if (tasks) {
-            return Object.keys(tasks).map((key) => {
-                return <TasksList
-                    key={key}
-                    name='tasks'
-                    date={key}
-                    items={tasks}
-                />
-            });
-        }
-
-        return <div></div>;
+        return <TasksList resetNewTask={() => this.setState({newTask: null})} newTask={this.state.newTask} />
     };
 
     renderNotSentTaskList = () => {
@@ -174,7 +137,7 @@ class CommissionPage extends PureComponent {
         if (currentUser && currentUser.role === 'ROLE_ADMIN') {
              addTaskSection = <MDBRow>
                                     <MDBCol md="12">
-                                        <AddTask updateTaskList={this.refreshTaskLists}/>
+                                        <AddTask updateTaskList={(task) => this.addTask(task)}/>
                                     </MDBCol>
                                 </MDBRow>;
         }
@@ -242,7 +205,7 @@ class CommissionPage extends PureComponent {
                             <MDBCol md="12">
                                 <MDBContainer>
                                     <h3 className="py-4">Tasks</h3>
-                                    <TasksList />
+                                    {this.renderTaskList()}
                                 </MDBContainer>
                             </MDBCol>
                         </MDBRow>

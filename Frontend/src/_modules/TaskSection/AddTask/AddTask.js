@@ -68,16 +68,15 @@ class AddTask extends Component {
     };
 
     addNewTask = (newTask) => {
-        console.log(newTask);
         this.setState({
             isShowingAlert: false,
             isShowingLoader: true
         });
         taskService.pushTask(newTask)
             .then(handleResponse)
+            .then(response => response.json())
             .then((response) => {
-                console.log(response);
-                if (!response.ok) {
+                if (!response.id) {
                     this.saveLocally(newTask);
                 } else { // Response ok
                     this.setState({
@@ -89,7 +88,6 @@ class AddTask extends Component {
                     newTask.id = response.id;
                     this.props.updateTaskList(newTask);
                 }
-
             })
             .catch((error) => {
                 if (error.status === 401) {

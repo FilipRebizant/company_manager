@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {taskService} from "../../../_services/index";
 import {Task} from "../Task";
-import {handleResponse} from "../../../_helpers";
+import { handleResponse } from "../../../_helpers";
 import Spinner from "../../../_components/Spinner/Spinner";
 
 class TasksList extends Component {
@@ -15,7 +15,7 @@ class TasksList extends Component {
               Done: []
             },
             commissionId: null,
-            shouldRender: false,
+            newTask: this.props.newTask,
         };
     }
 
@@ -38,7 +38,6 @@ class TasksList extends Component {
                         this.setState(currState);
                     }
                 }
-
             })
     };
 
@@ -58,6 +57,15 @@ class TasksList extends Component {
 
     componentWillUnmount() {
         this._isMounted = false;
+    }
+
+    shouldComponentUpdate(instance, nextProps, nextState) {
+        if (instance.newTask !== null) {
+            this.loadTasks(this.state.commissionId, 'todo');
+            this.props.resetNewTask();
+        }
+
+        return true;
     }
 
     handleTaskUpdate = (index, status, newStatus) => {

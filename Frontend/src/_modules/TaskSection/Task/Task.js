@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MDBCard, MDBCardBody, MDBCardText, MDBCardHeader, MDBIcon, MDBModal, MDBContainer, MDBModalFooter, MDBModalBody, MDBBtn } from 'mdbreact';
+import { MDBCard, MDBCardBody, MDBCardText, MDBCardHeader, MDBIcon, MDBModal, MDBContainer, MDBModalFooter, MDBModalBody, MDBModalHeader, MDBBtn } from 'mdbreact';
 import { storageService, taskService } from "../../../_services/index";
 
 class Task extends Component {
@@ -130,7 +130,6 @@ class Task extends Component {
             </div>;
         }
         let deleteTaskButton;
-        console.log(currentUser);
         if (currentUser && currentUser.role === 'ROLE_ADMIN') {
             deleteTaskButton = <span onClick={this.showRemovePopUp} className="deleteIcon"><MDBIcon icon="trash" size="1x" className="red-text" /></span>
         }
@@ -159,10 +158,11 @@ class Task extends Component {
                 </form>
                 <MDBContainer>
                     <MDBModal isOpen={this.state.deleteModalIsOpen} toggle={this.showRemovePopUp} centered>
-                        <MDBModalBody toggle={this.showRemovePopUp}>Are you sure you want to remove this task?</MDBModalBody>
+                        <MDBModalHeader toggle={this.showRemovePopUp}>Task will be deleted permanently</MDBModalHeader>
+                        <MDBModalBody>Are you sure you want to remove this task?</MDBModalBody>
                         <MDBModalFooter>
-                            <MDBBtn color="outline-primary" onClick={this.handleRemove}>Yes</MDBBtn>
                             <MDBBtn color="outline-danger" onClick={this.showRemovePopUp}>No</MDBBtn>
+                            <MDBBtn color="outline-primary" onClick={this.handleRemove}>Yes</MDBBtn>
                         </MDBModalFooter>
                     </MDBModal>
                 </MDBContainer>
