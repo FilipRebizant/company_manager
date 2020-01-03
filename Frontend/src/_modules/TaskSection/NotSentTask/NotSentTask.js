@@ -1,26 +1,27 @@
 import React from 'react';
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader
 } from 'mdbreact';
+import {Task} from "../Task";
 
 const NotSentTask = (props) => {
     return(
         <div className="d-flex justify-content-around">
-            { Object.keys(props.items).map((key) => {
-                return <React.Fragment key={key}>
-                    <MDBCard style={{ width: "22rem" }} id={props.id}>
-                        <MDBCardHeader className="d-flex justify-content-between">
-                            <p className="small">Created at: { props.items[key].date }</p>
-                            <p className="small">Status: <b>{props.items[key].status}</b></p>
-                        </MDBCardHeader>
-                        <MDBCardBody>
-                            <MDBCardTitle>{props.items[key].employeeAssigned}</MDBCardTitle>
-                            <MDBCardText>{props.items[key].description}</MDBCardText>
-                        </MDBCardBody>
-                        <div className="custom-control custom-checkbox">
-                            <button className="btn btn-black">Close task</button>
-                        </div>
-                    </MDBCard>
-                </React.Fragment>
+            { Object.keys(props.items).map((set, index) => {
+                return <ul key={index} className="col-md-4">
+                    {props.items.map((task, i) => {
+                        return  <Task
+                            key={i}
+                            id={task.id}
+                            createdAt={task.createdAt}
+                            status={task.status}
+                            priority={task.priority}
+                            employeeAssigned={task.employeeAssigned}
+                            description={task.description}
+                            handleTaskUpdate={(i, status, newStatus) => this.handleTaskUpdate(i, status, newStatus)}
+                            index={i}
+                        />
+                    })}
+                </ul>
             })}
         </div>
     );

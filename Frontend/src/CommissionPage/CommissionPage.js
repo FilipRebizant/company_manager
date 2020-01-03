@@ -39,24 +39,26 @@ class CommissionPage extends PureComponent {
         this.renderTaskList();
     };
 
-    // refreshTaskLists = (task) => {
-    //     let array = this.state.tasks;
-    //
-    //     if (!array) {
-    //         array = [];
-    //     }
-    //
-    //     if (!array[task.createdAt]) {
-    //         array[task.createdAt] = [];
-    //     }
-    //
-    //     array[task.createdAt].push(task);
-    //     this.setState({
-    //         tasks: array
-    //     });
-    //     this.renderNotSentTaskList();
-    //     this.renderTaskList();
-    // };
+    refreshTaskLists = (task) => {
+        let array = this.state.tasks;
+        console.log(task);
+
+
+        if (!array) {
+            array = [];
+        }
+
+        if (!array[task.createdAt]) {
+            array[task.createdAt] = [];
+        }
+
+        array[task.createdAt].push(task);
+        this.setState({
+            tasks: array
+        });
+        this.renderNotSentTaskList();
+        this.renderTaskList();
+    };
 
     getCommissionsData = (id) => {
         const commissions = storageService.getItems('localOpenedCommissions');

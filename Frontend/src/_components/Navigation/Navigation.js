@@ -76,10 +76,6 @@ class Navigation extends Component {
                 adminItems =
                     <React.Fragment>
                         <NavItem>
-                            <MDBNavLink to="/addUser" className="nav-item nav-link">Add User</MDBNavLink>
-                        </NavItem>
-
-                        <NavItem>
                             <MDBNavLink to="/users" className="nav-item nav-link">Users</MDBNavLink>
                         </NavItem>
                     </React.Fragment>

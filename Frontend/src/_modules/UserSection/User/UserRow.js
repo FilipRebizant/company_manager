@@ -32,7 +32,7 @@ class UserRow extends Component {
               this.props.showAlert('success', 'User has been edited');
           }
         })).catch((e) => {
-            this.props.showAlert('success', 'User has been edited');
+            this.props.showAlert('danger', 'Error, data couldn\'t been changed');
         });
     };
 
@@ -57,7 +57,7 @@ class UserRow extends Component {
                     <Input name="firstName" value={firstName} onChange={this.handleChange}/>
                 </td>
                 <td className="form-group">
-                <Label for="lastName"/>
+                    <Label for="lastName"/>
                     <Input name="lastName" value={lastName} onChange={this.handleChange}/>
                 </td>
                 <td className="form-group">

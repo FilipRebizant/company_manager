@@ -4,6 +4,7 @@ import { Label } from "../../../_components/atoms/Label/index";
 import { Input } from "../../../_components/atoms/Input/index";
 import { getCommissionId, getCurrentDate, countTimeDifference } from "../../../_helpers/index";
 import {reportService, storageService} from "../../../_services/index";
+import {authService} from "../../../_services";
 
 class AddDayReport extends Component {
     constructor(props) {
@@ -13,8 +14,8 @@ class AddDayReport extends Component {
             createdAt: '',
             startedAt: '',
             finishedAt: '',
-            addedBy: "John Doe",
             dayDescription: '',
+            currentUser: null,
             buttonDisabled: true,
         }
     }
@@ -37,13 +38,15 @@ class AddDayReport extends Component {
     };
 
     prepareNewReport = () => {
-        const {startedAt, finishedAt, dayDescription, addedBy} = this.state;
+        const {startedAt, finishedAt, dayDescription} = this.state;
         const summary = countTimeDifference(startedAt, finishedAt);
         let { createdAt } = this.state;
 
         if (createdAt === '') {
             createdAt = getCurrentDate();
         }
+
+        const currentUser = storageService.getItems('currentUser').name;
 
         return {
             commissionId: getCommissionId(),
@@ -52,7 +55,7 @@ class AddDayReport extends Component {
             finishedAt: finishedAt,
             hoursSum: summary,
             dayDescription: dayDescription,
-            addedBy: addedBy,
+            addedBy: currentUser,
             pushed: false
         };
     };

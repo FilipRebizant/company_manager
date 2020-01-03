@@ -68,11 +68,21 @@ class UserService
             ->setEmail($data['email'])
             ->setSalary($data['salary'])
             ->setRole($data['role'])
-
             ->setUsername($data['username'])
             ->setUpdatedAt(new \DateTimeImmutable());
+        $errors = $this->validator->validate($user);
+        if (count($errors) > 0) {
+            $errorArray = [];
 
-        $this->em->flush();
+            foreach ($errors as $error) {
+                $errorArray[] = [$error->getPropertyPath() => $error->getMessage()];
+            }
+
+            throw new ValidationException("", 0, null, $errorArray);
+        }
+        else {
+            $this->em->flush();
+        }
 
         return $user;
     }

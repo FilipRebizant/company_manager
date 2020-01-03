@@ -103,9 +103,6 @@ class App extends Component {
                                 // updateList={this.refresh}
                             }
                         />
-                        <PrivateRoute path="/addUser" component={ () =>
-                            <AddUser />
-                        } />
 
                         <PrivateRoute path="/users" component={UsersPage} />
                         <Route path="/login" component={LoginPage}/>

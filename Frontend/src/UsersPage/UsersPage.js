@@ -6,6 +6,7 @@ import { MDBContainer, MDBCard } from 'mdbreact';
 
 import { UserRow } from "../_modules/UserSection/User/UserRow";
 import Spinner from "../_components/Spinner/Spinner";
+import {AddUser} from "../_modules/UserSection/AddUser";
 
 class UsersPage extends React.Component {
     constructor(props) {
@@ -48,7 +49,8 @@ class UsersPage extends React.Component {
         return (
             <React.Fragment>
                 {alertContainer}
-                <MDBContainer className="my-5">
+                <MDBContainer className="mt-3">
+                    <AddUser/>
                     <MDBRow>
                     <MDBCol md="12">
                         <MDBCard>

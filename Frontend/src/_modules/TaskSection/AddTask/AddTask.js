@@ -13,7 +13,6 @@ class AddTask extends Component {
         super(props);
         this.state = {
             commissionId: '',
-            taskId: '',
             modalOpened: false,
             description: '',
             employeeAssigned: "false",
@@ -54,6 +53,7 @@ class AddTask extends Component {
     };
 
     validate = (task) => {
+        console.log(task);
         if (task.description === '') {
             this.setState({
                 alert: 'Description of task can not be empty',
@@ -68,6 +68,7 @@ class AddTask extends Component {
     };
 
     addNewTask = (newTask) => {
+        console.log(newTask);
         this.setState({
             isShowingAlert: false,
             isShowingLoader: true
@@ -116,7 +117,7 @@ class AddTask extends Component {
     };
 
     prepareNewTask = () => {
-        const {taskId, description, employeeAssigned, status, priority, estimatedTime} = this.state;
+        const { description, employeeAssigned, status, priority, estimatedTime} = this.state;
         let { createdAt } = this.state;
         if (createdAt === '') {
             createdAt = getCurrentDate();
@@ -124,7 +125,6 @@ class AddTask extends Component {
 
         return {
             commissionId: getCommissionId(),
-            id: taskId,
             description: description,
             employeeAssigned: employeeAssigned,
             status: status,
@@ -139,7 +139,7 @@ class AddTask extends Component {
 
         if (this.validate(newTask)) {
             this.addNewTask(newTask);
-            this.resetInputFields();
+            // this.resetInputFields();
         }
     };
 
@@ -227,7 +227,7 @@ class AddTask extends Component {
                                 <select value={employeeAssigned} className="form-control" name="employeeAssigned" id="employeeAssigned" onChange={this.handleChange}>
                                     <option value={false}></option>
                                     {users.map((user, index) => {
-                                        return <option key={index} value={index}>{user.firstName} {user.lastName}</option>
+                                        return <option key={index} value={user.id}>{user.firstName} {user.lastName}</option>
                                     })}
                                 </select>
                             </div>

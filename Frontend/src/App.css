@@ -52,10 +52,7 @@
   }
 }
 
-.main-backgound-color {
-  background: rgb(21, 111, 196);
-  color: #ffffff;
-}
+
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -188,6 +185,10 @@
   font-size: 0.8em;
 }
 
+.card-header {
+  background-color: rgb(247, 247, 247);
+}
+
 .card-header--upper {
   display: flex;
   justify-content: space-around;
@@ -211,4 +212,9 @@
 
 .table {
   background-color: #ffffff;
+}
+
+.main-backgound-color {
+  background: rgb(21, 111, 196);
+  color: #ffffff;
 }
