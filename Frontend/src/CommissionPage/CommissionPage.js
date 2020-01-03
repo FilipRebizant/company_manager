@@ -84,7 +84,8 @@ class CommissionPage extends PureComponent {
         const url = window.location.href;
         const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
         this.getCommissionsData(id);
-
+        let currentUser = storageService.getItems('currentUser');
+        this.setState({currentUser: currentUser});
         // this.loadTasks(id);
     };
 
@@ -168,12 +169,15 @@ class CommissionPage extends PureComponent {
     };
 
     render() {
-        const { commissionName } = this.state;
-        const addTaskSection = <MDBRow>
+        const { commissionName, currentUser } = this.state;
+        let addTaskSection;
+        if (currentUser && currentUser.role === 'ROLE_ADMIN') {
+             addTaskSection = <MDBRow>
                                     <MDBCol md="12">
                                         <AddTask updateTaskList={this.refreshTaskLists}/>
                                     </MDBCol>
                                 </MDBRow>;
+        }
 
         return (
             <MDBContainer>
