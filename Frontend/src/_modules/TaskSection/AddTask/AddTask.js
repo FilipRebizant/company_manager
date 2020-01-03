@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
 import { Label } from "../../../_components/atoms/Label/index";
 import { Input } from "../../../_components/atoms/Input/index";
-import {getCurrentDate, getCommissionId, handleResponse} from "../../../_helpers/index";
-import {storageService, taskService, userService} from '../../../_services/index';
+import { getCurrentDate, getCommissionId, handleResponse } from "../../../_helpers/index";
+import { taskService, userService } from '../../../_services/index';
 import Spinner from "../../../_components/Spinner/Spinner";
+import { config } from "../../../config/config";
 
 
 class AddTask extends Component {
@@ -13,17 +14,17 @@ class AddTask extends Component {
         super(props);
         this.state = {
             commissionId: '',
-            modalOpened: false,
             description: '',
             employeeAssigned: "false",
             createdAt: '',
             status: 'ToDo',
             priority: '0',
             estimatedTime: 0,
-            valid: true,
-            isShowingAlert: false,
             alert: '',
             alertStatus: '',
+            valid: true,
+            modalOpened: false,
+            isShowingAlert: false,
             isShowingLoader: false,
             showEstimation: false,
             users: []
@@ -35,7 +36,6 @@ class AddTask extends Component {
             userService.getUsers()
                 .then(response => response.json())
                 .then((response) => {
-                    console.log(response);
                     this.setState({
                         users: response.users
                     });
@@ -53,7 +53,6 @@ class AddTask extends Component {
     };
 
     validate = (task) => {
-        console.log(task);
         if (task.description === '') {
             this.setState({
                 alert: 'Description of task can not be empty',
@@ -169,9 +168,11 @@ class AddTask extends Component {
     estimateCost = () => {
         const { estimatedTime, users, employeeAssigned } = this.state;
         let salary = 0;
-        if (users[employeeAssigned]) {
-            salary = users[employeeAssigned].salary
-        }
+        users.map((user) => {
+            if (user.id == employeeAssigned) {
+                salary = user.salary
+            }
+        });
 
         return estimatedTime * salary;
     };
@@ -200,7 +201,7 @@ class AddTask extends Component {
         }
 
         if (showEstimation) {
-            estimationContainer = <div className="alert alert-info">Estimated Cost: { this.estimateCost() } USD</div>
+            estimationContainer = <div className="alert alert-info">Estimated Cost: { this.estimateCost() } {config.currency}</div>
         }
 
         return (
