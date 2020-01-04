@@ -204,7 +204,7 @@ class CommissionPage extends PureComponent {
                         <MDBRow>
                             <MDBCol md="12">
                                 <MDBContainer>
-                                    <h3 className="py-4">Tasks</h3>
+                                    <h3 className="pb-5">Tasks</h3>
                                     {this.renderTaskList()}
                                 </MDBContainer>
                             </MDBCol>

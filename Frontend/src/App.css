@@ -1,4 +1,5 @@
 .App {
+  overflow: hidden;
   text-align: center;
   /*background: rgb(8,37,140);*/
   /*background: linear-gradient(90deg, rgba(8,37,140,1) 5%, rgba(0,212,255,1) 94%);*/

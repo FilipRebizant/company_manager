@@ -94,9 +94,6 @@ class App extends Component {
                     <NotificationBanner isDisconnected={this.state.isDisconnected} tryToSync={this.handleConnectionChange}/>
                     <Switch>
                         <Route exact path="/" component={HomePage} />
-                            // needToUpdate={this.state.needToUpdate}/>
-
-
                         <Route path="/commission/:id" component={ () =>
                             <CommissionPage />
                                 // needToUpdate={this.state.needToUpdate}

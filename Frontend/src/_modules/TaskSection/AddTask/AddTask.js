@@ -207,7 +207,7 @@ class AddTask extends Component {
         return (
 
             <MDBContainer>
-                <MDBBtn className="btn btn-outline-blue" onClick={this.toggleModal}>Add Task</MDBBtn>
+                <MDBBtn className="btn btn-outline-blue my-4" onClick={this.toggleModal}>Add Task</MDBBtn>
                 <MDBModal isOpen={this.state.modalOpened} toggle={this.toggleModal}>
                     <MDBModalHeader className="justify-content-center" toggle={this.modalOpened}>Add Task</MDBModalHeader>
                     <MDBModalBody>

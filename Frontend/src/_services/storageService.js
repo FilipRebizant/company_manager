@@ -1,5 +1,10 @@
 function getItems(name) {
-    return JSON.parse(localStorage.getItem(name));
+    let items = JSON.parse(localStorage.getItem(name));
+    if (!items) {
+        items = [];
+    }
+
+    return items;
 }
 
 function setItem(item, name) {

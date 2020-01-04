@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {taskService} from "../../../_services/index";
-import {Task} from "../Task";
+import { storageService, taskService } from "../../../_services/index";
+import { Task } from "../Task";
 import { handleResponse } from "../../../_helpers";
 import Spinner from "../../../_components/Spinner/Spinner";
 
@@ -19,28 +19,6 @@ class TasksList extends Component {
         };
     }
 
-    loadTasks = (id, status) => {
-        let loaders = document.querySelectorAll('.loader');
-
-        taskService.getTasksWithStatus(id, status)
-            .then(handleResponse)
-            .then(response => response.json())
-            .then((response) => {
-                for (var loader of loaders) {
-                    loader.classList.add('d-none');
-                }
-                if (response && response.tasks.length > 0) {
-                    if (this._isMounted) {
-                        let currState = Object.assign({}, this.state);
-                        const status = response.tasks[0].status;
-                        currState.tasks[status.toString()] = response.tasks;
-
-                        this.setState(currState);
-                    }
-                }
-            })
-    };
-
     componentDidMount() {
         this._isMounted = true;
         const url = window.location.href;
@@ -55,10 +33,6 @@ class TasksList extends Component {
         this.loadTasks(id, 'done');
     }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
     shouldComponentUpdate(instance, nextProps, nextState) {
         if (instance.newTask !== null) {
             this.loadTasks(this.state.commissionId, 'todo');
@@ -67,6 +41,48 @@ class TasksList extends Component {
 
         return true;
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    loadTasks = (id, status) => {
+        let loaders = document.querySelectorAll('.loader');
+
+        taskService.getTasksWithStatus(id, status)
+            .then(handleResponse)
+            .then(response => response.json())
+            .then((response) => {
+                for (var loader of loaders) {
+                    loader.classList.add('d-none');
+                }
+                if (response.tasks && response.tasks.length > 0) {
+                    if (this._isMounted) {
+                        let currState = Object.assign({}, this.state);
+                        const status = response.tasks[0].status;
+                        currState.tasks[status.toString()] = response.tasks;
+
+                        this.setState(currState);
+                        this.saveTasksLocally();
+                    }
+                }
+            }).catch(error => {
+                const localTasks = storageService.getItems('localTasks');
+                const commissionTasks = localTasks[this.state.commissionId];
+
+                if (commissionTasks) {
+                    this.setState({tasks: commissionTasks});
+                }
+            })
+    };
+
+    saveTasksLocally = () => {
+        const currentLocalTasks = storageService.getItems('localTasks');
+        const { tasks, commissionId } = this.state;
+
+        currentLocalTasks[commissionId] = tasks;
+        storageService.setItem(currentLocalTasks, 'localTasks');
+    };
 
     handleTaskUpdate = (index, status, newStatus) => {
         const currentTaskList = this.state.tasks[status];
