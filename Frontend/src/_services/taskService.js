@@ -1,5 +1,6 @@
 import {config} from "../config/config";
 import {authHeaders, handleError} from "../_helpers";
+import {storageService} from "./storageService";
 
 function pushTask(obj) {
     const requestOptions = {
@@ -12,32 +13,69 @@ function pushTask(obj) {
         .catch((error => handleError(error)));
 }
 
-function arrayRemove(arr, val) {
-    return arr.filter(function (elem) {
-        return elem !== val;
-    })
-}
-
 async function syncLocalTasks() {
-    let notSentTasks = JSON.parse(localStorage.getItem('notSentTasks'));
-    if (notSentTasks) {
-        Object.keys(notSentTasks).filter((task) => {
-            const tasks = notSentTasks[task];
-            const length = notSentTasks[task].length;
+    console.log('syncing tasks');
+    let commissions = storageService.getItems('notSentTasks');
 
-            for (let i = 0; i < length; i++) { // For each task in commission
-                pushTask(tasks[i]).then((response) => {
-                    if (response.status === 201) {
-                        notSentTasks[task] = arrayRemove(tasks, tasks[i]);
-                        localStorage.removeItem('notSentTasks');
-                        localStorage.setItem('notSentTasks', JSON.stringify(notSentTasks));
+    console.log(commissions);
+    if (commissions) {
+        Object.keys(commissions).filter((index) => {
+            // console.log(task);
+            let tasks = commissions[index];
+            const length = tasks.length;
+            console.log(tasks);
+            console.log(length);
+            tasks.filter((task, i) => {
+               console.log(task);
 
-                        syncLocalTasks();
-                    }
-                });
+            this.pushTask(task).then(() => {
+                console.log(tasks);
+                console.log(task);
+                tasks.shift();
+                storageService.setItem(tasks, 'notSentTasks');
 
-                break;
-            }
+                // delete tasks[i];
+
+                console.log(tasks);
+                // tasks[i];
+                if (tasks.length === 0 ) {
+                    console.log('none');
+                    storageService.deleteKey('notSentTasks');
+                }
+            });
+               // delete tasks[i];
+               // Send task
+            //     const currentTaskList = this.state.tasks[status];
+            //     const currentState = Object.assign({}, this.state);
+            //
+            //     // Remove from old list
+            //     delete currentTaskList[index];
+            //     currentState.tasks[status] = currentTaskList;
+            //
+            //
+            //         this.setState({
+            //             currentState
+            //         });
+
+
+                // Remove from List
+                // Check if all empty
+                // Delete localstoragekey
+            });
+        //     for (let i = 0; i < length; i++) { // For each task in commission
+        //         pushTask(tasks[i]).then((response) => {
+        //             if (response.status === 201) {
+        //                 console.log(notSentTasks[task]);
+        //                 // notSentTasks[task] = arrayRemove(tasks, tasks[i]);
+        //                 // localStorage.removeItem('notSentTasks');
+        //                 // localStorage.setItem('notSentTasks', JSON.stringify(notSentTasks));
+        //
+        //                 // syncLocalTasks();
+        //             }
+        //         });
+        //
+        //         break;
+        //     }
         });
     }
 }

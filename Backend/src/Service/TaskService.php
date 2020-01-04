@@ -57,7 +57,14 @@ class TaskService
      */
     public function create(array $data): Task
     {
-        $user = $this->userRepository->find($data['employeeAssigned']);
+        $user = null;
+        if ($data['employeeAssigned'] != false) {
+            $userName = explode(' ', $data['employeeAssigned']);
+            $user = $this->userRepository->findOneBy([
+                'firstName' => $userName[0],
+                'lastName' => $userName[1],
+            ]);
+        }
         $commission = $this->commissionRepository->find($data['commissionId']);
         $createdAt = new \DateTime($data['createdAt']);
 

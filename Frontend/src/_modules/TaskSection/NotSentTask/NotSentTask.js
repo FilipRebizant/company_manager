@@ -1,6 +1,4 @@
 import React from 'react';
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardHeader
-} from 'mdbreact';
 import {Task} from "../Task";
 
 const NotSentTask = (props) => {

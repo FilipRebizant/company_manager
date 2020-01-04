@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBNavLink } from "mdbreact";
 import { MaterialList } from "../_modules/MaterialSection/MaterialList";
 import { AddMaterial } from "../_modules/MaterialSection/AddMaterial";
@@ -10,7 +10,7 @@ import { NotSentTask } from "../_modules/TaskSection/NotSentTask";
 import { storageService } from "../_services";
 import { CostsSummary } from "../_modules/CostSummarySection/CostsSummary/CostsSummary";
 
-class CommissionPage extends PureComponent {
+class CommissionPage extends Component {
     _isMounted = false;
     constructor(props) {
         super(props);
@@ -32,6 +32,7 @@ class CommissionPage extends PureComponent {
 
     componentDidMount() {
         this._isMounted = true;
+        window.addEventListener('storage', this.storageChange);
         const url = window.location.href;
         const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
         this.getCommissionsData(id);
@@ -39,9 +40,29 @@ class CommissionPage extends PureComponent {
         this.setState({currentUser: currentUser});
     };
 
+    // shouldComponentUpdate(instance, nextProps, nextState) {
+    //     // console.log(instance);
+    //     if (storageService.getItems('shouldRenderTasks')) {
+    //         this.renderTaskList();
+    //         this.renderNotSentTaskList();
+    //         storageService.deleteKey('shouldRenderTasks');
+    //     }
+    //
+    //     return true;
+    //
+    // }
+
     componentWillUnmount() {
+        if (typeof window !== 'undefined') {
+            window.removeEventListener('storage', this.storageChange)
+        }
         this._isMounted = false;
+
     }
+
+    storageChange = () => {
+        console.log('hook applied');
+    };
 
     toggleTab = tab => e => {
         if (this.state.activeTab !== tab) {
@@ -132,6 +153,8 @@ class CommissionPage extends PureComponent {
     };
 
     render() {
+
+
         const { commissionName, currentUser } = this.state;
         let addTaskSection;
         if (currentUser && currentUser.role === 'ROLE_ADMIN') {

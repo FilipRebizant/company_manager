@@ -143,6 +143,7 @@ class TasksList extends Component {
                         <Spinner />
                     </ul>
                 })}
+                <h5 className="my-5">{storageService.checkLocalStorageSpace()}</h5>
             </div>
         );
     }

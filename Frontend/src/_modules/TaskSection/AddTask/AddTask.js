@@ -77,6 +77,12 @@ class AddTask extends Component {
             .then((response) => {
                 if (!response.id) {
                     this.saveLocally(newTask);
+                    this.setState({
+                        alert: 'Couldn\'t connect to server, task has been saved locally',
+                        alertStatus: 'danger',
+                        isShowingAlert: true,
+                        isShowingLoader: false
+                    });
                 } else { // Response ok
                     this.setState({
                         alert: 'Task has been added',
@@ -88,13 +94,13 @@ class AddTask extends Component {
                     this.props.updateTaskList(newTask);
                 }
             })
-            .catch((error) => {
-                if (error.status === 401) {
-                    this.saveLocally(newTask);
-                }
+            .catch(() => {
+                this.saveLocally(newTask);
                 this.setState({
-                    isShowingError: true,
-                    error: error.statusText
+                    alert: 'Couldn\'t connect to server, task has been saved locally',
+                    alertStatus: 'danger',
+                    isShowingAlert: true,
+                    isShowingLoader: false
                 });
             });
     };
@@ -114,10 +120,14 @@ class AddTask extends Component {
     };
 
     prepareNewTask = () => {
-        const { description, employeeAssigned, status, priority, estimatedTime} = this.state;
-        let { createdAt } = this.state;
+        const { description, status, priority, estimatedTime} = this.state;
+        let { createdAt, employeeAssigned } = this.state;
         if (createdAt === '') {
             createdAt = getCurrentDate();
+        }
+
+        if (employeeAssigned == 'false') {
+            employeeAssigned = null;
         }
 
         return {
@@ -169,7 +179,7 @@ class AddTask extends Component {
         const { estimatedTime, users, employeeAssigned } = this.state;
         let salary = 0;
         users.map((user) => {
-            if (user.id == employeeAssigned) {
+            if ((user.firstName + " " + user.lastName) == employeeAssigned) {
                 salary = user.salary
             }
         });
@@ -226,7 +236,7 @@ class AddTask extends Component {
                                 <select value={employeeAssigned} className="form-control" name="employeeAssigned" id="employeeAssigned" onChange={this.handleChange}>
                                     <option value={false}></option>
                                     {users.map((user, index) => {
-                                        return <option key={index} value={user.id}>{user.firstName} {user.lastName}</option>
+                                        return <option key={index} value={`${user.firstName} ${user.lastName}`}>{user.firstName} {user.lastName}</option>
                                     })}
                                 </select>
                             </div>

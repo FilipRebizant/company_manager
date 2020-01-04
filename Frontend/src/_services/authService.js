@@ -35,12 +35,12 @@ function login(username, password) {
                 }
             }).then(response => response.json())
                 .then(response => {
-                    let user = JSON.stringify({
+                    let user = {
                         "token": token,
                         "name": response.name,
                         "role": response.role
-                    });
-                    localStorage.setItem('currentUser', user);
+                    };
+                    storageService.setItem(user, 'currentUser');
                     currentUserSubject.next(user);
 
                     return user;

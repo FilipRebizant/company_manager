@@ -54,7 +54,7 @@ class LoginPage extends React.Component {
     render() {
         let errorContainer;
         const { isShowingError, logging } = this.state;
-        if (this.state.isShowingError) {
+        if (isShowingError) {
             errorContainer = <div className="alert alert-danger" id="loginErrorContainer">{this.state.error}</div>;
         }
 

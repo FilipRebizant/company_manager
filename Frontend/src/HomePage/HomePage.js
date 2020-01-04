@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Commission } from '../_modules/CommissionSection/Commission';
 import { AddCommission } from "../_modules/CommissionSection/AddCommission";
-import { commissionService } from "../_services/commissionService";
 import {storageService} from "../_services";
 
 class HomePage extends Component {
@@ -20,7 +19,7 @@ class HomePage extends Component {
     };
 
     getOpenedCommissions = () => {
-        let openedCommissions = this.loadCommissionsFromServer();
+        // let openedCommissions = this.loadCommissionsFromServer();
 
         // if (openedCommissions === false) {
         //     openedCommissions = localStorage.getItem('localOpenedCommissions');
@@ -68,7 +67,7 @@ class HomePage extends Component {
     };
 
     addItem = (item) => {
-        let { openedCommissions, notSentCommissions } = this.state;
+        let { openedCommissions } = this.state;
         if (!openedCommissions) {
             const local =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
             if (local) {
