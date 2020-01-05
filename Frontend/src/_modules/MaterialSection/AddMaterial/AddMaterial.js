@@ -93,7 +93,7 @@ class AddMaterial extends Component {
         if (this.validate(newItem)) {
             this.addNewItem(newItem);
             this.resetInputFields();
-            this.props.updateList();
+            this.props.updateMaterialList();
         }
     };
 

@@ -1,63 +1,46 @@
 import React, { Component } from 'react';
 import { Commission } from '../_modules/CommissionSection/Commission';
 import { AddCommission } from "../_modules/CommissionSection/AddCommission";
-import {storageService} from "../_services";
+import { commissionService, storageService } from "../_services";
 
 class HomePage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            openedCommissions: null,
-            notSentCommissions: null
+            openedCommissions: [],
+            notSentCommissions: []
         }
     }
 
     componentDidMount() {
-        // this.getOpenedCommissions();
-        this.getCommissionsFromStorage();
+        this.loadCommissionsFromServer();
     };
 
-    getOpenedCommissions = () => {
-        // let openedCommissions = this.loadCommissionsFromServer();
+    loadCommissionsFromServer = () => {
+        const commissionsPromise = commissionService.getAll();
 
-        // if (openedCommissions === false) {
-        //     openedCommissions = localStorage.getItem('localOpenedCommissions');
-        // }
-        //
-        // this.setState({
-        //     openedCommissions: JSON.parse(openedCommissions)
-        // });
+        commissionsPromise.then(response => {
+            if (response.status === 200) {
+                return response
+            }
+        }).then(response => response.json()
+            .then((response => {
+                if (!response.errors) {
+                    this.setState({
+                        openedCommissions: response.commissions
+                    });
+                    storageService.setItem(response.commissions, 'localOpenedCommissions');
+                } else {
+                    this.getCommissionsFromStorage();
+                }
+            })))
+            .catch(error => {
+                this.getCommissionsFromStorage()
+            });
+
+        return false;
     };
-
-    componentDidUpdate() {
-        this.renderList();
-        this.renderNotSentCommissions();
-    }
-
-    // loadCommissionsFromServer = () => {
-    //     const commissionsPromise = commissionService.getAll();
-    //
-    //     commissionsPromise.then(response => {
-    //         if (response.status === 200) {
-    //             return response
-    //         }
-    //     }).then(response => response.json()
-    //         .then((response => {
-    //             if (!response.errors) {
-    //                 this.setState({
-    //                     openedCommissions: response.commissions
-    //                 })
-    //             } else {
-    //                 this.getCommissionsFromStorage();
-    //             }
-    //         })))
-    //         .catch(error => {
-    //             this.getCommissionsFromStorage()
-    //         });
-    //
-    //     return false;
-    // };
 
     getCommissionsFromStorage = () => {
         this.setState({
@@ -82,10 +65,10 @@ class HomePage extends Component {
     };
 
     updateList = () => {
-        this.getOpenedCommissions();
-        this.getCommissionsFromStorage();
-        this.renderList();
-        this.renderNotSentCommissions();
+        // this.getOpenedCommissions();
+        // this.getCommissionsFromStorage();
+        // this.renderList();
+        // this.renderNotSentCommissions();
     };
 
     renderList = () => {
@@ -122,7 +105,7 @@ class HomePage extends Component {
                     createdAt = {notSentCommissions[key].createdAt} />
             );
         }
-    }
+    };
 
     renderNotSentCommissionsWrapper = () => {
         return (
@@ -133,7 +116,7 @@ class HomePage extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
    render() {
        return (

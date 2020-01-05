@@ -23,10 +23,12 @@ class CommissionPage extends Component {
                 Done: []
             },
             newTask: null,
+            newMaterial: null,
+            newReport: null,
             commissionName: null,
             commissionId: '',
             currentUser: null,
-            activeTab: "3"
+            activeTab: "1"
         };
     }
 
@@ -62,7 +64,14 @@ class CommissionPage extends Component {
 
     addTask = (task) => {
         this.setState({newTask: task});
-        this.renderTaskList();
+    };
+
+    addMaterial = (item) => {
+      this.setState({newMaterial: item});
+    };
+
+    addReport = (report) => {
+        this.setState({newReport: report});
     };
 
     getCommissionsData = (id) => {
@@ -82,7 +91,7 @@ class CommissionPage extends Component {
     };
 
     renderMaterialList = () => {
-        const { material } = this.state;
+        const { material, newMaterial } = this.state;
 
         return Object.keys(material).map((key) => {
             return <MaterialList
@@ -90,12 +99,14 @@ class CommissionPage extends Component {
                 name='material'
                 date={key}
                 items={material}
+                newMaterial={newMaterial}
+                resetNewMaterial={() => this.setState({newMaterial: null})}
             />
         });
     };
 
     renderReportsList = () => {
-        const { reports } = this.state;
+        const { reports, newReport } = this.state;
 
         return Object.keys(reports).map((key) => {
             return <ReportsTable
@@ -103,6 +114,8 @@ class CommissionPage extends Component {
                 name='reports'
                 date={key}
                 items={reports}
+                newReport={newReport}
+                resetNewReport={() => this.setState({newReport: null})}
             />
         });
     };
@@ -138,10 +151,9 @@ class CommissionPage extends Component {
     };
 
     render() {
-
-
         const { commissionName, currentUser } = this.state;
         let addTaskSection;
+
         if (currentUser && currentUser.role === 'ROLE_ADMIN') {
              addTaskSection = <MDBRow>
                                     <MDBCol md="12">
@@ -182,7 +194,7 @@ class CommissionPage extends Component {
                     <MDBTabPane tabId="1" role="tabpanel">
                         <MDBRow>
                             <MDBCol md="4">
-                                <AddMaterial updateList={this.updateList}/>
+                                <AddMaterial updateMaterialList={this.renderMaterialList}/>
                             </MDBCol>
                             <MDBCol md="8">
                                 <MDBContainer>
