@@ -32,36 +32,24 @@ class CommissionPage extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-        window.addEventListener('storage', this.storageChange);
         const url = window.location.href;
         const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
-        this.getCommissionsData(id);
         let currentUser = storageService.getItems('currentUser');
+        window.addEventListener('customSync', this.storageChange);
+
+        this.getCommissionsData(id);
         this.setState({currentUser: currentUser});
     };
 
-    // shouldComponentUpdate(instance, nextProps, nextState) {
-    //     // console.log(instance);
-    //     if (storageService.getItems('shouldRenderTasks')) {
-    //         this.renderTaskList();
-    //         this.renderNotSentTaskList();
-    //         storageService.deleteKey('shouldRenderTasks');
-    //     }
-    //
-    //     return true;
-    //
-    // }
-
     componentWillUnmount() {
         if (typeof window !== 'undefined') {
-            window.removeEventListener('storage', this.storageChange)
+            window.removeEventListener('customSync', this.storageChange, false)
         }
         this._isMounted = false;
-
     }
 
-    storageChange = () => {
-        console.log('hook applied');
+    storageChange = (e) => {
+        this.setState({newTask: true});
     };
 
     toggleTab = tab => e => {
@@ -86,9 +74,6 @@ class CommissionPage extends Component {
                         this.setState({
                             commissionId: id,
                             commissionName: item.name,
-                            material: item.material,
-                            reports: item.reports,
-                            tasks: item.tasks
                         })
                     }
                 }
