@@ -33,6 +33,15 @@ getTasksWithStatus:
     controller: App\Controller\API\TaskController::getTaskWithStatus
     methods:    GET
 
+getMaterialFromCommission:
+    path:       /commissions/{id}/materials
+    controller: App\Controller\API\MaterialController::getMaterialFromCommission
+    methods:    GET
+
+getReportsFromCommission:
+    path:       /commissions/{id}/reports
+    controller: App\Controller\API\ReportController::getReportFromCommission
+    methods:    GET
 
 showCostsSummary:
     path:       /commissions/{id}/summary

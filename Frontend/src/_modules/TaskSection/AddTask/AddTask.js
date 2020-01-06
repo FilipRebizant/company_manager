@@ -126,7 +126,7 @@ class AddTask extends Component {
             createdAt = getCurrentDate();
         }
 
-        if (employeeAssigned == 'false') {
+        if (employeeAssigned === 'false') {
             employeeAssigned = null;
         }
 
@@ -160,7 +160,7 @@ class AddTask extends Component {
     };
 
     handleChange = (e) => {
-        let employeeSelected = ("false" != this.state.employeeAssigned);
+        let employeeSelected = ("false" !== this.state.employeeAssigned);
 
         if (employeeSelected) {
             this.setState({
@@ -178,8 +178,8 @@ class AddTask extends Component {
     estimateCost = () => {
         const { estimatedTime, users, employeeAssigned } = this.state;
         let salary = 0;
-        users.map((user) => {
-            if ((user.firstName + " " + user.lastName) == employeeAssigned) {
+        users.forEach((user) => {
+            if ((user.firstName + " " + user.lastName) === employeeAssigned) {
                 salary = user.salary
             }
         });
@@ -203,7 +203,7 @@ class AddTask extends Component {
         } = this.state;
 
         if (isShowingAlert) {
-            alertContainer = <div className={`alert alert-${alertStatus}`} id="loginErrorContainer">{alert}</div>;
+            alertContainer = <div className={`alert alert-${alertStatus}`}>{alert}</div>;
         }
 
         if (isShowingLoader) {

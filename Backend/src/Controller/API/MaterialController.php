@@ -77,10 +77,10 @@ class MaterialController extends ApiController
 
         $materialsArray = [];
         foreach ($materials as $material) {
-            $materialsArray[] = $this->materialService->transform($material);
+            $materialsArray[$material->getCreatedAt()->format('Y-m-d')][] = $this->materialService->transform($material);
         }
 
-        return $this->respondSuccess(['materials' => $materialsArray]);
+        return $this->respondSuccess(['materials' => $materialsArray], Response::HTTP_OK);
     }
 
     /**

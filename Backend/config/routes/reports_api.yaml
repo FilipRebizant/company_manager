@@ -3,11 +3,6 @@ showReports:
     controller: App\Controller\API\ReportController::showAll
     methods:    GET
 
-getReportFromCommission:
-    path:       /reports/{id}
-    controller: App\Controller\API\ReportController::getReportFromCommission
-    methods:    GET
-
 createReport:
     path:       /reports
     controller: App\Controller\API\ReportController::create

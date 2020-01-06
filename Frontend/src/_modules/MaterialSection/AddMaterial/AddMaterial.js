@@ -4,23 +4,59 @@ import { Label } from "../../../_components/atoms/Label/index";
 import { Input } from "../../../_components/atoms/Input/index";
 import { getCommissionId, getCurrentDate } from "../../../_helpers/index";
 import { materialService, storageService} from "../../../_services/index";
+import Spinner from "../../../_components/Spinner/Spinner";
 
 class AddMaterial extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commissionId: '',
+            // commissionId: '',
             name: '',
             code: '',
             quantity: '',
             createdAt: '',
             additionalInfo: '',
-            buttonDisabled: true
+            isShowingAlert: false,
+            alert: null,
+            alertStatus: '',
+            isShowingLoader: false
         }
     }
 
     validate = (item) => {
-        return true;
+        // if (item.name === "") {
+        //     this.setState({
+        //         isShowingAlert: true,
+        //         alert: 'Name can not be empty',
+        //         alertStatus: 'danger'
+        //     });
+        //
+        //     return false;
+        // }
+        //
+        // if (item.code === "") {
+        //     this.setState({
+        //         isShowingAlert: true,
+        //         alert: 'Code can not be empty',
+        //         alertStatus: 'danger'
+        //     });
+        //
+        //     return false;
+        // }
+        //
+        // if (item.quantity === "") {
+        //     this.setState({
+        //         isShowingAlert: true,
+        //         alert: 'Quantity can not be empty',
+        //         alertStatus: 'danger'
+        //     });
+        //
+        //     return false;
+        // }
+
+        this.addToLocalStorage(item);
+        return false;
+        // return true;
     };
 
     resetInputFields = () => {
@@ -38,24 +74,40 @@ class AddMaterial extends Component {
     };
 
     addNewItem = (newItem) => {
+        this.setState({
+            isShowingAlert: false,
+            isShowingLoader: true,
+        });
+
         materialService.pushMaterial(newItem)
             .then((response => {
                 console.log(response);
                 if (response.ok) {
                     newItem.id = response.id;
+
+                    this.setState({
+                        isShowingAlert: true,
+                        alert: 'Material sent successfully',
+                        alertStatus: 'success',
+                        isShowingLoader: false
+                    });
+
+                    this.resetInputFields();
+                    this.props.updateMaterialList();
+
                 } else {
-                    this.saveLocally(newItem);
+                    this.addToNotSent(newItem);
                 }
             }))
             .catch((e) => {
-                this.saveLocally(newItem);
+                this.addToNotSent(newItem);
             });
 
 
         const material = storageService.getItems('localMaterial');
 
         material.forEach(function (item) {
-
+            console.log(item);
         });
 
         // let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
@@ -73,7 +125,32 @@ class AddMaterial extends Component {
         // }
     };
 
-    saveLocally = (newMaterial) => {
+    addToLocalStorage = (newMaterial) => {
+        const commissionId = getCommissionId();
+        let storageMaterial = storageService.getItems('localMaterial');
+
+        if (!storageMaterial) {
+            storageMaterial = {
+                commissionId: commissionId,
+                material: {}
+            };
+        }
+
+        if (!storageMaterial[commissionId].material[newMaterial.createdAt]) {
+            storageMaterial[commissionId].material[newMaterial.createdAt] = [];
+        }
+
+        storageMaterial[commissionId].material[newMaterial.createdAt].push(newMaterial);
+        storageService.setItem(storageMaterial, 'localMaterial');
+        console.log(storageMaterial);
+        console.log(newMaterial);
+        console.log(commissionId);
+        // storageMaterial.forEach((item) => {
+        //     console.log(item);
+        // });
+    };
+
+    addToNotSent = (newMaterial) => {
         storageService.addItem(newMaterial, 'notSentMaterials');
     };
 
@@ -99,45 +176,59 @@ class AddMaterial extends Component {
 
         if (this.validate(newItem)) {
             this.addNewItem(newItem);
-            this.resetInputFields();
-            this.props.updateMaterialList();
         }
     };
 
     render() {
+        const { isShowingAlert, alertStatus, alert, isShowingLoader } = this.state;
+        let alertContainer, spinnerContainer;
+
+        if (isShowingLoader) {
+            spinnerContainer = <Spinner notFullHeight/>
+        }
+
+        if (isShowingAlert) {
+            alertContainer = <div className={`alert alert-${alertStatus}`}>{alert}</div>;
+        }
+
         return (
-            <form onSubmit={this.handleFormSubmit}>
-                <h3 className="text-center py-4">Add Used Material</h3>
+            <div>
 
-                <div className="form-group">
-                    <Label for="name"/>
-                    <Input name="name" value={this.state.name} onChange={this.handleChange} />
-                </div>
+                <form onSubmit={this.handleFormSubmit}>
+                    <h3 className="text-center py-4">Add Used Material</h3>
+                    { alertContainer }
+                    { spinnerContainer }
+                    <div className="form-group">
+                        <Label for="name"/>
+                        <Input name="name" value={this.state.name} onChange={this.handleChange} />
+                    </div>
 
-                <div className="form-group">
-                    <Label for="code"/>
-                    <Input name="code" value={this.state.code} onChange={this.handleChange} />
-                </div>
+                    <div className="form-group">
+                        <Label for="code"/>
+                        <Input name="code" value={this.state.code} onChange={this.handleChange} />
+                    </div>
 
-                <div className="form-group">
-                    <Label for="quantity"/>
-                    <Input type="number" name="quantity" value={this.state.quantity} onChange={this.handleChange} />
-                </div>
+                    <div className="form-group">
+                        <Label for="quantity"/>
+                        <Input type="number" name="quantity" value={this.state.quantity} onChange={this.handleChange} />
+                    </div>
 
-                <div className="form-group">
-                    <Label for="createdAt"/>
-                    <Input type="date" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
-                </div>
+                    <div className="form-group">
+                        <Label for="createdAt"/>
+                        <Input type="date" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
+                    </div>
 
-                <Input type="hidden" value={this.state.commissionId} />
+                    <Input type="hidden" value={this.state.commissionId} />
 
-                <div className="text-center py-4 mt-3">
-                    <MDBBtn className="btn btn-outline-blue" type="submit">
-                        Send
-                        <MDBIcon far icon="paper-plane" className="ml-2"/>
-                    </MDBBtn>
-                </div>
-            </form>
+                    <div className="text-center py-4 mt-3">
+                        <MDBBtn className="btn btn-outline-blue" type="submit">
+                            Send
+                            <MDBIcon far icon="paper-plane" className="ml-2"/>
+                        </MDBBtn>
+                    </div>
+                </form>
+
+            </div>
         );
     }
 }

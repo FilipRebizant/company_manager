@@ -78,7 +78,7 @@ class ReportController extends ApiController
 
         $reportsArray = [];
         foreach ($reports as $report) {
-            $reportsArray[] = $this->reportService->transform($report);
+            $reportsArray[$report->getCreatedAt()->format('Y-m-d')][] = $this->reportService->transform($report);
         }
 
         return $this->respondSuccess(['reports' => $reportsArray]);

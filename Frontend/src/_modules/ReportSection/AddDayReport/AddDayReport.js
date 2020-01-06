@@ -9,10 +9,9 @@ class AddDayReport extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commissionId: '',
+            // commissionId: '',
             createdAt: '',
             startedAt: '',
-            finishedAt: '',
             dayDescription: '',
             currentUser: null,
             buttonDisabled: true,
@@ -72,19 +71,19 @@ class AddDayReport extends Component {
                 this.saveLocally(newReport);
             });
 
-        let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
-
-        for (let elem in commissions) {
-            if (commissions[elem].id === newReport.commissionId) {
-                if (!commissions[elem].reports[newReport.createdAt]) {
-                    commissions[elem].reports[newReport.createdAt] = [];
-                }
-
-                commissions[elem].reports[newReport.createdAt].push(newReport);
-                localStorage.removeItem('localOpenedCommissions');
-                localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
-            }
-        }
+        // let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
+        //
+        // for (let elem in commissions) {
+        //     if (commissions[elem].id === newReport.commissionId) {
+        //         if (!commissions[elem].reports[newReport.createdAt]) {
+        //             commissions[elem].reports[newReport.createdAt] = [];
+        //         }
+        //
+        //         commissions[elem].reports[newReport.createdAt].push(newReport);
+        //         localStorage.removeItem('localOpenedCommissions');
+        //         localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+        //     }
+        // }
     };
 
     saveLocally = (newReport) => {

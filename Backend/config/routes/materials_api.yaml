@@ -3,11 +3,6 @@ showMaterials:
     controller: App\Controller\API\MaterialController::showAll
     methods:    GET
 
-getMaterialFromCommission:
-    path:       /materials/{id}
-    controller: App\Controller\API\MaterialController::getMaterialFromCommission
-    methods:    GET
-
 createMaterial:
     path:       /materials
     controller: App\Controller\API\MaterialController::create

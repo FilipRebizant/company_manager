@@ -89,18 +89,10 @@ class CommissionPage extends Component {
     };
 
     renderMaterialList = () => {
-        const { material, newMaterial } = this.state;
-
-        return Object.keys(material).map((key) => {
-            return <MaterialList
-                key={key}
-                name='material'
-                date={key}
-                items={material}
-                newMaterial={newMaterial}
-                resetNewMaterial={() => this.setState({newMaterial: null})}
-            />
-        });
+        return <MaterialList
+            newMaterial={this.state.newMaterial}
+            resetNewMaterial={() => this.setState({newMaterial: null})}
+        />
     };
 
     renderReportsList = () => {
@@ -119,7 +111,10 @@ class CommissionPage extends Component {
     };
 
     renderTaskList = () => {
-        return <TasksList resetNewTask={() => this.setState({newTask: null})} newTask={this.state.newTask} />
+        return <TasksList
+            resetNewTask={() => this.setState({newTask: null})}
+            newTask={this.state.newTask}
+        />
     };
 
     renderNotSentTaskList = () => {
