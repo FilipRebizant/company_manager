@@ -75,7 +75,7 @@ class CommissionPage extends Component {
     getCommissionsData = (id) => {
         const commissions = storageService.getItems('localOpenedCommissions');
         if (commissions) {
-            commissions.map((item) => {
+            commissions.forEach((item) => {
                 if (item.id === id) {
                     if (this._isMounted) {
                         this.setState({

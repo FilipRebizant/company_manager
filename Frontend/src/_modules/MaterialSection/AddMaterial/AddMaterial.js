@@ -51,19 +51,26 @@ class AddMaterial extends Component {
                 this.saveLocally(newItem);
             });
 
-        let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
 
-        for (let elem in commissions) {
-            if (commissions[elem].id === newItem.commissionId) {
-                if (!commissions[elem].material[newItem.createdAt]) {
-                    commissions[elem].material[newItem.createdAt] = [];
-                }
+        const material = storageService.getItems('localMaterial');
 
-                commissions[elem].material[newItem.createdAt].push(newItem);
-                localStorage.removeItem('localOpenedCommissions');
-                localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
-            }
-        }
+        material.forEach(function (item) {
+
+        });
+
+        // let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
+        //
+        // for (let elem in commissions) {
+        //     if (commissions[elem].id === newItem.commissionId) {
+        //         if (!commissions[elem].material[newItem.createdAt]) {
+        //             commissions[elem].material[newItem.createdAt] = [];
+        //         }
+        //
+        //         commissions[elem].material[newItem.createdAt].push(newItem);
+        //         localStorage.removeItem('localOpenedCommissions');
+        //         localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
+        //     }
+        // }
     };
 
     saveLocally = (newMaterial) => {

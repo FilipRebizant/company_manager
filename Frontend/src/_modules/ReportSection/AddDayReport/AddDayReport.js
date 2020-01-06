@@ -4,7 +4,6 @@ import { Label } from "../../../_components/atoms/Label/index";
 import { Input } from "../../../_components/atoms/Input/index";
 import { getCommissionId, getCurrentDate, countTimeDifference } from "../../../_helpers/index";
 import {reportService, storageService} from "../../../_services/index";
-import {authService} from "../../../_services";
 
 class AddDayReport extends Component {
     constructor(props) {

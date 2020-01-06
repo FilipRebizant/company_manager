@@ -28,30 +28,30 @@ function pushReport(report)
 
 
 async function syncLocalReports() {
-    let notSentReports = JSON.parse(localStorage.getItem('notSentReports'));
-    console.log(notSentReports);
+    const notSentReports = storageService.getItems('notSentReports');
+    //
     if (notSentReports) {
-        Object.keys(notSentReports).filter((report) => {
-            // const reports = notSentReports;
-            const length = notSentReports.length;
-            console.log(length);
-            for (let i = 0; i < length; i++) { // For each report in commission
-                console.log(i);
-                // console.log(reports);
-                pushReport(notSentReports[i]).then((response) => {
-                    if (response.status === 201) {
-                        //         console.log('successs');
-                        notSentReports = storageService.arrayRemove(notSentReports, notSentReports[i]);
-                        localStorage.removeItem('notSentReports');
-                        localStorage.setItem('notSentReports', JSON.stringify(notSentReports));
-
-                        syncLocalReports();
-                    }
-                });
-
-                break;
-            }
-        });
+    //     Object.keys(notSentReports).forEach((report) => {
+    //         // const reports = notSentReports;
+    //         const length = notSentReports.length;
+    //         console.log(length);
+    //         for (let i = 0; i < length; i++) { // For each report in commission
+    //             console.log(i);
+    //             // console.log(reports);
+    //             pushReport(notSentReports[i]).then((response) => {
+    //                 if (response.status === 201) {
+    //                     //         console.log('successs');
+    //                     notSentReports = storageService.arrayRemove(notSentReports, notSentReports[i]);
+    //                     localStorage.removeItem('notSentReports');
+    //                     localStorage.setItem('notSentReports', JSON.stringify(notSentReports));
+    //
+    //                     syncLocalReports();
+    //                 }
+    //             });
+    //
+    //             break;
+    //         }
+    //     });
     }
 }
 

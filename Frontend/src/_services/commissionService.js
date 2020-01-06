@@ -16,7 +16,7 @@ function getAll() {
 function syncLocalChanges() {
     let notSentCommissions = storageService.getItems('notSentCommissions');
 
-    Object.keys(notSentCommissions).filter((commission) => {
+    Object.keys(notSentCommissions).forEach((commission) => {
         const commissions = notSentCommissions;
         const length = notSentCommissions.length;
 

@@ -17,9 +17,9 @@ async function syncLocalTasks() {
     let commissions = storageService.getItems('notSentTasks');
 
     if (commissions) {
-       Object.keys(commissions).filter((index) => {
+       Object.keys(commissions).forEach((index) => {
             let tasks = commissions[index];
-            tasks.filter((task) => {
+            tasks.forEach((task) => {
                 this.pushTask(task).then(() => {
                     tasks.shift();
                     storageService.setItem(tasks, 'notSentTasks');
