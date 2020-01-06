@@ -202,3 +202,8 @@
   top: 1px;
   cursor:pointer;
 }
+
+.list-group-wrapper {
+  margin-bottom: 5px;
+  border: 1px solid #ced4da;
+}
