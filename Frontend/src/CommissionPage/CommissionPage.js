@@ -37,7 +37,9 @@ class CommissionPage extends Component {
         const url = window.location.href;
         const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
         let currentUser = storageService.getItems('currentUser');
-        window.addEventListener('customSync', this.storageChange);
+
+        // Events
+        window.addEventListener('reloadTaskEvent', this.addTask);
 
         this.getCommissionsData(id);
         this.setState({currentUser: currentUser});
@@ -45,14 +47,10 @@ class CommissionPage extends Component {
 
     componentWillUnmount() {
         if (typeof window !== 'undefined') {
-            window.removeEventListener('customSync', this.storageChange, false)
+            window.removeEventListener('reloadTaskEvent', this.addTask, false)
         }
         this._isMounted = false;
     }
-
-    storageChange = (e) => {
-        this.setState({newTask: true});
-    };
 
     toggleTab = tab => e => {
         if (this.state.activeTab !== tab) {

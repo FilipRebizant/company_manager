@@ -21,16 +21,14 @@ async function syncLocalTasks() {
             let tasks = commissions[index];
             tasks.filter((task) => {
                 this.pushTask(task).then(() => {
-                    console.log('sending task');
                     tasks.shift();
                     storageService.setItem(tasks, 'notSentTasks');
 
                     if (tasks.length === 0 ) {
-                        console.log('clear, all done');
                         storageService.deleteKey('notSentTasks');
                         storageService.setItem(true, 'shouldRenderTasks');
-                        // window.location.reload();
-                        var event = new CustomEvent('customSync', {detail: 'value'});
+
+                        const event = new CustomEvent('reloadTaskEvent', {detail: 'value'});
                         window.dispatchEvent(event);
                     }
                 });
