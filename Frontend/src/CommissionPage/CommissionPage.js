@@ -15,13 +15,6 @@ class CommissionPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            material: [],
-            reports: [],
-            tasks: {
-                Todo: [],
-                Pending: [],
-                Done: []
-            },
             newTask: null,
             newMaterial: null,
             newReport: null,
@@ -41,7 +34,7 @@ class CommissionPage extends Component {
         // Events
         window.addEventListener('reloadTaskEvent', this.addTask);
         window.addEventListener('newMaterialEvent', this.addMaterial);
-        window.addEventListener('newReportEvent', this.addMaterial);
+        window.addEventListener('newReportEvent', this.addReport);
 
         this.getCommissionsData(id);
         this.setState({currentUser: currentUser});

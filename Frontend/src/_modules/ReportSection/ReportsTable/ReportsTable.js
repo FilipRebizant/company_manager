@@ -116,7 +116,7 @@ class ReportsTable extends Component {
         return (
             Object.values(reports.dates).map((item, k) => {
                 let wrapper = React.createRef();
-                console.log(item);
+
                 return (
                     <div ref={wrapper} className="list-group-wrapper" key={k}>
                         <div className="card-header d-flex justify-content-between">

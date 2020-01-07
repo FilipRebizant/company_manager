@@ -3,18 +3,22 @@ import { MDBBtn, MDBIcon } from 'mdbreact';
 import { Label } from "../../../_components/atoms/Label/index";
 import { Input } from "../../../_components/atoms/Input/index";
 import { getCommissionId, getCurrentDate, countTimeDifference } from "../../../_helpers/index";
-import {reportService, storageService} from "../../../_services/index";
+import { reportService, storageService } from "../../../_services/index";
+import Spinner from "../../../_components/Spinner/Spinner";
 
 class AddDayReport extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // commissionId: '',
             createdAt: '',
             startedAt: '',
+            finishedAt: '',
             dayDescription: '',
             currentUser: null,
-            buttonDisabled: true,
+            isShowingAlert: false,
+            alert: null,
+            alertStatus: '',
+            isShowingLoader: false
         }
     }
 
@@ -31,7 +35,40 @@ class AddDayReport extends Component {
         this.setState({[e.target.name]: e.target.value});
     };
 
-    validate = (report) => {
+    validate = () => {
+        const { dayDescription, finishedAt, startedAt } = this.state;
+
+        if (startedAt === "" || startedAt === undefined) {
+            this.setState({
+                isShowingAlert: true,
+                alert: 'Started at can not be empty',
+                alertStatus: 'danger'
+            });
+
+            return false;
+        }
+
+        if (finishedAt === "" || finishedAt === undefined) {
+            this.setState({
+                isShowingAlert: true,
+                alert: 'Finished at can not be empty',
+                alertStatus: 'danger'
+            });
+
+            return false;
+        }
+
+        if (dayDescription === "") {
+            this.setState({
+                isShowingAlert: true,
+                alert: 'Day description can not be empty',
+                alertStatus: 'danger'
+            });
+
+            return false;
+        }
+
+
         return true;
     };
 
@@ -48,13 +85,12 @@ class AddDayReport extends Component {
 
         return {
             commissionId: getCommissionId(),
-            createdAt: createdAt,
-            startedAt: startedAt,
-            finishedAt: finishedAt,
             hoursSum: summary,
+            finishedAt: finishedAt,
+            startedAt: startedAt,
             dayDescription: dayDescription,
             addedBy: currentUser,
-            pushed: false
+            createdAt: createdAt
         };
     };
 
@@ -63,62 +99,69 @@ class AddDayReport extends Component {
             .then((response => {
                 if (response.ok) {
                     newReport.id = response.id;
+                    this.setState({
+                        isShowingAlert: true,
+                        alert: 'Report sent successfully',
+                        alertStatus: 'success',
+                        isShowingLoader: false
+                    });
+
+                    this.resetInputFields();
+                    const event = new CustomEvent('newReportEvent', newReport);
+                    window.dispatchEvent(event);
                 } else {
-                    this.saveLocally(newReport);
+                    this.addToNotSent(newReport);
                 }
             }))
             .catch((e) => {
-                this.saveLocally(newReport);
+                this.addToNotSent(newReport);
             });
-
-        // let commissions =  JSON.parse(localStorage.getItem('localOpenedCommissions'));
-        //
-        // for (let elem in commissions) {
-        //     if (commissions[elem].id === newReport.commissionId) {
-        //         if (!commissions[elem].reports[newReport.createdAt]) {
-        //             commissions[elem].reports[newReport.createdAt] = [];
-        //         }
-        //
-        //         commissions[elem].reports[newReport.createdAt].push(newReport);
-        //         localStorage.removeItem('localOpenedCommissions');
-        //         localStorage.setItem('localOpenedCommissions', JSON.stringify(commissions));
-        //     }
-        // }
     };
 
-    saveLocally = (newReport) => {
+    addToNotSent = (newReport) => {
         storageService.addItem(newReport, 'notSentReports');
     };
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        const newReport = this.prepareNewReport();
 
-        if (this.validate(newReport)) {
+        if (this.validate()) {
+            const newReport = this.prepareNewReport();
+
             this.addNewReport(newReport);
-            // this.resetInputFields();
-            this.props.updateList();
         }
     };
 
     render() {
+        const { isShowingAlert, alertStatus, alert, isShowingLoader } = this.state;
+        let alertContainer, spinnerContainer;
+
+        if (isShowingLoader) {
+            spinnerContainer = <Spinner notFullHeight/>
+        }
+
+        if (isShowingAlert) {
+            alertContainer = <div className={`alert alert-${alertStatus}`}>{alert}</div>;
+        }
+
         return(
             <form onSubmit={this.handleFormSubmit}>
                 <h3 className="text-center py-4">Add Day Report</h3>
-
+                { alertContainer }
+                { spinnerContainer }
                 <div className="form-group">
                     <Label for="startedAt"/>
                     <Input type="time" id="currentTime" name="startedAt" value={this.state.startedAt} onChange={this.handleChange} />
                 </div>
 
                 <div className="form-group">
-                    <Label for="finishedAt"/>
-                    <Input type="time" name="finishedAt" value={this.state.finishedAt} onChange={this.handleChange} />
+                    <Label for="addReportFinished"/>
+                    <Input type="time" id="addReportFinished" name="finishedAt" value={this.state.finishedAt} onChange={this.handleChange} />
                 </div>
 
                 <div className="form-group">
-                    <Label for="createdAt"/>
-                    <Input type="date" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
+                    <Label for="addReportCreated"/>
+                    <Input type="date" id="addReportCreated" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
                 </div>
 
                 <div className="form-group">

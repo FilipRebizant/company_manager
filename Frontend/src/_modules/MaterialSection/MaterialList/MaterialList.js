@@ -55,7 +55,7 @@ class MaterialList extends Component {
     getMaterialFromStorage = () => {
         const storageMaterial = storageService.getItems('localMaterial');
         const { commissionId } = this.state;
-        console.log(storageMaterial);
+
         if (storageMaterial[commissionId]) {
             let currState = Object.assign({}, this.state);
             currState.material.dates = storageMaterial[commissionId];
