@@ -28,7 +28,7 @@ class CommissionPage extends Component {
             commissionName: null,
             commissionId: '',
             currentUser: null,
-            activeTab: "1"
+            activeTab: "2"
         };
     }
 
@@ -40,6 +40,8 @@ class CommissionPage extends Component {
 
         // Events
         window.addEventListener('reloadTaskEvent', this.addTask);
+        window.addEventListener('newMaterialEvent', this.addMaterial);
+        window.addEventListener('newReportEvent', this.addMaterial);
 
         this.getCommissionsData(id);
         this.setState({currentUser: currentUser});
@@ -47,7 +49,9 @@ class CommissionPage extends Component {
 
     componentWillUnmount() {
         if (typeof window !== 'undefined') {
-            window.removeEventListener('reloadTaskEvent', this.addTask, false)
+            window.removeEventListener('reloadTaskEvent', this.addTask, false);
+            window.removeEventListener('newMaterialEvent', this.addMaterial, false);
+            window.removeEventListener('newReportEvent', this.addReport, false);
         }
         this._isMounted = false;
     }
@@ -96,24 +100,16 @@ class CommissionPage extends Component {
     };
 
     renderReportsList = () => {
-        const { reports, newReport } = this.state;
-
-        return Object.keys(reports).map((key) => {
-            return <ReportsTable
-                key={key}
-                name='reports'
-                date={key}
-                items={reports}
-                newReport={newReport}
-                resetNewReport={() => this.setState({newReport: null})}
-            />
-        });
+        return <ReportsTable
+            newReport={this.state.newReport}
+            resetNewReport={() => this.setState({newReport: null})}
+        />
     };
 
     renderTaskList = () => {
         return <TasksList
-            resetNewTask={() => this.setState({newTask: null})}
             newTask={this.state.newTask}
+            resetNewTask={() => this.setState({newTask: null})}
         />
     };
 

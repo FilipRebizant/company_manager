@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { MDBHamburgerToggler, MDBTable, MDBTableHead } from 'mdbreact';
-import {materialService, storageService} from "../../../_services";
+import { materialService, storageService } from "../../../_services";
 
 class MaterialList extends Component {
     constructor(props) {
@@ -23,6 +23,15 @@ class MaterialList extends Component {
             commissionId: id
         });
         this.loadMaterial(id);
+    }
+
+    shouldComponentUpdate(instance, nextProps, nextState) {
+        if (instance.newMaterial !== null) {
+            this.loadMaterial(this.state.commissionId);
+            this.props.resetNewMaterial();
+        }
+
+        return true;
     }
 
     loadMaterial = (id) => {
@@ -48,11 +57,11 @@ class MaterialList extends Component {
         const { commissionId } = this.state;
         console.log(storageMaterial);
         if (storageMaterial[commissionId]) {
-            this.setState({
-                material: storageMaterial[commissionId]
-            });
-        }
+            let currState = Object.assign({}, this.state);
+            currState.material.dates = storageMaterial[commissionId];
 
+            this.setState(currState);
+        }
     };
 
     saveMaterialLocally = () => {
@@ -103,7 +112,8 @@ class MaterialList extends Component {
         return (
             Object.values(material.dates).map((item, k) => {
                 let wrapper = React.createRef();
-                return <div ref={wrapper} className="list-group-wrapper" key={k}>
+                return (
+                    <div ref={wrapper} className="list-group-wrapper" key={k}>
                         <div className="card-header d-flex justify-content-between">
                             <div>{item[0].createdAt}</div>
                             <MDBHamburgerToggler color="#000000" id={`material-${item[0].createdAt}`} onClick={() => this.toggleVisibilityContent(wrapper)}/>
@@ -128,7 +138,8 @@ class MaterialList extends Component {
                             </MDBTable>
                         </div>
                     </div>
-                })
+                );
+            })
         );
     };
 }

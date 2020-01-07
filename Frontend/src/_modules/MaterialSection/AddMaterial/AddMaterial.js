@@ -54,9 +54,9 @@ class AddMaterial extends Component {
         //     return false;
         // }
 
-        this.addToLocalStorage(item);
-        return false;
-        // return true;
+        // this.addToLocalStorage(item);
+        // return false;
+        return true;
     };
 
     resetInputFields = () => {
@@ -93,7 +93,9 @@ class AddMaterial extends Component {
                     });
 
                     this.resetInputFields();
-                    this.props.updateMaterialList();
+                    const event = new CustomEvent('newMaterialEvent', newItem);
+                    window.dispatchEvent(event);
+                    // this.props.updateMaterialList();
 
                 } else {
                     this.addToNotSent(newItem);
@@ -129,22 +131,42 @@ class AddMaterial extends Component {
         const commissionId = getCommissionId();
         let storageMaterial = storageService.getItems('localMaterial');
 
-        if (!storageMaterial) {
-            storageMaterial = {
-                commissionId: commissionId,
-                material: {}
-            };
+        let dates = storageMaterial[commissionId].dates;
+        console.log(dates);
+        let created = newMaterial.createdAt;
+        // if (!storageMaterial) {
+        //     storageMaterial = {
+        //         commissionId: commissionId,
+        //         material: {}
+        //     };
+        // }
+
+        if (!dates[created]) {
+            console.log(dates[created]);
+            // dates[created] = Object.create({});
+            // let array = Object.assign([], newMaterial);
+            let array = [];
+            array.push(newMaterial);
+            // let obj = Object.assign(created, array);
+            console.log(array);
+            storageMaterial[commissionId].dates[created] = array;
+            // arr.push(newMaterial);
+            console.log(dates);
+            // console.log('here');
+        } else {
+            dates[created].push(newMaterial);
         }
 
-        if (!storageMaterial[commissionId].material[newMaterial.createdAt]) {
-            storageMaterial[commissionId].material[newMaterial.createdAt] = [];
-        }
-
-        storageMaterial[commissionId].material[newMaterial.createdAt].push(newMaterial);
-        storageService.setItem(storageMaterial, 'localMaterial');
+        console.log(dates);
         console.log(storageMaterial);
-        console.log(newMaterial);
-        console.log(commissionId);
+        // storageMaterial = JSON.parse(JSON.stringify(storageMaterial));
+        // storageMaterial[commissionId].dates = dates;
+        storageService.setItem(storageMaterial, 'localMaterial');
+
+        // storageMaterial[commissionId].material[newMaterial.createdAt].push(newMaterial);
+        // console.log(storageMaterial);
+        // console.log(newMaterial);
+        // console.log(commissionId);
         // storageMaterial.forEach((item) => {
         //     console.log(item);
         // });
