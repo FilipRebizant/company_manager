@@ -15,7 +15,6 @@ function pushTask(obj) {
 
 async function syncLocalTasks() {
     let commissions = storageService.getItems('notSentTasks');
-
     if (commissions) {
        Object.keys(commissions).forEach((index) => {
             let tasks = commissions[index];
@@ -24,11 +23,10 @@ async function syncLocalTasks() {
                     tasks.shift();
                     storageService.setItem(tasks, 'notSentTasks');
 
-                    if (tasks.length === 0 ) {
+                    if (tasks.length === 0) {
                         storageService.deleteKey('notSentTasks');
-                        storageService.setItem(true, 'shouldRenderTasks');
 
-                        const event = new CustomEvent('reloadTaskEvent', {detail: 'value'});
+                        const event = new CustomEvent('reloadTaskEvent');
                         window.dispatchEvent(event);
                     }
                 });

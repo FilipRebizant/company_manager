@@ -6,7 +6,7 @@ import { CommissionPage } from "./CommissionPage";
 import { LoginPage } from "./LoginPage";
 import { Navigation } from "./_components/Navigation";
 import { NotificationBanner } from "./_components/NotificationBanner";
-import { materialService, storageService, taskService} from "./_services";
+import {materialService, reportService, storageService, taskService} from "./_services";
 import { PrivateRoute } from "./_components/Auth";
 import { UsersPage } from "./UsersPage/UsersPage";
 
@@ -37,21 +37,23 @@ class App extends Component {
                     this.setState({isDisconnected: false});
                 }
 
-                if (storageService.getItems('notSentMaterials')) {
-                    if (storageService.getItems('notSentMaterials').length) {
-                        materialService.syncLocalMaterials();
-                    }
+                if (typeof storageService.getItems('notSentMaterials') === 'object') {
+                    materialService.syncLocalMaterials();
+                }
+
+                if (typeof storageService.getItems('notSentReports') === 'object') {
+                    reportService.syncLocalReports();
                 }
 
                 if (typeof storageService.getItems('notSentTasks') === 'object') {
                     taskService.syncLocalTasks();
                 }
+
             } else {
                 if (this._isMounted) {
                     this.setState({isDisconnected: true});
                 }
             }
-
     };
 
     render () {

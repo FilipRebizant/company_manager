@@ -18,6 +18,9 @@ class CommissionPage extends Component {
             newTask: null,
             newMaterial: null,
             newReport: null,
+            tasks: {
+                Todo: []
+            },
             commissionName: null,
             commissionId: '',
             currentUser: null,
@@ -176,7 +179,7 @@ class CommissionPage extends Component {
                     <MDBTabPane tabId="1" role="tabpanel">
                         <MDBRow>
                             <MDBCol md="4">
-                                <AddMaterial updateMaterialList={this.renderMaterialList}/>
+                                <AddMaterial updateMaterialList={(material) => this.addMaterial(material)}/>
                             </MDBCol>
                             <MDBCol md="8">
                                 <MDBContainer>
@@ -190,7 +193,7 @@ class CommissionPage extends Component {
                     <MDBTabPane tabId="2" role="tabpanel">
                         <MDBRow>
                             <MDBCol md="4">
-                                <AddDayReport updateList={this.updateList}/>
+                                <AddDayReport updateReportList={(report) => this.addReport(report)}/>
                             </MDBCol>
                             <MDBCol md="8">
                                 <MDBContainer>

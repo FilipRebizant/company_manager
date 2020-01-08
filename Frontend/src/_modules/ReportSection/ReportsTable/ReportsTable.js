@@ -3,6 +3,7 @@ import { MDBHamburgerToggler, MDBTable, MDBTableHead } from 'mdbreact';
 import { reportService, storageService } from "../../../_services";
 
 class ReportsTable extends Component {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -15,6 +16,7 @@ class ReportsTable extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         const url = window.location.href;
         const id = parseInt(url.substring(url.lastIndexOf('/') + 1));
 
@@ -33,6 +35,10 @@ class ReportsTable extends Component {
         return true;
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     loadReports = (id) => {
         reportService.getReports(id)
             .then(response => response.json())
@@ -40,8 +46,9 @@ class ReportsTable extends Component {
                 if (response.reports) {
                     let currState = Object.assign({}, this.state);
                     currState.reports.dates = response.reports;
-
-                    this.setState(currState);
+                    if (this._isMounted){
+                        this.setState(currState);
+                    }
                     this.saveReportsLocally();
                 } else {
                     this.getReportsFromStorage();
@@ -58,8 +65,9 @@ class ReportsTable extends Component {
         if (storageReports[commissionId]) {
             let currState = Object.assign({}, this.state);
             currState.reports.dates = storageReports[commissionId];
-
-            this.setState(currState);
+            if (this._isMounted) {
+                this.setState(currState);
+            }
         }
     };
 
@@ -116,12 +124,12 @@ class ReportsTable extends Component {
         return (
             Object.values(reports.dates).map((item, k) => {
                 let wrapper = React.createRef();
-
+                let createdAt = item[0] ? item[0].createdAt : '';
                 return (
                     <div ref={wrapper} className="list-group-wrapper" key={k}>
                         <div className="card-header d-flex justify-content-between">
-                            <div>{item[0].createdAt}</div>
-                            <MDBHamburgerToggler color="#000000" id={`report-${item[0].createdAt}`} onClick={() => this.toggleVisibilityContent(wrapper)}/>
+                            <div>{createdAt}</div>
+                            <MDBHamburgerToggler color="#000000" id={`report-${createdAt}`} onClick={() => this.toggleVisibilityContent(wrapper)}/>
                         </div>
                         <div className="hiddenContentContainer hiddenContent">
                             <MDBTable responsive>

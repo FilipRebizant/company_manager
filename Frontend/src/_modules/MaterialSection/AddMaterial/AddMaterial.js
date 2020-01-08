@@ -3,7 +3,7 @@ import { MDBBtn, MDBIcon } from 'mdbreact';
 import { Label } from "../../../_components/atoms/Label/index";
 import { Input } from "../../../_components/atoms/Input/index";
 import { getCommissionId, getCurrentDate } from "../../../_helpers/index";
-import { materialService, storageService } from "../../../_services/index";
+import { materialService } from "../../../_services/index";
 import Spinner from "../../../_components/Spinner/Spinner";
 
 class AddMaterial extends Component {
@@ -77,8 +77,9 @@ class AddMaterial extends Component {
         });
 
         materialService.pushMaterial(newItem)
+            .then(response => response.json())
             .then((response => {
-                if (response.ok) {
+                if (response.id) {
                     newItem.id = response.id;
 
                     this.setState({
@@ -91,18 +92,40 @@ class AddMaterial extends Component {
                     this.resetInputFields();
                     const event = new CustomEvent('newMaterialEvent', newItem);
                     window.dispatchEvent(event);
-
+                    this.props.updateMaterialList(newItem);
                 } else {
+                    this.setState({
+                        alert: 'Couldn\'t connect to server, material has been saved locally',
+                        alertStatus: 'danger',
+                        isShowingAlert: true,
+                        isShowingLoader: false
+                    });
                     this.addToNotSent(newItem);
                 }
             }))
             .catch((e) => {
+                this.setState({
+                    alert: 'Couldn\'t connect to server, material has been saved locally',
+                    alertStatus: 'danger',
+                    isShowingAlert: true,
+                    isShowingLoader: false
+                });
                 this.addToNotSent(newItem);
             });
     };
 
     addToNotSent = (newMaterial) => {
-        storageService.addItem(newMaterial, 'notSentMaterials');
+        let currentNotSentMaterials = JSON.parse(localStorage.getItem('notSentMaterials'));
+
+        if (!currentNotSentMaterials) {
+            currentNotSentMaterials = {};
+        }
+        if (!currentNotSentMaterials[newMaterial.commissionId]) {
+            currentNotSentMaterials[newMaterial.commissionId] = [];
+        }
+        currentNotSentMaterials[newMaterial.commissionId].push(newMaterial);
+        localStorage.setItem('notSentMaterials', JSON.stringify(currentNotSentMaterials));
+        this.props.updateTaskList(newMaterial);
     };
 
     prepareNewItem = () => {

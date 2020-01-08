@@ -3,6 +3,7 @@ import { MDBHamburgerToggler, MDBTable, MDBTableHead } from 'mdbreact';
 import { materialService, storageService } from "../../../_services";
 
 class MaterialList extends Component {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -34,6 +35,10 @@ class MaterialList extends Component {
         return true;
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     loadMaterial = (id) => {
         materialService.getMaterials(id)
             .then(response => response.json())
@@ -42,7 +47,9 @@ class MaterialList extends Component {
                     let currState = Object.assign({}, this.state);
                     currState.material.dates = response.materials;
 
-                    this.setState(currState);
+                    if (this._isMounted){
+                        this.setState(currState);
+                    }
                     this.saveMaterialLocally();
                 } else {
                     this.getMaterialFromStorage();
@@ -60,7 +67,9 @@ class MaterialList extends Component {
             let currState = Object.assign({}, this.state);
             currState.material.dates = storageMaterial[commissionId];
 
-            this.setState(currState);
+            if (this._isMounted){
+                this.setState(currState);
+            }
         }
     };
 
@@ -112,11 +121,12 @@ class MaterialList extends Component {
         return (
             Object.values(material.dates).map((item, k) => {
                 let wrapper = React.createRef();
+                let createdAt = item[0] ? item[0].createdAt : '';
                 return (
                     <div ref={wrapper} className="list-group-wrapper" key={k}>
                         <div className="card-header d-flex justify-content-between">
-                            <div>{item[0].createdAt}</div>
-                            <MDBHamburgerToggler color="#000000" id={`material-${item[0].createdAt}`} onClick={() => this.toggleVisibilityContent(wrapper)}/>
+                            <div>{createdAt}</div>
+                            <MDBHamburgerToggler color="#000000" id={`material-${createdAt}`} onClick={() => this.toggleVisibilityContent(wrapper)}/>
                         </div>
                         <div className="hiddenContentContainer hiddenContent">
                             <MDBTable responsive>

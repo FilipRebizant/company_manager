@@ -96,8 +96,9 @@ class AddDayReport extends Component {
 
     addNewReport = (newReport) => {
         reportService.pushReport(newReport)
+            .then(response => response.json())
             .then((response => {
-                if (response.ok) {
+                if (response.id) {
                     newReport.id = response.id;
                     this.setState({
                         isShowingAlert: true,
@@ -111,15 +112,37 @@ class AddDayReport extends Component {
                     window.dispatchEvent(event);
                 } else {
                     this.addToNotSent(newReport);
+                    this.setState({
+                        alert: 'Couldn\'t connect to server, report has been saved locally',
+                        alertStatus: 'danger',
+                        isShowingAlert: true,
+                        isShowingLoader: false
+                    });
                 }
             }))
             .catch((e) => {
                 this.addToNotSent(newReport);
+                this.setState({
+                    alert: 'Couldn\'t connect to server, report has been saved locally',
+                    alertStatus: 'danger',
+                    isShowingAlert: true,
+                    isShowingLoader: false
+                });
             });
     };
 
     addToNotSent = (newReport) => {
-        storageService.addItem(newReport, 'notSentReports');
+        let currentNotSentReports = JSON.parse(localStorage.getItem('notSentReports'));
+
+        if (!currentNotSentReports) {
+            currentNotSentReports = {};
+        }
+        if (!currentNotSentReports[newReport.commissionId]) {
+            currentNotSentReports[newReport.commissionId] = [];
+        }
+        currentNotSentReports[newReport.commissionId].push(newReport);
+        localStorage.setItem('notSentReports', JSON.stringify(currentNotSentReports));
+        this.props.updateReportList(newReport);
     };
 
     handleFormSubmit = (e) => {
@@ -129,6 +152,7 @@ class AddDayReport extends Component {
             const newReport = this.prepareNewReport();
 
             this.addNewReport(newReport);
+            this.resetInputFields();
         }
     };
 

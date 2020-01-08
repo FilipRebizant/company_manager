@@ -26,32 +26,26 @@ function pushReport(report)
         .catch((error => handleError(error)));
 }
 
-
 async function syncLocalReports() {
     const notSentReports = storageService.getItems('notSentReports');
-    //
+
     if (notSentReports) {
-    //     Object.keys(notSentReports).forEach((report) => {
-    //         // const reports = notSentReports;
-    //         const length = notSentReports.length;
-    //         console.log(length);
-    //         for (let i = 0; i < length; i++) { // For each report in commission
-    //             console.log(i);
-    //             // console.log(reports);
-    //             pushReport(notSentReports[i]).then((response) => {
-    //                 if (response.status === 201) {
-    //                     //         console.log('successs');
-    //                     notSentReports = storageService.arrayRemove(notSentReports, notSentReports[i]);
-    //                     localStorage.removeItem('notSentReports');
-    //                     localStorage.setItem('notSentReports', JSON.stringify(notSentReports));
-    //
-    //                     syncLocalReports();
-    //                 }
-    //             });
-    //
-    //             break;
-    //         }
-    //     });
+        Object.keys(notSentReports).forEach((index) => {
+            let reports = notSentReports[index];
+            reports.forEach((report) => {
+                this.pushReport(report).then(() => {
+                    reports.shift();
+                    storageService.setItem(reports, 'notSentReports');
+
+                    if (reports.length === 0) {
+                        storageService.deleteKey('notSentReports');
+
+                        const event = new CustomEvent('newReportEvent');
+                        window.dispatchEvent(event);
+                    }
+                });
+            });
+        });
     }
 }
 

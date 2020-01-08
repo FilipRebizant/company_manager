@@ -25,34 +25,28 @@ function pushMaterial(material)
         .catch((error => handleError(error)));
 }
 
-
 async function syncLocalMaterials() {
-    let notSentMaterials = storageService.getItems('notSentMaterials');
-    console.log(notSentMaterials);
-    if (notSentMaterials) {
-    //     Object.keys(notSentMaterials).forEach((material) => {
-    //         // const materials = notSentMaterials;
-    //         const length = notSentMaterials.length;
-    //         console.log(length);
-    //         for (let i = 0; i < length; i++) { // For each material in commission
-    //             console.log(i);
-    //             // console.log(materials);
-    //             pushMaterial(notSentMaterials[i]).then((response) => {
-    //                 if (response.status === 201) {
-    //             //         console.log('successs');
-    //                     notSentMaterials = storageService.arrayRemove(notSentMaterials, notSentMaterials[i]);
-    //                     localStorage.removeItem('notSentMaterials');
-    //                     localStorage.setItem('notSentMaterials', JSON.stringify(notSentMaterials));
-    //
-    //                     syncLocalMaterials();
-    //                 }
-    //             });
-    //
-    //             break;
-    //         }
-    //     });
-    }
+    let commissions = storageService.getItems('notSentMaterials');
 
+    if (commissions) {
+        Object.keys(commissions).forEach((index) => {
+            let materials = commissions[index];
+            materials.forEach((material) => {
+                console.log(materials);
+                this.pushMaterial(material).then(() => {
+                    materials.shift();
+                    storageService.setItem(materials, 'notSentMaterials');
+
+                    if (materials.length === 0) {
+                        storageService.deleteKey('notSentMaterials');
+
+                        const event = new CustomEvent('newMaterialEvent');
+                        window.dispatchEvent(event);
+                    }
+                });
+            });
+        });
+    }
 }
 
 export const materialService = {
