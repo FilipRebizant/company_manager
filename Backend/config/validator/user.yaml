@@ -8,10 +8,6 @@ App\Entity\User:
                 max: 50
                 minMessage: 'Too short username, min {{ limit }}'
                 maxMessage: 'You have entered too long username, max {{ limit }}'
-            - Regex:
-                pattern: '/\d/'
-                match: false
-                message: 'Your name cannot contain a number'
 #            - App\Validator\Constraints\UniqueCredentials: ~
         firstName:
             - NotBlank:
@@ -21,6 +17,10 @@ App\Entity\User:
                 max: 25
                 minMessage: 'First name is too short, minimum number is {{ limit }}'
                 maxMessage: 'First name is too long, maximum number is {{ limit }}'
+            - Regex:
+                pattern: '/\d/'
+                match: false
+                message: 'Your name cannot contain a number'
 
         lastName:
             - NotBlank:
@@ -30,6 +30,10 @@ App\Entity\User:
                 max: 50
                 minMessage: 'Last name is too short, minimum number is {{ limit }}'
                 maxMessage: 'Last name is too long, maximum number is {{ limit }}'
+            - Regex:
+                pattern: '/\d/'
+                match: false
+                message: 'Your name cannot contain a number'
         email:
             - NotBlank: ~
 #            - App\Validator\Constraints\EmailApi: ~

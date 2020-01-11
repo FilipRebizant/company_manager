@@ -179,13 +179,13 @@ class AddDayReport extends Component {
                 </div>
 
                 <div className="form-group">
-                    <Label for="addReportFinished"/>
-                    <Input type="time" id="addReportFinished" name="finishedAt" value={this.state.finishedAt} onChange={this.handleChange} />
+                    <Label for="finishedAt"/>
+                    <Input type="time" id="finishedAt" name="finishedAt" value={this.state.finishedAt} onChange={this.handleChange} />
                 </div>
 
                 <div className="form-group">
-                    <Label for="addReportCreated"/>
-                    <Input type="date" id="addReportCreated" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
+                    <Label for="Date"/>
+                    <Input type="date" id="Date" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
                 </div>
 
                 <div className="form-group">
