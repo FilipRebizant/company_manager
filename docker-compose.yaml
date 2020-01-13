@@ -3,7 +3,7 @@ version: '3.7'
 services:
   php-fpm:
     build:
-      dockerfile: ./docker/php-fpm/Dockerfile
+      dockerfile: Docker/php-fpm/Dockerfile
       context: ./
     volumes:
       - ./Backend:/var/www/html
