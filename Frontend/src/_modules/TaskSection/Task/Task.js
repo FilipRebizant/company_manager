@@ -121,6 +121,12 @@ class Task extends Component {
         const { id, description, status, priority, currentUser } = this.state;
         let { employeeAssigned } = this.state;
 
+        let deleteTaskButton;
+        if (currentUser && currentUser.role === 'ROLE_ADMIN') {
+            let classes = employeeAssigned ? "deleteIcon": "deleteIcon--noUser";
+            deleteTaskButton = <span onClick={this.showRemovePopUp} className={classes}><MDBIcon icon="trash" size="1x" className="red-text" /></span>
+        }
+
         if (employeeAssigned === null) {
             employeeAssigned = <button className="btn btn-sm btn-outline-blue" onClick={this.handleAssign}>Assign to me <MDBIcon icon="check" /></button>;
         } else {
@@ -128,10 +134,6 @@ class Task extends Component {
                 <MDBIcon icon="user-alt" />
                 <span className="employee-name">{employeeAssigned}</span>
             </div>;
-        }
-        let deleteTaskButton;
-        if (currentUser && currentUser.role === 'ROLE_ADMIN') {
-            deleteTaskButton = <span onClick={this.showRemovePopUp} className="deleteIcon"><MDBIcon icon="trash" size="1x" className="red-text" /></span>
         }
 
         return(

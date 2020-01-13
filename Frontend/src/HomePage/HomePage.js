@@ -110,7 +110,7 @@ class HomePage extends Component {
     renderNotSentCommissionsWrapper = () => {
         return (
             <div>
-                <h2 className="h2 py-5">Not sent commissions</h2>
+                <h2 className="h2 py-5"></h2>
                 <div className="d-flex justify-content-around my-5">
                     {this.renderNotSentCommissions()}
                 </div>
@@ -121,7 +121,7 @@ class HomePage extends Component {
    render() {
        return (
            <div>
-               <h2 className="h2 py-5">Opened Commissions</h2>
+               <h2 className="h2 py-5">Commissions</h2>
                <AddCommission updateList={this.updateList} addItem={(item) => this.addItem(item)}/>
                <div className="d-flex justify-content-around my-5">
                    {this.renderList()}

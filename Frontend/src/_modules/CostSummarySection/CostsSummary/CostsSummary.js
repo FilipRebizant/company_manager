@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import {commissionService} from "../../../_services/index";
 import Spinner from "../../../_components/Spinner/Spinner";
-import {config} from "../../../config/config";
+import {config} from "../../../_config/config";
 
 class CostsSummary extends Component {
     _isMounted = false;

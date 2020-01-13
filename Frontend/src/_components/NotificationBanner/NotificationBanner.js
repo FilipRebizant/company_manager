@@ -7,7 +7,7 @@ class NotificationBanner extends Component {
         if (this.props.isDisconnected) {
             return (
                 <div className="alert alert-danger">
-                    You are offline <button onClick={this.props.tryToSync}>Try to sync</button>
+                    You are offline
                 </div>
             );
         }

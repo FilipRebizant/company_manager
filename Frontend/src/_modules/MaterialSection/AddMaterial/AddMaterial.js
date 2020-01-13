@@ -125,7 +125,7 @@ class AddMaterial extends Component {
         }
         currentNotSentMaterials[newMaterial.commissionId].push(newMaterial);
         localStorage.setItem('notSentMaterials', JSON.stringify(currentNotSentMaterials));
-        this.props.updateTaskList(newMaterial);
+        this.props.updateMaterialList(newMaterial);
     };
 
     prepareNewItem = () => {
@@ -188,7 +188,7 @@ class AddMaterial extends Component {
                     </div>
 
                     <div className="form-group">
-                        <Label for="createdAt"/>
+                        <Label for="usedAt"/>
                         <Input type="date" name="createdAt" value={this.state.createdAt} onChange={this.handleChange} />
                     </div>
 

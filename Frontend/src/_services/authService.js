@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { config } from "../config/config";
+import { config } from "../_config/config";
 import {authHeaders, handleResponse} from "../_helpers";
 import { storageService } from "./storageService";
 

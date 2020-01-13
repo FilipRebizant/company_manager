@@ -1,4 +1,4 @@
-import { config } from "../config/config";
+import { config } from "../_config/config";
 import {authHeaders, handleError} from "../_helpers";
 import { storageService } from "./storageService";
 

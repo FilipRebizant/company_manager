@@ -5,7 +5,7 @@ import { Input } from "../../../_components/atoms/Input/index";
 import { getCurrentDate, getCommissionId, handleResponse } from "../../../_helpers/index";
 import { taskService, userService } from '../../../_services/index';
 import Spinner from "../../../_components/Spinner/Spinner";
-import { config } from "../../../config/config";
+import { config } from "../../../_config/config";
 
 
 class AddTask extends Component {

@@ -24,7 +24,7 @@ class CommissionPage extends Component {
             commissionName: null,
             commissionId: '',
             currentUser: null,
-            activeTab: "2"
+            activeTab: "3"
         };
     }
 
@@ -159,7 +159,7 @@ class CommissionPage extends Component {
                     </MDBNavItem>
                     <MDBNavItem>
                         <MDBNavLink to="#" active={this.state.activeTab === "2"} onClick={this.toggleTab("2")} role="tab" >
-                            Working hours
+                            Reports
                         </MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>

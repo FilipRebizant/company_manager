@@ -203,6 +203,13 @@
   cursor:pointer;
 }
 
+.card-header .deleteIcon--noUser {
+  position: absolute;
+  right: 25px;
+  top: 22px;
+  cursor:pointer;
+}
+
 .list-group-wrapper {
   margin-bottom: 5px;
   border: 1px solid #ced4da;
