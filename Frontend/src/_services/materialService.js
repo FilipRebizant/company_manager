@@ -31,8 +31,9 @@ async function syncLocalMaterials() {
     if (commissions) {
         Object.keys(commissions).forEach((index) => {
             let materials = commissions[index];
+
             materials.forEach((material) => {
-                console.log(materials);
+
                 this.pushMaterial(material).then(() => {
                     materials.shift();
                     storageService.setItem(materials, 'notSentMaterials');

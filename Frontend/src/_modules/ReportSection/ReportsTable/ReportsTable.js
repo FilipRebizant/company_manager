@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { MDBHamburgerToggler, MDBTable, MDBTableHead } from 'mdbreact';
 import { reportService, storageService } from "../../../_services";
+import {getTimeFromDate} from "../../../_helpers";
 
 class ReportsTable extends Component {
     _isMounted = false;
@@ -142,8 +143,8 @@ class ReportsTable extends Component {
                                                 <tr>
                                                     <td className="table__data_counter" rowSpan="2">{(key)+1}</td>
                                                     <td>{i.createdAt}</td>
-                                                    <td>{i.startedAt}</td>
-                                                    <td>{i.finishedAt}</td>
+                                                    <td>{getTimeFromDate(i.startedAt)}</td>
+                                                    <td>{getTimeFromDate(i.finishedAt)}</td>
                                                     <td>{i.hoursSummary} hours</td>
                                                 </tr>
                                                 <tr className="table__row-full-width">

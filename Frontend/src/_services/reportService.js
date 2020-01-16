@@ -32,6 +32,7 @@ async function syncLocalReports() {
     if (notSentReports) {
         Object.keys(notSentReports).forEach((index) => {
             let reports = notSentReports[index];
+
             reports.forEach((report) => {
                 this.pushReport(report).then(() => {
                     reports.shift();
