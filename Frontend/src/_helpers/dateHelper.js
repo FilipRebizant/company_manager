@@ -20,7 +20,7 @@ const getCurrentDateTime = () => {
 };
 
 const getTimeFromDate = (date) => {
-    var date = new Date(date);
+    date = new Date(date);
     const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
     const minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
 

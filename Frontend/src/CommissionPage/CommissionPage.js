@@ -137,7 +137,7 @@ class CommissionPage extends Component {
 
     render() {
         const { commissionName, currentUser } = this.state;
-        let addTaskSection;
+        let addTaskSection, costsSummarySection;
 
         if (currentUser && currentUser.role === 'ROLE_ADMIN') {
              addTaskSection = <MDBRow>
@@ -145,7 +145,16 @@ class CommissionPage extends Component {
                                         <AddTask updateTaskList={(task) => this.addTask(task)}/>
                                     </MDBCol>
                                 </MDBRow>;
+
+            costsSummarySection =
+                <MDBNavItem>
+                    <MDBNavLink to="#" active={this.state.activeTab === "4"} onClick={this.toggleTab("4")} role="tab" >
+                        Costs summary
+                    </MDBNavLink>
+                </MDBNavItem>;
         }
+
+
 
         return (
             <MDBContainer>
@@ -167,11 +176,9 @@ class CommissionPage extends Component {
                             Tasks
                         </MDBNavLink>
                     </MDBNavItem>
-                    <MDBNavItem>
-                        <MDBNavLink to="#" active={this.state.activeTab === "4"} onClick={this.toggleTab("4")} role="tab" >
-                            Costs summary
-                        </MDBNavLink>
-                    </MDBNavItem>
+
+                    { costsSummarySection }
+
                 </MDBNav>
 
                 <MDBTabContent activeItem={this.state.activeTab} >
