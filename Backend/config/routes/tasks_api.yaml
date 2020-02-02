@@ -1,0 +1,29 @@
+showTasks:
+    path:       /tasks
+    controller: App\Controller\API\TaskController::showAll
+    methods:    GET
+
+createTask:
+    path:       /tasks
+    controller: App\Controller\API\TaskController::create
+    methods:    POST
+
+showTask:
+    path:       /tasks/{id}
+    controller: App\Controller\API\TaskController::show
+    methods:    GET
+
+updateTask:
+    path:       /tasks/{id}
+    controller: App\Controller\API\TaskController::update
+    methods:    PUT
+
+changeStatusOfTask:
+    path:       /tasks/{id}
+    controller: App\Controller\API\TaskController::changeStatus
+    methods:    PATCH
+
+deleteTask:
+    path:       /tasks/{id}
+    controller: App\Controller\API\TaskController::delete
+    methods:    DELETE

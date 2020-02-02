@@ -1,0 +1,51 @@
+showCommissions:
+    path:       /commissions
+    controller: App\Controller\API\CommissionController::showAll
+    methods:    GET
+
+createCommission:
+    path:       /commissions
+    controller: App\Controller\API\CommissionController::create
+    methods:    POST
+
+showCommission:
+    path:       /commissions/{id}
+    controller: App\Controller\API\CommissionController::show
+    methods:    GET
+
+updateCommission:
+    path:       /commissions/{id}
+    controller: App\Controller\API\CommissionController::update
+    methods:    PUT|PATCH
+
+deleteCommission:
+    path:       /commissions/{id}
+    controller: App\Controller\API\CommissionController::delete
+    methods:    DELETE
+
+getTasksFromCommission:
+    path:       /commissions/{id}/tasks
+    controller: App\Controller\API\TaskController::getTasksFromCommission
+    methods:    GET
+
+getTasksWithStatus:
+    path:       /commissions/{id}/tasks/{status}
+    controller: App\Controller\API\TaskController::getTaskWithStatus
+    methods:    GET
+
+getMaterialFromCommission:
+    path:       /commissions/{id}/materials
+    controller: App\Controller\API\MaterialController::getMaterialFromCommission
+    methods:    GET
+
+getReportsFromCommission:
+    path:       /commissions/{id}/reports
+    controller: App\Controller\API\ReportController::getReportFromCommission
+    methods:    GET
+
+showCostsSummary:
+    path:       /commissions/{id}/summary
+    controller: App\Controller\API\CommissionController::showCostsSummary
+    methods:    GET
+
+

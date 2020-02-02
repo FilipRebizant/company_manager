@@ -1,0 +1,24 @@
+showClients:
+    path:       /clients
+    controller: App\Controller\API\ClientController::showAll
+    methods:    GET
+
+createClient:
+    path:       /clients
+    controller: App\Controller\API\ClientController::create
+    methods:    POST
+
+showClient:
+    path:       /clients/{id}
+    controller: App\Controller\API\ClientController::show
+    methods:    GET
+
+updateClient:
+    path:       /clients/{id}
+    controller: App\Controller\API\ClientController::update
+    methods:    PUT|PATCH
+
+deleteClient:
+    path:       /clients/{id}
+    controller: App\Controller\API\ClientController::delete
+    methods:    DELETE

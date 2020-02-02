@@ -1,0 +1,29 @@
+showUsers:
+    path:       /users
+    controller: App\Controller\API\UserController::showAll
+    methods:    GET
+
+createUser:
+    path:       /users
+    controller: App\Controller\API\UserController::create
+    methods:    POST
+
+showUser:
+    path:       /users/{id}
+    controller: App\Controller\API\UserController::show
+    methods:    GET
+
+showUsersSalary:
+    path:       /users/{employee}/salary
+    controller: App\Controller\API\UserController::getSalary
+    methods:    GET
+
+updateUser:
+    path:       /users/{id}
+    controller: App\Controller\API\UserController::update
+    methods:    PUT|PATCH
+
+deleteUser:
+    path:       /users/{id}
+    controller: App\Controller\API\UserController::delete
+    methods:    DELETE

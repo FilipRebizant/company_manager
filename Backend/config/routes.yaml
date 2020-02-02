@@ -1,0 +1,27 @@
+security_api:
+  resource: 'routes/security_api.yaml'
+  prefix: api/
+
+users_api:
+  resource: 'routes/users_api.yaml'
+  prefix: api/
+
+commissions_api:
+  resource: 'routes/commissions_api.yaml'
+  prefix: api/
+
+tasks_api:
+  resource: 'routes/tasks_api.yaml'
+  prefix: api/
+
+materials_api:
+  resource: 'routes/materials_api.yaml'
+  prefix: api/
+
+reports_api:
+  resource: 'routes/reports_api.yaml'
+  prefix: api/
+
+index:
+    path: /
+    controller: App\Controller\DefaultController::index

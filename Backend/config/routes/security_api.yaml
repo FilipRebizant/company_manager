@@ -1,0 +1,13 @@
+api_auth_login:
+  path: /auth/login
+  methods: [POST]
+
+api_auth_register:
+  path: /auth/register
+  controller: App\Controller\API\SecurityController::register
+  methods: [POST]
+
+api_get_current_user:
+  path: /auth/user
+  controller: App\Controller\API\SecurityController::getCurrentUser
+  methods: [GET]

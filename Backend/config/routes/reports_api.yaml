@@ -1,0 +1,19 @@
+showReports:
+    path:       /reports
+    controller: App\Controller\API\ReportController::showAll
+    methods:    GET
+
+createReport:
+    path:       /reports
+    controller: App\Controller\API\ReportController::create
+    methods:    POST
+
+updateReport:
+    path:       /reports/{id}
+    controller: App\Controller\API\ReportController::update
+    methods:    PUT
+
+deleteReport:
+    path:       /reports/{id}
+    controller: App\Controller\API\ReportController::delete
+    methods:    DELETE

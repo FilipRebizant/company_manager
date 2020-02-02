@@ -1,0 +1,24 @@
+App\Entity\Client:
+    properties:
+        firstName:
+            - NotBlank:
+                message: 'First name can not be empty'
+            - Length:
+                min: 2
+                max: 25
+                minMessage: 'First name is too short, minimum number is {{ limit }}'
+                maxMessage: 'First name is too long, maximum number is {{ limit }}'
+
+        lastName:
+            - NotBlank:
+                message: 'Last name can not be empty'
+            - Length:
+                min: 2
+                max: 50
+                minMessage: 'Last name is too short, minimum number is {{ limit }}'
+                maxMessage: 'Last name is too long, maximum number is {{ limit }}'
+        commission:
+            - NotBlank: ~
+            - App\Validator\Constraint\ItemExists: ~
+#            - App\Validator\Constraints\EmailApi: ~
+#            - App\Validator\Constraints\UniqueCredentials: ~

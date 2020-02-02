@@ -1,0 +1,19 @@
+showMaterials:
+    path:       /materials
+    controller: App\Controller\API\MaterialController::showAll
+    methods:    GET
+
+createMaterial:
+    path:       /materials
+    controller: App\Controller\API\MaterialController::create
+    methods:    POST
+
+updateMaterial:
+    path:       /materials/{id}
+    controller: App\Controller\API\MaterialController::update
+    methods:    PUT
+
+deleteMaterial:
+    path:       /materials/{id}
+    controller: App\Controller\API\MaterialController::delete
+    methods:    DELETE
